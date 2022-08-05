@@ -1,5 +1,5 @@
 import { ConnectorIdentityAttribute } from "@nmshd/connector-sdk"
-import { createQRCode } from "./createQRCode.mjs"
+import { createQRCodeForRequest } from "./createQRCode.mjs"
 import { CONNECTOR_ADDRESS, CONNECTOR_CLIENT } from "./globals.mjs"
 
 export async function createComplexQRCode() {
@@ -132,5 +132,5 @@ export async function createComplexQRCode() {
     ],
   }
 
-  await createQRCode(request)
+  await createQRCodeForRequest(request)
 }

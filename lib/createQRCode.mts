@@ -1,8 +1,9 @@
+import { ConnectorFile } from "@nmshd/connector-sdk"
 import { DateTime } from "luxon"
 import qrcode from "qrcode-terminal"
 import { CONNECTOR_CLIENT } from "./globals.mjs"
 
-export async function createQRCode(request: unknown) {
+export async function createQRCodeForRequest(request: unknown) {
   const name = "John"
   const sId = "12345"
   const type = "admin"
@@ -25,6 +26,12 @@ export async function createQRCode(request: unknown) {
   const templateId = template.result.id
   const tokenResponse = await CONNECTOR_CLIENT.relationshipTemplates.createTokenForOwnRelationshipTemplate(templateId)
   const url = `nmshd://qr#${tokenResponse.result.truncatedReference}`
+  console.log(url)
+  qrcode.generate(url)
+}
+
+export async function createQRCodeForFile(file: ConnectorFile) {
+  const url = `nmshd://qr#${file.truncatedReference}`
   console.log(url)
   qrcode.generate(url)
 }
