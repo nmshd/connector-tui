@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node --loader ts-node/esm ./index.mts"
+    "start": "clear && node --loader ts-node/esm ./index.mts"
   },
   "license": "MIT",
   "dependencies": {
