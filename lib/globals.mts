@@ -1,8 +1,11 @@
 import { ConnectorClient } from "@nmshd/connector-sdk"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 export const CONNECTOR_CLIENT = ConnectorClient.create({
-  baseUrl: "https://v2demo.is.enmeshed.eu/",
-  apiKey: "QLZ95lqJIKMiUMLRxWFQR48sNR6wJtU6",
+  baseUrl: process.env.BASE_URL!,
+  apiKey: process.env.API_KEY!,
 })
 
 export const CONNECTOR_ADDRESS = (await CONNECTOR_CLIENT.account.getIdentityInfo()).result.address

@@ -1,18 +1,45 @@
-import { readFile } from "fs/promises"
+import fs from "fs"
 import { DateTime } from "luxon"
 import path from "path"
 import { createQRCodeForFile } from "./createQRCode.mjs"
 import { CONNECTOR_CLIENT } from "./globals.mjs"
 
-const filePath = path.resolve("__assets__/upload.txt")
+import prompts from "prompts"
+const assetFolder = path.resolve("__assets__")
 
 export async function uploadFile() {
-  const file = await CONNECTOR_CLIENT.files.uploadOwnFile({
-    title: "aFile",
-    expiresAt: DateTime.utc().plus({ days: 1 }).toISO(),
-    file: await readFile(filePath),
-    filename: "upload.txt",
+  const filenames = await fs.promises.readdir(assetFolder)
+
+  const result = await prompts([
+    {
+      message: "Which file do you want to upload?",
+      type: "select",
+      name: "filename",
+      choices: filenames.map((filename) => ({ title: filename, value: filename })),
+    },
+    {
+      message: "Whats the files title?",
+      type: "text",
+      name: "title",
+      initial: "aFile",
+    },
+  ])
+
+  const title = result.title
+  const expiresAt = DateTime.local().plus({ days: 1 }).toISO()
+  const filename = result.filename
+  const file = await fs.promises.readFile(path.resolve(assetFolder, filename))
+
+  const uploadedFile = await CONNECTOR_CLIENT.files.uploadOwnFile({ title, expiresAt, file, filename })
+
+  const render = await prompts({
+    name: "yesno",
+    message: "Do you want to render a QR Code for this file?",
+    type: "confirm",
+    initial: true,
   })
 
-  await createQRCodeForFile(file.result)
+  if (render.yesno) {
+    await createQRCodeForFile(uploadedFile.result)
+  }
 }
