@@ -9,122 +9,62 @@ export async function createComplexQRCode() {
         "@type": "IdentityAttribute",
         owner: CONNECTOR_ADDRESS,
         value: {
-          "@type": "GivenName",
-          value: "Theo",
-        },
-      } as ConnectorIdentityAttribute,
-    })
-  ).result
-
-  const surname = (
-    await CONNECTOR_CLIENT.attributes.createAttribute({
-      content: {
-        "@type": "IdentityAttribute",
-        owner: CONNECTOR_ADDRESS,
-        value: {
-          "@type": "Surname",
-          value: "Templator",
+          "@type": "DisplayName",
+          value: "Connector Tutorial",
         },
       } as ConnectorIdentityAttribute,
     })
   ).result
 
   const request = {
-    "@type": "Request",
     items: [
       {
         "@type": "RequestItemGroup",
         mustBeAccepted: true,
-        title: "Attribute von uns",
+        title: "Shared Attributes",
         items: [
           {
-            "@type": "CreateAttributeRequestItem",
+            "@type": "ShareAttributeRequestItem",
             mustBeAccepted: true,
-            attribute: givenName.content,
+            attribute: {
+              "@type": "IdentityAttribute",
+              owner: "",
+              value: {
+                "@type": "DisplayName",
+                value: "ConnectorV2 Demo",
+              },
+            },
             sourceAttributeId: givenName.id,
-          },
-          {
-            "@type": "CreateAttributeRequestItem",
-            mustBeAccepted: false,
-            attribute: surname.content,
-            sourceAttributeId: surname.id,
           },
         ],
       },
       {
         "@type": "RequestItemGroup",
         mustBeAccepted: true,
-        title: "Attribute die wir über dich kennen",
+        title: "Requested Attributes",
         items: [
           {
-            "@type": "ProposeAttributeRequestItem",
+            "@type": "ReadAttributeRequestItem",
+            mustBeAccepted: true,
+            query: {
+              "@type": "IdentityAttributeQuery",
+              valueType: "Surname",
+            },
+          },
+          {
+            "@type": "ReadAttributeRequestItem",
             mustBeAccepted: true,
             query: {
               "@type": "IdentityAttributeQuery",
               valueType: "GivenName",
             },
-            attribute: {
-              "@type": "IdentityAttribute",
-              owner: CONNECTOR_ADDRESS,
-              value: {
-                "@type": "GivenName",
-                value: "Horst",
-              },
-            },
-          },
-          {
-            "@type": "ProposeAttributeRequestItem",
-            mustBeAccepted: false,
-            query: {
-              "@type": "IdentityAttributeQuery",
-              valueType: "Surname",
-            },
-            attribute: {
-              "@type": "IdentityAttribute",
-              owner: CONNECTOR_ADDRESS,
-              value: {
-                "@type": "Surname",
-                value: "Becker",
-              },
-            },
-          },
-        ],
-      },
-      {
-        "@type": "RequestItemGroup",
-        mustBeAccepted: true,
-        title: "Attribute die wir von dir brauchen",
-        items: [
-          {
-            "@type": "ReadAttributeRequestItem",
-            mustBeAccepted: true,
-            query: {
-              "@type": "IdentityAttributeQuery",
-              valueType: "Nationality",
-            },
-          },
-          {
-            "@type": "ReadAttributeRequestItem",
-            mustBeAccepted: true,
-            query: {
-              "@type": "IdentityAttributeQuery",
-              valueType: "CommunicationLanguage",
-            },
           },
           {
             "@type": "ReadAttributeRequestItem",
             mustBeAccepted: false,
             query: {
               "@type": "IdentityAttributeQuery",
-              valueType: "Sex",
-            },
-          },
-          {
-            "@type": "ReadAttributeRequestItem",
-            mustBeAccepted: false,
-            query: {
-              "@type": "IdentityAttributeQuery",
-              valueType: "BirthName",
+              valueType: "EMailAddress",
             },
           },
         ],
