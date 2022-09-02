@@ -1,9 +1,14 @@
-import dotenv from "dotenv"
 import prompts from "prompts"
 
-import { acceptAllRelationships, createComplexQRCode, createSimpleQRCode, uploadFile } from "./lib/index.mjs"
+import {
+  acceptAllRelationships,
+  createComplexQRCode,
+  createSimpleQRCode,
+  sendMessage,
+  uploadFile,
+} from "./lib/index.mjs"
 
-dotenv.config()
+console.clear()
 
 let running = true
 while (running) {
@@ -16,6 +21,7 @@ while (running) {
       { title: "Simple QR Code", value: 2 },
       { title: "Accept All Relationships", value: 3 },
       { title: "Upload File", value: 4 },
+      { title: "Send Message", value: 5 },
       { title: "Exit", value: "exit" },
     ],
   })
@@ -34,6 +40,9 @@ while (running) {
       break
     case 4:
       await uploadFile()
+      break
+    case 5:
+      await sendMessage()
       break
     case "exit":
     default:
