@@ -1,6 +1,6 @@
 {
-  "name": "connector-sdk-hacking",
-  "version": "1.0.0",
+  "name": "@nmshd/connector-tui",
+  "version": "0.0.1-beta.1",
   "main": "index.js",
   "type": "module",
   "scripts": {
