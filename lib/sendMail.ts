@@ -2,7 +2,7 @@ import prompts from "prompts"
 import { CONNECTOR_CLIENT } from "./globals"
 import { selectFiles, selectRelationships } from "./selectors"
 
-export async function sendMessage() {
+export async function sendMail() {
   const recipients = await selectRelationships("Which recipient(s) do you want to send the message to?")
   if (!recipients) return
 

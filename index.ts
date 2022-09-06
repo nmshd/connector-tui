@@ -1,13 +1,13 @@
 import chalk from "chalk"
 import prompts from "prompts"
-import { getAttributesOfContact } from "./lib"
 
 import {
   acceptAllRelationships,
   CONNECTOR_CLIENT,
   createComplexQRCode,
   createSimpleQRCode,
-  sendMessage,
+  getAttributesOfContact,
+  sendMail,
   sendRequestByMessage,
   sync,
   uploadFile,
@@ -37,7 +37,7 @@ while (true) {
       { title: "Simple QR Code", value: createSimpleQRCode },
       { title: "Accept All Relationships", value: acceptAllRelationships },
       { title: "Upload File", value: uploadFile },
-      { title: "Send Message", value: sendMessage },
+      { title: "Send Mail", value: sendMail },
       { title: "Send Request By Message", value: sendRequestByMessage },
       { title: "Get Attributes of Contact", value: getAttributesOfContact },
       { title: "Exit", value: "exit" },
