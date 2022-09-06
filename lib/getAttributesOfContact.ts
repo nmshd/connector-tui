@@ -7,7 +7,7 @@ export async function getAttributesOfContact() {
 
   const attributeResult = await CONNECTOR_CLIENT.relationships.getAttributesForRelationship(relationship.id)
 
-  const attributes = attributeResult.result
+  const attributes = attributeResult.result.filter((a) => a.content.owner === relationship.peer)
   attributes.map((attribute) =>
     console.log(`${attribute.id}: ${attribute.content.value["@type"]} = ${attribute.content.value.value}`)
   )
