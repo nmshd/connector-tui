@@ -1,4 +1,4 @@
-import { CONNECTOR_CLIENT } from "./globals.mjs"
+import { CONNECTOR_CLIENT } from "./globals"
 
 export async function sync() {
   const syncRequest = await CONNECTOR_CLIENT.account.sync()

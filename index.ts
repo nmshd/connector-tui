@@ -1,20 +1,33 @@
+import chalk from "chalk"
 import prompts from "prompts"
-import { getAttributesOfContact } from "./lib/getAttributesOfContact.mjs"
+import { getAttributesOfContact } from "./lib"
 
 import {
   acceptAllRelationships,
+  CONNECTOR_CLIENT,
   createComplexQRCode,
   createSimpleQRCode,
+  sendCreateRelationshipAttributeRequest,
   sendMessage,
+  sendProposeIdentityAttributeRequest,
+  sendReadIdentityAttributeRequest,
+  sendReadRelationshipAttributeRequest,
+  sync,
   uploadFile,
-} from "./lib/index.mjs"
-import { sendCreateRelationshipAttributeRequest } from "./lib/sendCreateRelationshipAttributeRequest.mjs"
-import { sendProposeIdentityAttributeRequest } from "./lib/sendProposeIdentityAttributeRequest.mjs"
-import { sendReadIdentityAttributeRequest } from "./lib/sendReadIdentityAttributeRequest.mjs"
-import { sendReadRelationshipAttributeRequest } from "./lib/sendReadRelationshipAttributeRequest.mjs"
-import { sync } from "./lib/sync.mjs"
+} from "./lib"
 
-console.clear()
+const connectorVersionInfo = await CONNECTOR_CLIENT.monitoring.getVersion()
+if (!connectorVersionInfo.version.startsWith("3.")) {
+  console.log(
+    `This TUI is made for Enmeshed V2 connectors (starting with version 3.0.0 of the connector). Current version: ${connectorVersionInfo.version}`
+  )
+  process.exit(1)
+}
+
+console.log(`Welcome to the ${chalk.blue("Enmeshed V2 TUI")}!`)
+console.log(`TUI Version: ${chalk.yellow(process.env.npm_package_version)}`)
+console.log(`Connector version: ${chalk.yellow(connectorVersionInfo.version)}`)
+console.log("")
 
 let running = true
 while (running) {
@@ -41,9 +54,6 @@ while (running) {
   if (!result.action) break
 
   switch (result.action) {
-    case 11:
-      await sync()
-      break
     case 1:
       await createComplexQRCode()
       break
@@ -65,15 +75,18 @@ while (running) {
     case 7:
       await sendReadRelationshipAttributeRequest()
       break
-      case 8:
-        await sendCreateRelationshipAttributeRequest()
-        break
-        case 9:
-          await sendProposeIdentityAttributeRequest()
-          break
-          case 10:
-            await getAttributesOfContact()
-            break
+    case 8:
+      await sendCreateRelationshipAttributeRequest()
+      break
+    case 9:
+      await sendProposeIdentityAttributeRequest()
+      break
+    case 10:
+      await getAttributesOfContact()
+      break
+    case 11:
+      await sync()
+      break
     case "exit":
     default:
       running = false

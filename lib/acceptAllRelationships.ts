@@ -1,5 +1,5 @@
 import { ConnectorRelationship } from "@nmshd/connector-sdk"
-import { CONNECTOR_CLIENT } from "./globals.mjs"
+import { CONNECTOR_CLIENT } from "./globals"
 
 function acceptRelationship(r: ConnectorRelationship) {
   console.log(`Accepting relationship ${r.id}`)

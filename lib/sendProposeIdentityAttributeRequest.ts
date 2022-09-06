@@ -1,31 +1,10 @@
-import { CreateOutgoingRequestRequestContentItem } from "@nmshd/connector-sdk"
 import prompts from "prompts"
-import { CONNECTOR_CLIENT } from "./globals.mjs"
+import { CONNECTOR_CLIENT } from "./globals"
+import { selectRelationship } from "./selectors"
 
 export async function sendProposeIdentityAttributeRequest() {
-  const relationships = (await CONNECTOR_CLIENT.relationships.getRelationships({}))
-  if (relationships.isError) {
-    console.error(relationships.error)
-    return
-
-  }
-  const possibleRecipients = relationships.result.filter((r) => r.status === "Active").map((r) => r.peer)
-  if (possibleRecipients.length === 0) {
-    console.log("No recipients found")
-    return
-  }
-
-  const recipientChoices = possibleRecipients.map((r) => ({ title: r, value: r }))
-
-  const existingFiles = (await CONNECTOR_CLIENT.files.getOwnFiles()).result
-
-  const recipientResult = await prompts({
-    message: "Which recipient do you want to send the request to?",
-    type: "select",
-    name: "recipient",
-    choices: recipientChoices,
-  })
-  const recipient = recipientResult.recipient
+  const recipient = await selectRelationship("Which recipient do you want to send the request to?")
+  if (!recipient) return console.log("No recipient selected")
 
   const result = await prompts([
     {
@@ -39,7 +18,7 @@ export async function sendProposeIdentityAttributeRequest() {
       type: "text",
       name: "value",
       initial: "Value",
-    }
+    },
   ])
 
   const requestResult = await CONNECTOR_CLIENT.outgoingRequests.createRequest({
@@ -51,19 +30,19 @@ export async function sendProposeIdentityAttributeRequest() {
           mustBeAccepted: true,
           query: {
             "@type": "IdentityAttributeQuery",
-            valueType: result.attributeType
+            valueType: result.attributeType,
           },
           attribute: {
             "@type": "IdentityAttribute",
             owner: "",
             value: {
               "@type": result.attributeType,
-              value: result.value
-            }
-          }
-        } as CreateOutgoingRequestRequestContentItem
-      ]
-    }
+              value: result.value,
+            },
+          },
+        },
+      ],
+    },
   })
   if (requestResult.isError) {
     return console.error("Error while creating LocalRequest", requestResult.error)
@@ -72,7 +51,7 @@ export async function sendProposeIdentityAttributeRequest() {
   const messageResult = await CONNECTOR_CLIENT.messages.sendMessage({
     recipients: [recipient],
     content: requestResult.result.content,
-    attachments: []
+    attachments: [],
   })
   if (messageResult.isError) {
     return console.error("Error while sending message", messageResult.error)
