@@ -26,55 +26,33 @@ console.log(`TUI Version: ${chalk.yellow(process.env.npm_package_version)}`)
 console.log(`Connector version: ${chalk.yellow(connectorVersionInfo.version)}`)
 console.log("")
 
-let running = true
-while (running) {
+while (true) {
   const result = await prompts({
     type: "select",
     name: "action",
     message: "What do you want to do?",
     choices: [
-      { title: "Sync", value: 8 },
-      { title: "Complex QR Code", value: 1 },
-      { title: "Simple QR Code", value: 2 },
-      { title: "Accept All Relationships", value: 3 },
-      { title: "Upload File", value: 4 },
-      { title: "Send Message", value: 5 },
-      { title: "Send Request By Message", value: 6 },
-      { title: "Get Attributes of Contact", value: 7 },
+      { title: "Sync", value: sync },
+      { title: "Complex QR Code", value: createComplexQRCode },
+      { title: "Simple QR Code", value: createSimpleQRCode },
+      { title: "Accept All Relationships", value: acceptAllRelationships },
+      { title: "Upload File", value: uploadFile },
+      { title: "Send Message", value: sendMessage },
+      { title: "Send Request By Message", value: sendRequestByMessage },
+      { title: "Get Attributes of Contact", value: getAttributesOfContact },
       { title: "Exit", value: "exit" },
     ],
   })
 
   if (!result.action) break
 
-  switch (result.action) {
-    case 1:
-      await createComplexQRCode()
-      break
-    case 2:
-      await createSimpleQRCode()
-      break
-    case 3:
-      await acceptAllRelationships()
-      break
-    case 4:
-      await uploadFile()
-      break
-    case 5:
-      await sendMessage()
-      break
-    case 6:
-      await sendRequestByMessage()
-      break
-    case 7:
-      await getAttributesOfContact()
-      break
-    case 8:
-      await sync()
-      break
-    case "exit":
-    default:
-      running = false
-      break
+  if (typeof result.action === "function") {
+    try {
+      await result.action()
+    } catch (error) {
+      console.log(chalk.red("An Error occurred: "), error)
+    }
+  } else {
+    break
   }
 }
