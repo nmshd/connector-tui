@@ -1,5 +1,5 @@
 import prompts from "prompts"
-import { CONNECTOR_CLIENT } from "./globals.js"
+import { CONNECTOR_CLIENT } from "./globals"
 
 export async function sendMessage() {
   const relationships = (await CONNECTOR_CLIENT.relationships.getRelationships({})).result

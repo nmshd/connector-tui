@@ -1,6 +1,6 @@
 import { ConnectorIdentityAttribute } from "@nmshd/connector-sdk"
-import { createQRCodeForRequest } from "./createQRCode.js"
-import { CONNECTOR_ADDRESS, CONNECTOR_CLIENT } from "./globals.js"
+import { createQRCodeForRequest } from "./createQRCode"
+import { CONNECTOR_ADDRESS, CONNECTOR_CLIENT } from "./globals"
 
 export async function createComplexQRCode() {
   const givenName = (
