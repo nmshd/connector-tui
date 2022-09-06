@@ -16,7 +16,7 @@ export async function sendRequestByMessage() {
     choices: [
       { title: "ReadRelationshipAttributeRequest", value: createReadRelationshipAttributeRequest },
       { title: "ReadIdentityAttributeRequest", value: createReadIdentityAttributeRequest },
-      { title: "ProposeIdentityAttributeRequest", value: createProposeIdentityAttributeRequest },
+      { title: "ProposeAttributeRequest", value: createProposeAttributeRequest },
       { title: "CreateRelationshipAttributeRequest", value: createCreateRelationshipAttributeRequest },
     ],
   })
@@ -112,7 +112,7 @@ async function createReadIdentityAttributeRequest(peer: string) {
   })
 }
 
-async function createProposeIdentityAttributeRequest(peer: string) {
+async function createProposeAttributeRequest(peer: string) {
   const result = await prompts([
     {
       message: "Whats the attribute type you would like to create?",
