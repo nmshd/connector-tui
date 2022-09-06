@@ -1,5 +1,6 @@
 export { acceptAllRelationships } from "./acceptAllRelationships"
 export { createComplexQRCode } from "./createComplexQRCode"
 export { createSimpleQRCode } from "./createSimpleQRCode"
+export { CONNECTOR_CLIENT } from "./globals"
 export { sendMessage } from "./sendMessage"
 export { uploadFile } from "./uploadFile"
