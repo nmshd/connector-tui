@@ -23,7 +23,7 @@ export async function sendRequestByMessage() {
 
   if (!whatRequest.requestMethod) return console.log("No request method selected")
 
-  const response: ConnectorResponse<ConnectorRequest> = await whatRequest.requestMethod()
+  const response: ConnectorResponse<ConnectorRequest> = await whatRequest.requestMethod(peer)
   if (response.isError) {
     return console.error("Error while creating LocalRequest", response.error)
   }
