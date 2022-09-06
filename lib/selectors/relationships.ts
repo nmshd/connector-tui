@@ -6,7 +6,7 @@ async function renderRelationship(
   relationship: ConnectorRelationship,
   returnRelationship: boolean
 ): Promise<prompts.Choice> {
-  const value = returnRelationship ? relationship : relationship.id
+  const value = returnRelationship ? relationship : relationship.peer
   const response = await CONNECTOR_CLIENT.relationships.getAttributesForRelationship(relationship.id)
   const relationshipAttributes = response.result.filter((a) => a.content.owner === relationship.peer)
 

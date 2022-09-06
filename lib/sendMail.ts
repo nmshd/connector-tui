@@ -30,6 +30,10 @@ export async function sendMail() {
     body: result.body,
   }
 
-  await CONNECTOR_CLIENT.messages.sendMessage({ recipients, content, attachments })
+  const sendMessageResult = await CONNECTOR_CLIENT.messages.sendMessage({ recipients, content, attachments })
+  if (sendMessageResult.isError) {
+    return console.error("Error while sending message", sendMessageResult.error)
+  }
+
   console.log(`Message sent to [${recipients.join(", ")}]`)
 }
