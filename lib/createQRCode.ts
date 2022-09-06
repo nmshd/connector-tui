@@ -1,7 +1,7 @@
 import { ConnectorFile } from "@nmshd/connector-sdk"
 import { DateTime } from "luxon"
 import qrcode from "qrcode-terminal"
-import { CONNECTOR_CLIENT } from "./globals.mjs"
+import { CONNECTOR_CLIENT } from "./globals.js"
 
 export async function createQRCodeForRequest(request: unknown) {
   const name = "John"

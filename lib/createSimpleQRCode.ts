@@ -1,4 +1,4 @@
-import { createQRCodeForRequest } from "./createQRCode.mjs"
+import { createQRCodeForRequest } from "./createQRCode.js"
 
 export async function createSimpleQRCode() {
   const request = {

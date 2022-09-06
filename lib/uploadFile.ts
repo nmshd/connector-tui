@@ -1,8 +1,8 @@
 import fs from "fs"
 import { DateTime } from "luxon"
 import path from "path"
-import { createQRCodeForFile } from "./createQRCode.mjs"
-import { CONNECTOR_CLIENT } from "./globals.mjs"
+import { createQRCodeForFile } from "./createQRCode.js"
+import { CONNECTOR_CLIENT } from "./globals.js"
 
 import prompts from "prompts"
 const assetFolder = path.resolve("__assets__")

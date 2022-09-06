@@ -1,12 +1,6 @@
 import prompts from "prompts"
 
-import {
-  acceptAllRelationships,
-  createComplexQRCode,
-  createSimpleQRCode,
-  sendMessage,
-  uploadFile,
-} from "./lib/index.mjs"
+import { acceptAllRelationships, createComplexQRCode, createSimpleQRCode, sendMessage, uploadFile } from "./lib"
 
 console.clear()
 

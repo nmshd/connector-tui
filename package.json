@@ -2,8 +2,9 @@
   "name": "connector-sdk-hacking",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "clear && node --loader ts-node/esm ./index.mts"
+    "start": "clear && node --loader ts-node/esm --experimental-specifier-resolution node ./index.ts"
   },
   "license": "MIT",
   "dependencies": {
