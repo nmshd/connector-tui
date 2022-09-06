@@ -1,12 +1,13 @@
 {
   "name": "@nmshd/connector-tui",
   "version": "0.0.1-beta.1",
+  "license": "MIT",
+  "type": "module",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "clear && ts-node --esm --experimental-specifier-resolution node ./index.ts"
   },
-  "license": "MIT",
   "dependencies": {
     "@nmshd/connector-sdk": "^2.0.0-beta.6",
     "chalk": "^5.0.1",
