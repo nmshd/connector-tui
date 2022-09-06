@@ -1,6 +1,27 @@
+import chalk from "chalk"
 import prompts from "prompts"
 
-import { acceptAllRelationships, createComplexQRCode, createSimpleQRCode, sendMessage, uploadFile } from "./lib"
+import {
+  acceptAllRelationships,
+  CONNECTOR_CLIENT,
+  createComplexQRCode,
+  createSimpleQRCode,
+  sendMessage,
+  uploadFile,
+} from "./lib"
+
+const connectorVersionInfo = await CONNECTOR_CLIENT.monitoring.getVersion()
+if (!connectorVersionInfo.version.startsWith("3.")) {
+  console.log(
+    `This TUI is made for Enmeshed V2 connectors (starting with version 3.0.0 of the connector). Current version: ${connectorVersionInfo.version}`
+  )
+  process.exit(1)
+}
+
+console.log(`Welcome to the ${chalk.blue("Enmeshed V2 TUI")}!`)
+console.log(`TUI Version: ${chalk.yellow(process.env.npm_package_version)}`)
+console.log(`Connector version: ${chalk.yellow(connectorVersionInfo.version)}`)
+console.log("")
 
 let running = true
 while (running) {
