@@ -7,11 +7,8 @@ import {
   CONNECTOR_CLIENT,
   createComplexQRCode,
   createSimpleQRCode,
-  sendCreateRelationshipAttributeRequest,
   sendMessage,
-  sendProposeIdentityAttributeRequest,
-  sendReadIdentityAttributeRequest,
-  sendReadRelationshipAttributeRequest,
+  sendRequestByMessage,
   sync,
   uploadFile,
 } from "./lib"
@@ -36,17 +33,14 @@ while (running) {
     name: "action",
     message: "What do you want to do?",
     choices: [
-      { title: "Sync", value: 11 },
+      { title: "Sync", value: 8 },
       { title: "Complex QR Code", value: 1 },
       { title: "Simple QR Code", value: 2 },
       { title: "Accept All Relationships", value: 3 },
       { title: "Upload File", value: 4 },
       { title: "Send Message", value: 5 },
-      { title: "Send ReadAttributeRequest (IdentityAttributeQuery)", value: 6 },
-      { title: "Send ReadAttributeRequest (RelationshipAttributeQuery)", value: 7 },
-      { title: "Send CreateRelationshipAttributeRequest", value: 8 },
-      { title: "Send ProposeAttributeRequest", value: 9 },
-      { title: "Get Attributes of Contact", value: 10 },
+      { title: "Send Request By Message", value: 6 },
+      { title: "Get Attributes of Contact", value: 7 },
       { title: "Exit", value: "exit" },
     ],
   })
@@ -70,21 +64,12 @@ while (running) {
       await sendMessage()
       break
     case 6:
-      await sendReadIdentityAttributeRequest()
+      await sendRequestByMessage()
       break
     case 7:
-      await sendReadRelationshipAttributeRequest()
-      break
-    case 8:
-      await sendCreateRelationshipAttributeRequest()
-      break
-    case 9:
-      await sendProposeIdentityAttributeRequest()
-      break
-    case 10:
       await getAttributesOfContact()
       break
-    case 11:
+    case 8:
       await sync()
       break
     case "exit":

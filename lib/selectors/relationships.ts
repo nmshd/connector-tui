@@ -2,13 +2,17 @@ import { ConnectorRelationship, ConnectorRelationshipStatus } from "@nmshd/conne
 import prompts from "prompts"
 import { CONNECTOR_CLIENT } from "../globals"
 
-async function renderRelationship(relationship: ConnectorRelationship): Promise<prompts.Choice> {
+async function renderRelationship(
+  relationship: ConnectorRelationship,
+  returnRelationship: boolean
+): Promise<prompts.Choice> {
+  const value = returnRelationship ? relationship : relationship.id
   const response = await CONNECTOR_CLIENT.relationships.getAttributesForRelationship(relationship.id)
   const relationshipAttributes = response.result.filter((a) => a.content.owner === relationship.peer)
 
   const displayName = relationshipAttributes.find((a) => a.content.value["@type"] === "DisplayName")
   if (displayName) {
-    return { title: `${relationship.peer} (${displayName.content.value.value})`, value: relationship.id }
+    return { title: `${relationship.peer} (${displayName.content.value.value})`, value }
   }
 
   const surname = relationshipAttributes.find((a) => a.content.value["@type"] === "Surname")
@@ -17,38 +21,36 @@ async function renderRelationship(relationship: ConnectorRelationship): Promise<
     const name = `${surname?.content.value.value || ""} ${givenName?.content.value.value || ""}`.trim()
     return {
       title: `${relationship.peer} (${name})`,
-      value: relationship.id,
+      value,
     }
   }
 
-  return { title: relationship.peer, value: relationship.id }
+  return { title: relationship.peer, value }
 }
 
-async function getChoices(status: ConnectorRelationshipStatus) {
+async function getChoices(status: ConnectorRelationshipStatus, returnRelationship: boolean) {
   const relationships = (await CONNECTOR_CLIENT.relationships.getRelationships({ status })).result
-
-  const possibleRecipients = relationships.map((r) => r.peer)
-  if (possibleRecipients.length === 0) {
+  if (relationships.length === 0) {
     console.log(`No relationships with status '${status}' found`)
     return
   }
 
-  const choices = await Promise.all(relationships.map((r) => renderRelationship(r)))
+  const choices = await Promise.all(relationships.map((r) => renderRelationship(r, returnRelationship)))
   return choices
 }
 
 export async function selectRelationship(
   prompt: string,
   status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE
-): Promise<string | undefined> {
+): Promise<ConnectorRelationship | undefined> {
   const recipientsResult = await prompts({
     message: prompt,
     type: "select",
     name: "recipient",
-    choices: await getChoices(status),
+    choices: await getChoices(status, true),
   })
 
-  return recipientsResult.recipient as string | undefined
+  return recipientsResult.recipient as ConnectorRelationship | undefined
 }
 
 export async function selectRelationships(
@@ -59,7 +61,7 @@ export async function selectRelationships(
     message: prompt,
     type: "multiselect",
     name: "recipients",
-    choices: await getChoices(status),
+    choices: await getChoices(status, false),
   })
 
   const recipients = recipientsResult.recipients as string[] | undefined
