@@ -43,12 +43,10 @@ export async function selectRelationship(
   prompt: string,
   status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE
 ): Promise<ConnectorRelationship | undefined> {
-  const recipientsResult = await prompts({
-    message: prompt,
-    type: "select",
-    name: "recipient",
-    choices: await getChoices(status, true),
-  })
+  const choices = await getChoices(status, true)
+  if (!choices) return
+
+  const recipientsResult = await prompts({ message: prompt, type: "select", name: "recipient", choices })
 
   return recipientsResult.recipient as ConnectorRelationship | undefined
 }
@@ -57,12 +55,10 @@ export async function selectRelationships(
   prompt: string,
   status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE
 ): Promise<string[] | undefined> {
-  const recipientsResult = await prompts({
-    message: prompt,
-    type: "multiselect",
-    name: "recipients",
-    choices: await getChoices(status, false),
-  })
+  const choices = await getChoices(status, false)
+  if (!choices) return
+
+  const recipientsResult = await prompts({ message: prompt, type: "multiselect", name: "recipients", choices })
 
   const recipients = recipientsResult.recipients as string[] | undefined
   if (!recipients || recipients.length === 0) {
