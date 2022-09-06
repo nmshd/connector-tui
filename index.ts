@@ -2,8 +2,6 @@ import prompts from "prompts"
 
 import { acceptAllRelationships, createComplexQRCode, createSimpleQRCode, sendMessage, uploadFile } from "./lib"
 
-console.clear()
-
 let running = true
 while (running) {
   const result = await prompts({

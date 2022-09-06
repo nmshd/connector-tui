@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "clear && node --loader ts-node/esm --experimental-specifier-resolution node ./index.ts"
+    "start": "clear && ts-node --esm --experimental-specifier-resolution node ./index.ts"
   },
   "license": "MIT",
   "dependencies": {
