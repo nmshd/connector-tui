@@ -29,9 +29,3 @@ export async function createQRCodeForRequest(request: unknown) {
   console.log(url)
   qrcode.generate(url, { small: true })
 }
-
-export async function createQRCodeForFile(file: ConnectorFile) {
-  const url = `nmshd://qr#${file.truncatedReference}`
-  console.log(url)
-  qrcode.generate(url, { small: true })
-}

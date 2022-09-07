@@ -1,8 +1,8 @@
 import fs from "fs"
 import { DateTime } from "luxon"
 import path from "path"
+import qrcode from "qrcode-terminal"
 import url from "url"
-import { createQRCodeForFile } from "./createQRCode"
 import { CONNECTOR_CLIENT } from "./globals"
 
 import prompts from "prompts"
@@ -44,6 +44,8 @@ export async function uploadFile() {
   })
 
   if (render.yesno) {
-    await createQRCodeForFile(uploadedFile.result)
+    const url = `nmshd://qr#${uploadedFile.result.truncatedReference}`
+    console.log(url)
+    qrcode.generate(url, { small: true })
   }
 }
