@@ -30,7 +30,7 @@ export async function sendRequestByMessage() {
 
   const messageResult = await CONNECTOR_CLIENT.messages.sendMessage({
     recipients: [peer],
-    content: response.result,
+    content: response.result.content,
   })
   if (messageResult.isError) {
     return console.error("Error while sending message", messageResult.error)
