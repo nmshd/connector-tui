@@ -12,7 +12,7 @@ import {
   sendRequestByMessage,
   sync,
   uploadFile,
-} from "./lib"
+} from "./functionality"
 
 const connectorVersionInfo = await CONNECTOR_CLIENT.monitoring.getVersion()
 if (!connectorVersionInfo.version.startsWith("3.")) {
@@ -22,7 +22,7 @@ if (!connectorVersionInfo.version.startsWith("3.")) {
   process.exit(1)
 }
 
-const jsonString = (await readFile(new URL("./package.json", import.meta.url))).toString()
+const jsonString = (await readFile(new URL("../package.json", import.meta.url))).toString()
 const packageJson = JSON.parse(jsonString)
 
 console.log(`Welcome to the ${chalk.blue("Enmeshed V2 TUI")}!`)
