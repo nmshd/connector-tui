@@ -1,4 +1,4 @@
-export { acceptAllRelationships } from "./acceptAllRelationships"
+export { acceptPendingRelationships } from "./acceptPendingRelationships"
 export { createComplexQRCode } from "./createComplexQRCode"
 export { createSimpleQRCode } from "./createSimpleQRCode"
 export { getAttributesOfContact } from "./getAttributesOfContact"

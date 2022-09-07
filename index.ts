@@ -3,7 +3,7 @@ import { readFile } from "fs/promises"
 import prompts from "prompts"
 
 import {
-  acceptAllRelationships,
+  acceptPendingRelationships,
   CONNECTOR_CLIENT,
   createComplexQRCode,
   createSimpleQRCode,
@@ -39,7 +39,7 @@ while (true) {
       { title: "Sync", value: sync },
       { title: "Complex QR Code", value: createComplexQRCode },
       { title: "Simple QR Code", value: createSimpleQRCode },
-      { title: "Accept All Relationships", value: acceptAllRelationships },
+      { title: "Accept Pending Relationships", value: acceptPendingRelationships },
       { title: "Upload File", value: uploadFile },
       { title: "Send Mail", value: sendMail },
       { title: "Send Request By Message", value: sendRequestByMessage },
