@@ -3,6 +3,8 @@ import { createQRCodeForRequest } from "./createQRCode"
 import { CONNECTOR_ADDRESS, CONNECTOR_CLIENT } from "./globals"
 
 export async function createComplexQRCode() {
+  const displayName = process.env.CONNECTOR_DISPLAY_NAME || "ConnectorV2 Demo"
+
   const givenName = (
     await CONNECTOR_CLIENT.attributes.createAttribute({
       content: {
@@ -10,7 +12,7 @@ export async function createComplexQRCode() {
         owner: CONNECTOR_ADDRESS,
         value: {
           "@type": "DisplayName",
-          value: "Connector Tutorial",
+          value: displayName,
         },
       } as ConnectorIdentityAttribute,
     })
@@ -31,7 +33,7 @@ export async function createComplexQRCode() {
               owner: "",
               value: {
                 "@type": "DisplayName",
-                value: "ConnectorV2 Demo",
+                value: displayName,
               },
             },
             sourceAttributeId: givenName.id,
