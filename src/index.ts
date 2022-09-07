@@ -5,11 +5,10 @@ import prompts from "prompts"
 import {
   acceptPendingRelationships,
   CONNECTOR_CLIENT,
-  createComplexQRCode,
-  createSimpleQRCode,
   getAttributesOfContact,
   sendMail,
   sendRequestByMessage,
+  shareRequestByTemplate,
   sync,
   uploadFile,
 } from "./functionality"
@@ -37,12 +36,11 @@ while (true) {
     message: "What do you want to do?",
     choices: [
       { title: "Sync", value: sync },
-      { title: "Complex QR Code", value: createComplexQRCode },
-      { title: "Simple QR Code", value: createSimpleQRCode },
       { title: "Accept Pending Relationships", value: acceptPendingRelationships },
       { title: "Upload File", value: uploadFile },
       { title: "Send Mail", value: sendMail },
       { title: "Send Request By Message", value: sendRequestByMessage },
+      { title: "Share Request By Template", value: shareRequestByTemplate },
       { title: "Get Attributes of Contact", value: getAttributesOfContact },
       { title: "Exit", value: "exit" },
     ],
