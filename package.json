@@ -19,7 +19,7 @@
     ".env.example"
   ],
   "dependencies": {
-    "@nmshd/connector-sdk": "^2.0.0-beta.6",
+    "@nmshd/connector-sdk": "^2.0.0-beta.7",
     "chalk": "^5.0.1",
     "dotenv": "^16.0.2",
     "luxon": "^3.0.3",

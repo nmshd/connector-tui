@@ -26,8 +26,11 @@ export async function uploadFile() {
   ])
 
   const title = result.title
+
   const expiresAt = DateTime.local().plus({ days: 1 }).toISO()
   const filename = result.filename
+  if (!title || !filename) return console.log("No file / title selected")
+
   const file = await fs.promises.readFile(path.resolve(assetFolder, filename))
 
   const uploadedFile = await CONNECTOR_CLIENT.files.uploadOwnFile({ title, expiresAt, file, filename })
