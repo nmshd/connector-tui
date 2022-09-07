@@ -1,11 +1,12 @@
 import fs from "fs"
 import { DateTime } from "luxon"
 import path from "path"
+import url from "url"
 import { createQRCodeForFile } from "./createQRCode"
 import { CONNECTOR_CLIENT } from "./globals"
 
 import prompts from "prompts"
-const assetFolder = path.resolve("__assets__")
+const assetFolder = path.resolve(url.fileURLToPath(new URL(".", import.meta.url)), "../../__assets__")
 
 export async function uploadFile() {
   const filenames = await fs.promises.readdir(assetFolder)
