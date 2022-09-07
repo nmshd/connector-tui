@@ -1,4 +1,5 @@
 import chalk from "chalk"
+import { readFile } from "fs/promises"
 import prompts from "prompts"
 
 import {
@@ -21,8 +22,11 @@ if (!connectorVersionInfo.version.startsWith("3.")) {
   process.exit(1)
 }
 
+const jsonString = (await readFile(new URL("./package.json", import.meta.url))).toString()
+const packageJson = JSON.parse(jsonString)
+
 console.log(`Welcome to the ${chalk.blue("Enmeshed V2 TUI")}!`)
-console.log(`TUI Version: ${chalk.yellow(process.env.npm_package_version)}`)
+console.log(`TUI Version: ${chalk.yellow(packageJson.version)}`)
 console.log(`Connector version: ${chalk.yellow(connectorVersionInfo.version)}`)
 console.log("")
 
