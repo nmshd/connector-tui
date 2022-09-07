@@ -1,11 +1,12 @@
 import fs from "fs"
 import { DateTime } from "luxon"
 import path from "path"
-import { createQRCodeForFile } from "./createQRCode"
+import qrcode from "qrcode-terminal"
+import url from "url"
 import { CONNECTOR_CLIENT } from "./globals"
 
 import prompts from "prompts"
-const assetFolder = path.resolve("__assets__")
+const assetFolder = path.resolve(url.fileURLToPath(new URL(".", import.meta.url)), "../../__assets__")
 
 export async function uploadFile() {
   const filenames = await fs.promises.readdir(assetFolder)
@@ -43,6 +44,8 @@ export async function uploadFile() {
   })
 
   if (render.yesno) {
-    await createQRCodeForFile(uploadedFile.result)
+    const url = `nmshd://qr#${uploadedFile.result.truncatedReference}`
+    console.log(url)
+    qrcode.generate(url, { small: true })
   }
 }
