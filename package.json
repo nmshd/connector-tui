@@ -1,6 +1,6 @@
 {
   "name": "@jkoenig134/connector-tui",
-  "version": "0.0.1-beta.8",
+  "version": "0.0.1-beta.9",
   "license": "MIT",
   "type": "module",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "clear && ts-node --esm --experimental-specifier-resolution node ./index.ts",
+    "start": "clear && ts-node --esm --experimental-specifier-resolution node ./src/index.ts",
     "test": "echo 'no test specified'"
   },
   "files": [
