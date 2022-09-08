@@ -13,7 +13,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: sudo apt-get update && sudo apt-get install jq -y
       - run: bash .ci/build.sh
         env:
           BUILD_NUMBER: ${{ github.run_number }}
