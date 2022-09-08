@@ -1,6 +1,10 @@
-# Connector SDK Hacking
+# Connector TUI
 
-> this example only works with enmeshed v2
+> A terminal user interface for Demos.
+>
+> Showcase how to integrate Enmeshed and use the SDK.
+>
+> This TUI only works with Enmeshed v2 (Connector version 3.0.0+)
 
 ## Setup
 
