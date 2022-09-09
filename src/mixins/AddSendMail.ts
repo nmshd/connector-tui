@@ -36,7 +36,7 @@ export function AddSendMail<TBase extends ConnectorTUIBaseConstructor>(Base: TBa
         body: result.body,
       }
 
-      const sendMessageResult = await this.connectorClient.messages.sendMessage({ recipients, content, attachments })
+      const sendMessageResult = await this.connectorClient.messages.sendMessage({ recipients, content, attachments: attachments?.map((a) => a.id) })
       if (sendMessageResult.isError) {
         return console.error("Error while sending message", sendMessageResult.error)
       }

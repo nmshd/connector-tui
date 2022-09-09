@@ -78,12 +78,12 @@ export class ConnectorTUIBase {
     return result.file as ConnectorFile | undefined
   }
 
-  protected async selectFiles(prompt: string): Promise<string[] | undefined> {
+  protected async selectFiles(prompt: string): Promise<ConnectorFile[] | undefined> {
     const choices = await this.getFileChoices()
     if (!choices) return
 
     const result = await prompts({ message: prompt, type: "multiselect", name: "files", choices: choices })
-    return result.files as string[] | undefined
+    return result.files as ConnectorFile[] | undefined
   }
 
   private async getFileChoices(): Promise<prompts.Choice[] | undefined> {
