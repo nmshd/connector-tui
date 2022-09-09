@@ -29,14 +29,10 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
 
       if (!result.action) break
 
-      if (typeof result.action === "function") {
-        try {
-          await result.action.apply(this)
-        } catch (error) {
-          console.log(chalk.red("An Error occurred: "), error)
-        }
-      } else {
-        break
+      try {
+        await result.action.apply(this)
+      } catch (error) {
+        console.log(chalk.red("An Error occurred: "), error)
       }
     }
   }
