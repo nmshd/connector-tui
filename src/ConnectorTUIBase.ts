@@ -1,26 +1,18 @@
-import {
-  ConnectorClient,
-  ConnectorFile,
-  ConnectorRelationship,
-  ConnectorRelationshipStatus,
-} from "@nmshd/connector-sdk"
+import { ConnectorClient, ConnectorFile, ConnectorRelationship, ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
 import prompts from "prompts"
 
 export type ConnectorTUIBaseConstructor = new (...args: any[]) => ConnectorTUIBase
 
 export interface ConnectorTUIChoice extends prompts.Choice {
-  value: () => Promise<void>
+  value(): Promise<void>
 }
 
 export class ConnectorTUIBase {
   protected choices: ConnectorTUIChoice[] = []
 
-  constructor(protected connectorClient: ConnectorClient, protected connectorAddress: string) {}
+  public constructor(protected connectorClient: ConnectorClient, protected connectorAddress: string) {}
 
-  protected async selectRelationship(
-    prompt: string,
-    status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE
-  ): Promise<ConnectorRelationship | undefined> {
+  protected async selectRelationship(prompt: string, status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE): Promise<ConnectorRelationship | undefined> {
     const choices = await this.getRelationshipChoices(status, true)
     if (!choices) return
 
@@ -29,10 +21,7 @@ export class ConnectorTUIBase {
     return recipientsResult.recipient as ConnectorRelationship | undefined
   }
 
-  protected async selectRelationships(
-    prompt: string,
-    status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE
-  ): Promise<string[] | undefined> {
+  protected async selectRelationships(prompt: string, status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE): Promise<string[] | undefined> {
     const choices = await this.getRelationshipChoices(status, false)
     if (!choices) return
 
@@ -54,16 +43,11 @@ export class ConnectorTUIBase {
       return
     }
 
-    const choices = await Promise.all(
-      relationships.map((relationship) => this.renderRelationship(relationship, returnRelationship))
-    )
+    const choices = await Promise.all(relationships.map((relationship) => this.renderRelationship(relationship, returnRelationship)))
     return choices
   }
 
-  private async renderRelationship(
-    relationship: ConnectorRelationship,
-    returnRelationship: boolean
-  ): Promise<prompts.Choice> {
+  private async renderRelationship(relationship: ConnectorRelationship, returnRelationship: boolean): Promise<prompts.Choice> {
     const value = returnRelationship ? relationship : relationship.peer
     const response = await this.connectorClient.relationships.getAttributesForRelationship(relationship.id)
     const relationshipAttributes = response.result.filter((a) => a.content.owner === relationship.peer)

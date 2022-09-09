@@ -8,9 +8,9 @@ import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
 
 export function AddUploadFile<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {
-    private assetFolder = path.resolve(url.fileURLToPath(new URL(".", import.meta.url)), "../../__assets__")
+    private readonly assetFolder = path.resolve(url.fileURLToPath(new URL(".", import.meta.url)), "../../__assets__")
 
-    constructor(...args: any[]) {
+    public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Upload File", value: this.uploadFile })
     }
