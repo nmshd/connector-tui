@@ -8,8 +8,12 @@ import prompts from "prompts"
 
 export type ConnectorTUIBaseConstructor = new (...args: any[]) => ConnectorTUIBase
 
+export interface ConnectorTUIChoice extends prompts.Choice {
+  value: () => Promise<void>
+}
+
 export class ConnectorTUIBase {
-  protected choices: prompts.Choice[] = []
+  protected choices: ConnectorTUIChoice[] = []
 
   constructor(protected connectorClient: ConnectorClient, protected connectorAddress: string) {}
 
