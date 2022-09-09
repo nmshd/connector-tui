@@ -4,7 +4,7 @@ import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
 
 export function AddAcceptPendingRelationships<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {
-    constructor(...args: any[]) {
+    public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Accept Pending Relationships", value: this.acceptPendingRelationships })
     }

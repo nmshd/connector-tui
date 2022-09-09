@@ -4,7 +4,7 @@ import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
 
 export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {
-    constructor(...args: any[]) {
+    public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Send Request By Message", value: this.sendRequestByMessage })
     }

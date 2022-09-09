@@ -5,13 +5,13 @@ import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
 
 export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {
-    constructor(...args: any[]) {
+    public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Share Request By Template", value: this.shareRequestByTemplate })
     }
 
     public async shareRequestByTemplate() {
-      const name = process.env.CONNECTOR_DISPLAY_NAME || "ConnectorV2 Demo"
+      const name = process.env.CONNECTOR_DISPLAY_NAME ?? "ConnectorV2 Demo"
       const displayName = await this.getOrCreateConnectorDisplayName(name)
 
       const request = {
@@ -113,9 +113,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       })
 
       const templateId = template.result.id
-      const tokenResponse = await this.connectorClient.relationshipTemplates.createTokenForOwnRelationshipTemplate(
-        templateId
-      )
+      const tokenResponse = await this.connectorClient.relationshipTemplates.createTokenForOwnRelationshipTemplate(templateId)
       const url = `nmshd://qr#${tokenResponse.result.truncatedReference}`
       console.log(url)
       qrcode.generate(url, { small: true })

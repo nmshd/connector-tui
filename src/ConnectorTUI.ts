@@ -19,6 +19,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
 
     await this.showStartupMessage(connectorVersionInfo)
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
     while (true) {
       const result = await prompts({
         type: "select",
@@ -40,9 +41,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
   private async checkConnectorVersion() {
     const connectorVersionInfo = await this.connectorClient.monitoring.getVersion()
     if (!connectorVersionInfo.version.startsWith("3.")) {
-      console.log(
-        `This TUI is made for Enmeshed V2 connectors (starting with version 3.0.0 of the connector). Current version: ${connectorVersionInfo.version}`
-      )
+      console.log(`This TUI is made for Enmeshed V2 connectors (starting with version 3.0.0 of the connector). Current version: ${connectorVersionInfo.version}`)
 
       return
     }
