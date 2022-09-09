@@ -1,4 +1,5 @@
 import { ConnectorClient } from "@nmshd/connector-sdk"
+import { ConnectorVersionInfo } from "@nmshd/connector-sdk/dist/types/monitoring"
 import chalk from "chalk"
 import { readFile } from "fs/promises"
 import prompts from "prompts"
@@ -13,7 +14,10 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
   }
 
   public async run() {
-    await this.showStartupMessage()
+    const connectorVersionInfo = await this.checkConnectorVersion()
+    if (!connectorVersionInfo) return
+
+    await this.showStartupMessage(connectorVersionInfo)
 
     while (true) {
       const result = await prompts({
@@ -37,15 +41,20 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
     }
   }
 
-  private async showStartupMessage() {
+  private async checkConnectorVersion() {
     const connectorVersionInfo = await this.connectorClient.monitoring.getVersion()
     if (!connectorVersionInfo.version.startsWith("3.")) {
       console.log(
         `This TUI is made for Enmeshed V2 connectors (starting with version 3.0.0 of the connector). Current version: ${connectorVersionInfo.version}`
       )
-      process.exit(1)
+
+      return
     }
 
+    return connectorVersionInfo
+  }
+
+  private async showStartupMessage(connectorVersionInfo: ConnectorVersionInfo) {
     const jsonString = (await readFile(new URL("../package.json", import.meta.url))).toString()
     const packageJson = JSON.parse(jsonString)
 
