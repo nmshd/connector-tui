@@ -98,8 +98,8 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
     }
 
     private async createQRCodeForRelationshipTemplate(request: unknown, name: string) {
-      const templateBody = {
-        "@type": "RelationshipTemplateBody",
+      const content = {
+        "@type": "RelationshipTemplateContent",
         title: `Kontaktanfrage mit ${name}`,
         metadata: {
           webSessionId: "12345",
@@ -108,7 +108,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       }
 
       const template = await this.connectorClient.relationshipTemplates.createOwnRelationshipTemplate({
-        content: templateBody,
+        content,
         expiresAt: DateTime.now().plus({ days: 2 }).toISO(),
       })
 
