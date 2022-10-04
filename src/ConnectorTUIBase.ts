@@ -37,7 +37,12 @@ export class ConnectorTUIBase {
   }
 
   private async getRelationshipChoices(status: ConnectorRelationshipStatus, returnRelationship: boolean) {
-    const relationships = (await this.connectorClient.relationships.getRelationships({ status })).result
+    const relationshipsResult = await this.connectorClient.relationships.getRelationships({ status })
+    if (relationshipsResult.isError) {
+      console.error(relationshipsResult.error)
+      return
+    }
+    const relationships = relationshipsResult.result
     if (relationships.length === 0) {
       console.log(`No relationships with status '${status}' found`)
       return
