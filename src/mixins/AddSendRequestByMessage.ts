@@ -89,13 +89,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               query: {
                 "@type": "RelationshipAttributeQuery",
                 owner: "",
-                valueType: result.attributeType,
                 attributeCreationHints: {
                   title: `A ${result.attributeType} attribute`,
                   confidentiality: "public",
+                  valueType: result.attributeType,
                 },
                 key: result.key,
-                thirdParty: result.thirdParty ? result.thirdParty : undefined,
               },
             },
           ],
@@ -198,7 +197,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         content: {
           items: [
             {
-              "@type": "CreateRelationshipAttributeRequestItem",
+              "@type": "CreateAttributeRequestItem",
               mustBeAccepted: true,
               attribute: {
                 "@type": "RelationshipAttribute",
