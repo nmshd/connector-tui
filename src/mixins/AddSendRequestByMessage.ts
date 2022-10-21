@@ -151,6 +151,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           initial: "An attribute type",
         },
         {
+          message: "Whats the title of the RelationshipAttribute?",
+          type: "text",
+          name: "attributeTitle",
+          initial: "Attribute Title",
+        },
+        {
           message: "Whats the key of the attribute you would like to query?",
           type: "text",
           name: "key",
@@ -163,6 +169,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           initial: "Third party address",
         },
       ])
+      const title = result.attributeTitle ? result.attributeTitle : `A ${result.attributeType} attribute`
 
       return await this.connectorClient.outgoingRequests.createRequest({
         peer,
@@ -175,7 +182,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
                 "@type": "RelationshipAttributeQuery",
                 owner: "",
                 attributeCreationHints: {
-                  title: `A ${result.attributeType} attribute`,
+                  title: title,
                   confidentiality: "public",
                   valueType: result.attributeType,
                 },
