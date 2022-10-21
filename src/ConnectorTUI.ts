@@ -56,6 +56,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
     console.log(`Welcome to the ${chalk.blue("Enmeshed V2 TUI")}!`)
     console.log(`TUI Version: ${chalk.yellow(packageJson.version)}`)
     console.log(`Connector version: ${chalk.yellow(connectorVersionInfo.version)}`)
+    console.log(`Connector Address: ${chalk.yellow(this.connectorAddress)}`)
     console.log("")
   }
 }
