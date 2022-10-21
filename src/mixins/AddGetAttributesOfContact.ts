@@ -12,9 +12,24 @@ export function AddGetAttributesOfContact<TBase extends ConnectorTUIBaseConstruc
       if (!relationship) return console.log("No recipient selected")
 
       const attributeResult = await this.connectorClient.relationships.getAttributesForRelationship(relationship.id)
+      if (attributeResult.isError) {
+        console.log(attributeResult.error)
+        return
+      }
 
-      const attributes = attributeResult.result.filter((a) => a.content.owner === relationship.peer)
-      attributes.map((attribute) => console.log(`${attribute.id}: ${attribute.content.value["@type"]} = ${attribute.content.value.value}`))
+      const attributes = attributeResult.result.filter((a) => a.content.owner === relationship.peer || a.content["@type"] === "RelationshipAttribute")
+      attributes.map((attribute: any) => {
+        if (!attribute?.content?.value.value) {
+          console.log(`${attribute.id}: ${attribute.content.value["@type"]}`)
+          for (const propertyName in attribute.content.value) {
+            if (propertyName === "@type") continue
+            console.log(`   ${propertyName}: ${attribute.content.value[propertyName]}`)
+          }
+        } else {
+          console.log(`${attribute.id}: ${attribute.content.value["@type"]} = ${attribute.content.value.value}`)
+        }
+        return attribute
+      })
     }
   }
 }
