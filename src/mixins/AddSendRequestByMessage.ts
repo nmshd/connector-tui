@@ -36,6 +36,18 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             title: "CreateRelationshipAttributeRequest",
             value: this.createCreateRelationshipAttributeRequest.bind(this),
           },
+          {
+            title: "CreateIdentityAttributeRequest",
+            value: this.createCreateIdentityAttributeRequest.bind(this),
+          },
+          {
+            title: "ConsentRequest",
+            value: this.createConsentRequest.bind(this),
+          },
+          {
+            title: "AuthenticationRequest",
+            value: this.createAuthenticationRequest.bind(this),
+          },
         ],
       })
 
@@ -55,6 +67,79 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       }
 
       console.log(`Request sent to '${peer}'`)
+    }
+
+    private async createConsentRequest(peer: string) {
+      const result = await prompts([
+        {
+          message: "Whats the consent the peer should agree to?",
+          type: "text",
+          name: "consent",
+          initial: "A statement the user should agree to",
+        },
+        {
+          message: "[Optional] Enter the URL to to the consent details?",
+          type: "text",
+          name: "link",
+          initial: "An URL to the consent.",
+        },
+        {
+          message: "[Optional] Enter a consentKey to know which consent the user agreed to",
+          type: "text",
+          name: "consentKey",
+          initial: "A key to the consent",
+        },
+      ])
+
+      return await this.connectorClient.outgoingRequests.createRequest({
+        peer,
+        content: {
+          items: [
+            {
+              "@type": "ConsentRequestItem",
+              mustBeAccepted: true,
+              consent: result.consent,
+              link: result.link,
+              responseMetadata: {
+                consentKey: result.consentKey,
+              },
+            },
+          ],
+        },
+      })
+    }
+
+    private async createAuthenticationRequest(peer: string) {
+      const result = await prompts([
+        {
+          message: "Enter a title of the authentication",
+          type: "text",
+          name: "title",
+          initial: "Authentication Title",
+        },
+        {
+          message: "[Optional] Enter an unique authenticationToken to know which authentication did the user grant",
+          type: "text",
+          name: "authenticationToken",
+          initial: "Some unique id",
+        },
+      ])
+
+      return await this.connectorClient.outgoingRequests.createRequest({
+        peer,
+        content: {
+          items: [
+            {
+              "@type": "AuthenticationRequestItem",
+              mustBeAccepted: true,
+              title: result.title,
+              responseMetadata: {
+                authenticationToken: result.authenticationToken,
+              },
+            },
+          ],
+        },
+      })
     }
 
     private async createReadRelationshipAttributeRequest(peer: string) {
@@ -208,6 +293,43 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
                   "@type": "ProprietaryString",
                   value: result.value,
                   title: result.title,
+                },
+              },
+            },
+          ],
+        },
+      })
+    }
+
+    private async createCreateIdentityAttributeRequest(peer: string) {
+      const result = await prompts([
+        {
+          message: "Whats the value type of the IdentityAttribute you would like to create?",
+          type: "text",
+          name: "valueType",
+          initial: "ValueType",
+        },
+        {
+          message: "Whats the value of the Attribute?",
+          type: "text",
+          name: "value",
+          initial: "Value",
+        },
+      ])
+
+      return await this.connectorClient.outgoingRequests.createRequest({
+        peer,
+        content: {
+          items: [
+            {
+              "@type": "CreateAttributeRequestItem",
+              mustBeAccepted: true,
+              attribute: {
+                "@type": "IdentityAttribute",
+                owner: peer,
+                value: {
+                  "@type": result.valueType,
+                  value: result.value,
                 },
               },
             },
