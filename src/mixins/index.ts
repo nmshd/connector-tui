@@ -1,4 +1,5 @@
 export * from "./AddAcceptPendingRelationships"
+export * from "./AddAcceptPendingRequests"
 export * from "./AddExit"
 export * from "./AddGetAttributesOfContact"
 export * from "./AddSendMail"

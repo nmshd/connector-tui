@@ -1,5 +1,6 @@
 import { ConnectorTUIBase } from "../ConnectorTUIBase"
 import { AddAcceptPendingRelationships } from "./AddAcceptPendingRelationships"
+import { AddAcceptPendingRequests } from "./AddAcceptPendingRequests"
 import { AddExit } from "./AddExit"
 import { AddGetAttributesOfContact } from "./AddGetAttributesOfContact"
 import { AddSendMail } from "./AddSendMail"
@@ -13,20 +14,22 @@ export class ConnectorTUIBaseWithMixins
   extends AddExit(
     //
     AddAcceptPendingRelationships(
-      //
-      AddGetAttributesOfContact(
+      AddAcceptPendingRequests(
         //
-        AddSendMail(
+        AddGetAttributesOfContact(
           //
-          AddSendRequestByMessage(
+          AddSendMail(
             //
-            AddShareRequestByTemplate(
+            AddSendRequestByMessage(
               //
-              AddSync(
+              AddShareRequestByTemplate(
                 //
-                AddUploadFile(
+                AddSync(
                   //
-                  ConnectorTUIBase
+                  AddUploadFile(
+                    //
+                    ConnectorTUIBase
+                  )
                 )
               )
             )
