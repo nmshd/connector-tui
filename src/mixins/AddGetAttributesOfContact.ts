@@ -25,6 +25,8 @@ export function AddGetAttributesOfContact<TBase extends ConnectorTUIBaseConstruc
             if (propertyName === "@type") continue
             console.log(`   ${propertyName}: ${attribute.content.value[propertyName]}`)
           }
+        } else if (attribute.content["@type"] === "RelationshipAttribute") {
+          console.log(`${attribute.id}: ${attribute.content.value.title} [${attribute.content.value["@type"]}] = ${attribute.content.value.value}`)
         } else {
           console.log(`${attribute.id}: ${attribute.content.value["@type"]} = ${attribute.content.value.value}`)
         }
