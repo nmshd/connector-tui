@@ -75,21 +75,21 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "Whats the consent the peer should agree to?",
           type: "text",
           name: "consent",
-          initial: "A statement the user should agree to",
         },
         {
           message: "[Optional] Enter the URL to to the consent details?",
           type: "text",
           name: "link",
-          initial: "An URL to the consent.",
         },
         {
           message: "[Optional] Enter a consentKey to know which consent the user agreed to",
           type: "text",
           name: "consentKey",
-          initial: "A key to the consent",
         },
       ])
+
+      const responseMetadata = result.consentKey ? { consentKey: result.consentKey } : undefined
+      const link = result.link ? result.link : undefined
 
       return await this.connectorClient.outgoingRequests.createRequest({
         peer,
@@ -99,10 +99,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               "@type": "ConsentRequestItem",
               mustBeAccepted: true,
               consent: result.consent,
-              link: result.link,
-              responseMetadata: {
-                consentKey: result.consentKey,
-              },
+              link,
+              responseMetadata,
             },
           ],
         },
@@ -115,15 +113,15 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "Enter a title of the authentication",
           type: "text",
           name: "title",
-          initial: "Authentication Title",
         },
         {
           message: "[Optional] Enter an unique authenticationToken to know which authentication did the user grant",
           type: "text",
           name: "authenticationToken",
-          initial: "Some unique id",
         },
       ])
+
+      const responseMetadata = result.authenticationToken ? { authenticationToken: result.authenticationToken } : undefined
 
       return await this.connectorClient.outgoingRequests.createRequest({
         peer,
@@ -133,9 +131,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               "@type": "AuthenticationRequestItem",
               mustBeAccepted: true,
               title: result.title,
-              responseMetadata: {
-                authenticationToken: result.authenticationToken,
-              },
+              responseMetadata,
             },
           ],
         },
@@ -148,7 +144,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "Whats the attribute type you would like to query?",
           type: "text",
           name: "attributeType",
-          initial: "An attribute type",
         },
         {
           message: "Whats the title of the RelationshipAttribute?",
@@ -166,7 +161,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "Whats the third party address?",
           type: "text",
           name: "thirdParty",
-          initial: "Third party address",
         },
       ])
       const title = result.attributeTitle ? result.attributeTitle : `A ${result.attributeType} attribute`
@@ -200,7 +194,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "Whats the attribute type you would like to query?",
           type: "text",
           name: "attributeType",
-          initial: "An attribute type",
         },
       ])
 
@@ -227,13 +220,11 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "Whats the attribute type you would like to create?",
           type: "text",
           name: "attributeType",
-          initial: "An attribute type",
         },
         {
           message: "Whats the value of your Attribute?",
           type: "text",
           name: "value",
-          initial: "Value",
         },
       ])
 
@@ -280,7 +271,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "Whats the value of your Attribute?",
           type: "text",
           name: "value",
-          initial: "Value",
         },
       ])
 
@@ -314,13 +304,11 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "Whats the value type of the IdentityAttribute you would like to create?",
           type: "text",
           name: "valueType",
-          initial: "ValueType",
         },
         {
           message: "Whats the value of the Attribute?",
           type: "text",
           name: "value",
-          initial: "Value",
         },
       ])
 
