@@ -24,7 +24,7 @@
     "test": "echo 'no test specified'"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^2.0.3",
+    "@nmshd/connector-sdk": "^2.0.4",
     "chalk": "^5.1.2",
     "dotenv": "^16.0.3",
     "luxon": "^3.1.0",
