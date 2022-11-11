@@ -16,10 +16,10 @@
     ".env.example"
   ],
   "scripts": {
-    "lint:prettier": "prettier --check ./src",
-    "lint:eslint": "eslint --ext .ts ./src",
-    "lint": "npm run lint:prettier && npm run lint:eslint",
     "build": "tsc",
+    "lint": "npm run lint:prettier && npm run lint:eslint",
+    "lint:eslint": "eslint --ext .ts ./src",
+    "lint:prettier": "prettier --check ./src",
     "start": "clear && ts-node --esm --experimental-specifier-resolution node ./src/index.ts",
     "test": "echo 'no test specified'"
   },
