@@ -27,7 +27,7 @@ If you want to execute this TUI as a package you can install it using `npm i -g 
 
 ```txt
       --version  Show version number                                   [boolean]
-  -e, --env      location of the env file relative to cwd - default: .env
-                                                                        [string]
+  -e, --env      location of the env file relative to cwd
+                                                      [string] [default: ".env"]
   -h, --help     Show help                                             [boolean]
 ```
