@@ -1,8 +1,20 @@
 import chalk from "chalk"
 import dotenv from "dotenv"
+import path from "path"
+import yargs from "yargs"
+import { hideBin } from "yargs/helpers"
 import { ConnectorTUI } from "./ConnectorTUI"
 
-dotenv.config()
+const argv = await yargs(hideBin(process.argv))
+  .option("env", {
+    alias: "e",
+    description: "location of the env file relative to cwd - default: .env",
+    type: "string",
+  })
+  .help()
+  .alias("help", "h").argv
+
+dotenv.config({ path: path.resolve(process.cwd(), argv.env ?? ".env") })
 
 if (typeof process.env.BASE_URL === "undefined" || typeof process.env.API_KEY === "undefined") {
   console.log(chalk.red("Please provide a BASE_URL and API_KEY in your .env file or as environment variables."))
