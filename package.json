@@ -1,6 +1,6 @@
 {
   "name": "@nmshd/connector-tui",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "github:nmshd/connector-tui",
   "license": "MIT",
   "author": "j&s-soft GmbH",
@@ -20,7 +20,7 @@
     "lint": "npm run lint:prettier && npm run lint:eslint",
     "lint:eslint": "eslint --ext .ts ./src",
     "lint:prettier": "prettier --check ./src",
-    "start": "clear && ts-node --esm --experimental-specifier-resolution node ./src/index.ts",
+    "start": "ts-node --esm --experimental-specifier-resolution node ./src/index.ts",
     "test": "echo 'no test specified'"
   },
   "dependencies": {
