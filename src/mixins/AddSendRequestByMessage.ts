@@ -137,24 +137,24 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createReadRelationshipAttributeRequestItem() {
       const result = await prompts([
         {
-          message: "Whats the attribute type you would like to query?",
+          message: "What's the attribute type you would like to query?",
           type: "text",
           name: "attributeType",
         },
         {
-          message: "Whats the title of the RelationshipAttribute?",
+          message: "What's the title of the RelationshipAttribute?",
           type: "text",
           name: "attributeTitle",
           initial: "Attribute Title",
         },
         {
-          message: "Whats the description of the RelationshipAttribute?",
+          message: "What's the description of the RelationshipAttribute?",
           type: "text",
           name: "attributeDescription",
           initial: "Attribute Title",
         },
         {
-          message: "Whats the key of the attribute you would like to query?",
+          message: "What's the key of the attribute you would like to query?",
           type: "text",
           name: "key",
           initial: "Key of RelationshipAttribute",
@@ -194,12 +194,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createReadThirdPartyRelationshipAttributeRequestItem() {
       const result = await prompts([
         {
-          message: "Whats the attribute type you would like to query?",
+          message: "What's the attribute type you would like to query?",
           type: "text",
           name: "attributeType",
         },
         {
-          message: "Whats the key of the attribute you would like to query?",
+          message: "What's the key of the attribute you would like to query?",
           type: "text",
           name: "key",
           initial: "Key of RelationshipAttribute",
@@ -238,7 +238,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createReadIdentityAttributeRequestItem() {
       const result = await prompts([
         {
-          message: "Whats the attribute type you would like to query?",
+          message: "What's the attribute type you would like to query?",
           type: "text",
           name: "attributeType",
         },
@@ -259,12 +259,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createProposeAttributeRequestItem() {
       const result = await prompts([
         {
-          message: "Whats the attribute type you would like to create?",
+          message: "What's the attribute type you would like to create?",
           type: "text",
           name: "attributeType",
         },
         {
-          message: "Whats the value of your Attribute?",
+          message: "What's the value of your Attribute?",
           type: "text",
           name: "value",
         },
@@ -293,19 +293,19 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createCreateRelationshipAttributeRequestItem() {
       const result = await prompts([
         {
-          message: "Whats the title of the RelationshipAttribute you would like to create?",
+          message: "What's the title of the RelationshipAttribute you would like to create?",
           type: "text",
           name: "title",
           initial: "Title of RelationshipAttribute",
         },
         {
-          message: "Whats the key of the RelationshipAttribute you would like to create?",
+          message: "What's the key of the RelationshipAttribute you would like to create?",
           type: "text",
           name: "key",
           initial: "Key of RelationshipAttribute",
         },
         {
-          message: "Whats the value of your Attribute?",
+          message: "What's the value of your Attribute?",
           type: "text",
           name: "value",
         },
@@ -333,12 +333,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createCreateIdentityAttributeRequestItem(peer: string) {
       const result = await prompts([
         {
-          message: "Whats the value type of the IdentityAttribute you would like to create?",
+          message: "What's the value type of the IdentityAttribute you would like to create?",
           type: "text",
           name: "valueType",
         },
         {
-          message: "Whats the value of the Attribute?",
+          message: "What's the value of the Attribute?",
           type: "text",
           name: "value",
         },
@@ -368,7 +368,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createConsentRequestItem(peer: string) {
       const result = await prompts([
         {
-          message: "Whats the consent the peer should agree to?",
+          message: "What's the consent the peer should agree to?",
           type: "text",
           name: "consent",
         },
