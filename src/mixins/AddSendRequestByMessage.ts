@@ -216,7 +216,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const thirdParties = result.thirdParties.split(",")
+      const thirdParties = result.thirdParties
+        .split(",")
+        .filter((address: string) => address.length > 0)
+        .map((address: string) => address.trim())
 
       const requestItem: ReadAttributeRequestItem = {
         "@type": "ReadAttributeRequestItem",
