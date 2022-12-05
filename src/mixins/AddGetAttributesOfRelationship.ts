@@ -1,14 +1,14 @@
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
 
-export function AddGetAttributesOfContact<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class Sync extends Base {
+export function AddGetAttributesOfRelationship<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
+  return class AddGetAttributesOfRelationship extends Base {
     public constructor(...args: any[]) {
       super(...args)
-      this.choices.push({ title: "Get Attributes Of Contact", value: this.getAttributesOfContact })
+      this.choices.push({ title: "Get Attributes Of Relationship", value: this.getAttributesOfRelationship })
     }
 
-    protected async getAttributesOfContact() {
-      const relationship = await this.selectRelationship("From which contact do you want to get the attributes?")
+    protected async getAttributesOfRelationship() {
+      const relationship = await this.selectRelationship("From which relationship do you want to get the attributes?")
       if (!relationship) return console.log("No recipient selected")
 
       const attributeResult = await this.connectorClient.relationships.getAttributesForRelationship(relationship.id)
