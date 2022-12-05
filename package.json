@@ -24,26 +24,26 @@
     "test": "echo 'no test specified'"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^2.0.4",
+    "@nmshd/connector-sdk": "^2.1.1",
     "chalk": "^5.1.2",
     "dotenv": "^16.0.3",
-    "luxon": "^3.1.0",
+    "luxon": "^3.1.1",
     "prompts": "^2.4.2",
     "qrcode-terminal": "^0.12.0",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
     "@js-soft/eslint-config-ts": "^1.6.1",
-    "@js-soft/license-check": "^1.0.5",
-    "@types/luxon": "^3.0.2",
-    "@types/node": "^18.11.9",
+    "@js-soft/license-check": "^1.0.6",
+    "@types/luxon": "^3.1.0",
+    "@types/node": "^18.11.10",
     "@types/prompts": "^2.4.1",
     "@types/qrcode-terminal": "^0.12.0",
-    "@types/yargs": "^17.0.13",
-    "eslint": "^8.26.0",
-    "prettier": "^2.7.1",
+    "@types/yargs": "^17.0.15",
+    "eslint": "^8.29.0",
+    "prettier": "^2.8.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.9.3"
   },
   "publishConfig": {
     "access": "public"
