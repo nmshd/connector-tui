@@ -43,6 +43,18 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createCreateRelationshipAttributeRequestItem.bind(this),
             },
             {
+              title: "CreateIdentityAttributeRequestItem",
+              value: this.createCreateIdentityAttributeRequestItem.bind(this),
+            },
+            {
+              title: "ConsentRequestItem",
+              value: this.createConsentRequestItem.bind(this),
+            },
+            {
+              title: "AuthenticationRequestItem",
+              value: this.createAuthenticationRequestItem.bind(this),
+            },
+            {
               title: "No more items please",
               value: "no-more",
             },
@@ -103,6 +115,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             title: "Relationship Attribute",
             value: "RelationshipAttribute",
           },
+          {
+            title: "Third Party Relationship Attribute",
+            value: "ThirdPartyRelationshipAttribute",
+          },
         ],
       })
 
@@ -111,6 +127,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           return await this.createReadIdentityAttributeRequestItem()
         case "RelationshipAttribute":
           return await this.createReadRelationshipAttributeRequestItem()
+        case "ThirdPartyRelationshipAttribute":
+          return await this.createReadThirdPartyRelationshipAttributeRequestItem()
         default:
           return console.log("Invalid attribute type")
       }
@@ -130,27 +148,26 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           initial: "Attribute Title",
         },
         {
+          message: "Whats the description of the RelationshipAttribute?",
+          type: "text",
+          name: "attributeDescription",
+          initial: "Attribute Title",
+        },
+        {
           message: "Whats the key of the attribute you would like to query?",
           type: "text",
           name: "key",
           initial: "Key of RelationshipAttribute",
         },
         {
-          message: "Whats the title?",
+          message: "Who is the owner of the RelationshipAttribute?",
           type: "text",
-          name: "title",
-          initial: "Attribute Title",
+          name: "owner",
         },
         {
-          message: "Whats the description?",
+          message: "What are the third party addresses? (comma-separated, optional)",
           type: "text",
-          name: "description",
-          initial: "Attribute Description",
-        },
-        {
-          message: "Whats the third party address? (optional)",
-          type: "text",
-          name: "thirdParty",
+          name: "thirdParties",
         },
       ])
       const title = result.attributeTitle ? result.attributeTitle : `A ${result.attributeType} attribute`
@@ -160,14 +177,55 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         query: {
           "@type": "RelationshipAttributeQuery",
-          owner: "",
+          owner: result.owner ? result.owner : "",
           attributeCreationHints: {
-            title: result.title,
-            description: result.description,
+            title: title,
+            description: result.attributeDescription,
             confidentiality: "public",
             valueType: result.attributeType,
           },
           key: result.key,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createReadThirdPartyRelationshipAttributeRequestItem() {
+      const result = await prompts([
+        {
+          message: "Whats the attribute type you would like to query?",
+          type: "text",
+          name: "attributeType",
+        },
+        {
+          message: "Whats the key of the attribute you would like to query?",
+          type: "text",
+          name: "key",
+          initial: "Key of RelationshipAttribute",
+        },
+        {
+          message: "Who is the owner of the RelationshipAttribute?",
+          type: "text",
+          name: "owner",
+        },
+        {
+          message: "What are the third party addresses? (comma-separated)",
+          type: "text",
+          name: "thirdParties",
+        },
+      ])
+
+      const thirdParties = result.thirdParties.split(",")
+
+      const requestItem: ReadAttributeRequestItem = {
+        "@type": "ReadAttributeRequestItem",
+        mustBeAccepted: true,
+        query: {
+          "@type": "ThirdPartyRelationshipAttributeQuery",
+          owner: result.owner ? result.owner : "",
+          key: result.key,
+          thirdParty: thirdParties,
         },
       }
 
@@ -269,7 +327,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createCreateIdentityAttributeRequest(peer: string) {
+    private async createCreateIdentityAttributeRequestItem(peer: string) {
       const result = await prompts([
         {
           message: "Whats the value type of the IdentityAttribute you would like to create?",
@@ -298,6 +356,75 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
                   value: result.value,
                 },
               },
+            },
+          ],
+        },
+      })
+    }
+
+    private async createConsentRequestItem(peer: string) {
+      const result = await prompts([
+        {
+          message: "Whats the consent the peer should agree to?",
+          type: "text",
+          name: "consent",
+        },
+        {
+          message: "[Optional] Enter the URL to to the consent details?",
+          type: "text",
+          name: "link",
+        },
+        {
+          message: "[Optional] Enter a consentKey to know which consent the user agreed to",
+          type: "text",
+          name: "consentKey",
+        },
+      ])
+
+      const responseMetadata = result.consentKey ? { consentKey: result.consentKey } : undefined
+      const link = result.link ? result.link : undefined
+
+      return await this.connectorClient.outgoingRequests.createRequest({
+        peer,
+        content: {
+          items: [
+            {
+              "@type": "ConsentRequestItem",
+              mustBeAccepted: true,
+              consent: result.consent,
+              link,
+              responseMetadata,
+            },
+          ],
+        },
+      })
+    }
+
+    private async createAuthenticationRequestItem(peer: string) {
+      const result = await prompts([
+        {
+          message: "Enter a title of the authentication",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "[Optional] Enter an unique authenticationToken to know which authentication did the user grant",
+          type: "text",
+          name: "authenticationToken",
+        },
+      ])
+
+      const responseMetadata = result.authenticationToken ? { authenticationToken: result.authenticationToken } : undefined
+
+      return await this.connectorClient.outgoingRequests.createRequest({
+        peer,
+        content: {
+          items: [
+            {
+              "@type": "AuthenticationRequestItem",
+              mustBeAccepted: true,
+              title: result.title,
+              responseMetadata,
             },
           ],
         },
