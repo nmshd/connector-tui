@@ -1,9 +1,15 @@
-import { ConnectorRequest, ConnectorResponse } from "@nmshd/connector-sdk"
+import {
+  ConnectorRequestContentItemGroup,
+  CreateAttributeRequestItem,
+  CreateOutgoingRequestRequestContentItemDerivations,
+  ProposeAttributeRequestItem,
+  ReadAttributeRequestItem,
+} from "@nmshd/connector-sdk"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
 
 export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class Sync extends Base {
+  return class SendRequestByMessage extends Base {
     public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Send Request By Message", value: this.sendRequestByMessage })
@@ -15,130 +21,102 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
       const peer = recipient.peer
 
-      const whatRequest = await prompts({
-        message: "What kind of request do you want to send?",
-        type: "select",
-        name: "requestMethod",
-        choices: [
-          {
-            title: "ReadRelationshipAttributeRequest",
-            value: this.createReadRelationshipAttributeRequest.bind(this),
-          },
-          {
-            title: "ReadIdentityAttributeRequest",
-            value: this.createReadIdentityAttributeRequest.bind(this),
-          },
-          {
-            title: "ProposeAttributeRequest",
-            value: this.createProposeAttributeRequest.bind(this),
-          },
-          {
-            title: "CreateRelationshipAttributeRequest",
-            value: this.createCreateRelationshipAttributeRequest.bind(this),
-          },
-          {
-            title: "CreateIdentityAttributeRequest",
-            value: this.createCreateIdentityAttributeRequest.bind(this),
-          },
-          {
-            title: "ConsentRequest",
-            value: this.createConsentRequest.bind(this),
-          },
-          {
-            title: "AuthenticationRequest",
-            value: this.createAuthenticationRequest.bind(this),
-          },
-        ],
+      const requestItems: (CreateOutgoingRequestRequestContentItemDerivations | ConnectorRequestContentItemGroup)[] = []
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition,no-constant-condition
+      while (true) {
+        const whatRequest = await prompts({
+          message: "What kind of request do you want to send?",
+          type: "select",
+          name: "requestMethod",
+          choices: [
+            {
+              title: "ReadAttributeRequestItem",
+              value: this.createReadAttributeRequestItem.bind(this),
+            },
+            {
+              title: "ProposeAttributeRequestItem",
+              value: this.createProposeAttributeRequestItem.bind(this),
+            },
+            {
+              title: "CreateRelationshipAttributeRequestItem",
+              value: this.createCreateRelationshipAttributeRequestItem.bind(this),
+            },
+            {
+              title: "No more items please",
+              value: "no-more",
+            },
+          ],
+        })
+
+        if (!whatRequest.requestMethod) return
+
+        if (typeof whatRequest.requestMethod !== "function") {
+          break
+        }
+
+        const requestItemJSON = await whatRequest.requestMethod(peer)
+        requestItems.push(requestItemJSON)
+      }
+
+      if (requestItems.length === 0) {
+        console.error("You have to add at least one item.")
+        return
+      }
+
+      const response = await this.connectorClient.outgoingRequests.createRequest({
+        peer,
+        content: {
+          items: requestItems,
+        },
       })
 
-      if (!whatRequest.requestMethod) return console.log("No request method selected")
-
-      const response: ConnectorResponse<ConnectorRequest> = await whatRequest.requestMethod(peer)
       if (response.isError) {
         return console.error("Error while creating LocalRequest", response.error)
       }
 
-      const messageResult = await this.connectorClient.messages.sendMessage({
+      const messageResponse = await this.connectorClient.messages.sendMessage({
         recipients: [peer],
         content: response.result.content,
       })
-      if (messageResult.isError) {
-        return console.error("Error while sending message", messageResult.error)
+
+      if (messageResponse.isError) {
+        return console.error("Error while sending message", messageResponse.error)
       }
+
+      console.log("The following Request was sent:", JSON.stringify(response.result.content, null, 2))
 
       console.log(`Request sent to '${peer}'`)
     }
 
-    private async createConsentRequest(peer: string) {
-      const result = await prompts([
-        {
-          message: "Whats the consent the peer should agree to?",
-          type: "text",
-          name: "consent",
-        },
-        {
-          message: "[Optional] Enter the URL to to the consent details?",
-          type: "text",
-          name: "link",
-        },
-        {
-          message: "[Optional] Enter a consentKey to know which consent the user agreed to",
-          type: "text",
-          name: "consentKey",
-        },
-      ])
-
-      const responseMetadata = result.consentKey ? { consentKey: result.consentKey } : undefined
-      const link = result.link ? result.link : undefined
-
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "ConsentRequestItem",
-              mustBeAccepted: true,
-              consent: result.consent,
-              link,
-              responseMetadata,
-            },
-          ],
-        },
+    private async createReadAttributeRequestItem() {
+      const whatAttribute = await prompts({
+        message: "What kind of Attribute do you want to read?",
+        type: "select",
+        name: "attributeType",
+        choices: [
+          {
+            title: "Identity Attribute",
+            value: "IdentityAttribute",
+          },
+          {
+            title: "Relationship Attribute",
+            value: "RelationshipAttribute",
+          },
+        ],
       })
+
+      switch (whatAttribute.attributeType) {
+        case "IdentityAttribute":
+          return await this.createReadIdentityAttributeRequestItem()
+        case "RelationshipAttribute":
+          return await this.createReadRelationshipAttributeRequestItem()
+        default:
+          return console.log("Invalid attribute type")
+      }
     }
 
-    private async createAuthenticationRequest(peer: string) {
-      const result = await prompts([
-        {
-          message: "Enter a title of the authentication",
-          type: "text",
-          name: "title",
-        },
-        {
-          message: "[Optional] Enter an unique authenticationToken to know which authentication did the user grant",
-          type: "text",
-          name: "authenticationToken",
-        },
-      ])
-
-      const responseMetadata = result.authenticationToken ? { authenticationToken: result.authenticationToken } : undefined
-
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "AuthenticationRequestItem",
-              mustBeAccepted: true,
-              title: result.title,
-              responseMetadata,
-            },
-          ],
-        },
-      })
-    }
-
-    private async createReadRelationshipAttributeRequest(peer: string) {
+    private async createReadRelationshipAttributeRequestItem() {
       const result = await prompts([
         {
           message: "Whats the attribute type you would like to query?",
@@ -158,37 +136,45 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           initial: "Key of RelationshipAttribute",
         },
         {
-          message: "Whats the third party address?",
+          message: "Whats the title?",
+          type: "text",
+          name: "title",
+          initial: "Attribute Title",
+        },
+        {
+          message: "Whats the description?",
+          type: "text",
+          name: "description",
+          initial: "Attribute Description",
+        },
+        {
+          message: "Whats the third party address? (optional)",
           type: "text",
           name: "thirdParty",
         },
       ])
       const title = result.attributeTitle ? result.attributeTitle : `A ${result.attributeType} attribute`
 
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "ReadAttributeRequestItem",
-              mustBeAccepted: true,
-              query: {
-                "@type": "RelationshipAttributeQuery",
-                owner: "",
-                attributeCreationHints: {
-                  title: title,
-                  confidentiality: "public",
-                  valueType: result.attributeType,
-                },
-                key: result.key,
-              },
-            },
-          ],
+      const requestItem: ReadAttributeRequestItem = {
+        "@type": "ReadAttributeRequestItem",
+        mustBeAccepted: true,
+        query: {
+          "@type": "RelationshipAttributeQuery",
+          owner: "",
+          attributeCreationHints: {
+            title: result.title,
+            description: result.description,
+            confidentiality: "public",
+            valueType: result.attributeType,
+          },
+          key: result.key,
         },
-      })
+      }
+
+      return requestItem
     }
 
-    private async createReadIdentityAttributeRequest(peer: string) {
+    private async createReadIdentityAttributeRequestItem() {
       const result = await prompts([
         {
           message: "Whats the attribute type you would like to query?",
@@ -197,24 +183,19 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "ReadAttributeRequestItem",
-              mustBeAccepted: true,
-              query: {
-                "@type": "IdentityAttributeQuery",
-                valueType: result.attributeType,
-              },
-            },
-          ],
+      const requestItem: ReadAttributeRequestItem = {
+        "@type": "ReadAttributeRequestItem",
+        mustBeAccepted: true,
+        query: {
+          "@type": "IdentityAttributeQuery",
+          valueType: result.attributeType,
         },
-      })
+      }
+
+      return requestItem
     }
 
-    private async createProposeAttributeRequest(peer: string) {
+    private async createProposeAttributeRequestItem() {
       const result = await prompts([
         {
           message: "Whats the attribute type you would like to create?",
@@ -228,32 +209,27 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "ProposeAttributeRequestItem",
-              mustBeAccepted: true,
-              query: {
-                "@type": "IdentityAttributeQuery",
-                valueType: result.attributeType,
-              },
-              attribute: {
-                "@type": "IdentityAttribute",
-                owner: "",
-                value: {
-                  "@type": result.attributeType,
-                  value: result.value,
-                },
-              },
-            },
-          ],
+      const requestItem: ProposeAttributeRequestItem = {
+        "@type": "ProposeAttributeRequestItem",
+        mustBeAccepted: true,
+        query: {
+          "@type": "IdentityAttributeQuery",
+          valueType: result.attributeType,
         },
-      })
+        attribute: {
+          "@type": "IdentityAttribute",
+          owner: "",
+          value: {
+            "@type": result.attributeType,
+            value: result.value,
+          },
+        },
+      }
+
+      return requestItem
     }
 
-    private async createCreateRelationshipAttributeRequest(peer: string) {
+    private async createCreateRelationshipAttributeRequestItem() {
       const result = await prompts([
         {
           message: "Whats the title of the RelationshipAttribute you would like to create?",
@@ -274,28 +250,23 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "CreateAttributeRequestItem",
-              mustBeAccepted: true,
-              attribute: {
-                "@type": "RelationshipAttribute",
-                owner: "",
-                key: result.key,
-                confidentiality: "public",
-                value: {
-                  "@type": "ProprietaryString",
-                  value: result.value,
-                  title: result.title,
-                },
-              },
-            },
-          ],
+      const requestItem: CreateAttributeRequestItem = {
+        "@type": "CreateAttributeRequestItem",
+        mustBeAccepted: true,
+        attribute: {
+          "@type": "RelationshipAttribute",
+          owner: "",
+          key: result.key,
+          confidentiality: "public",
+          value: {
+            "@type": "ProprietaryString",
+            value: result.value,
+            title: result.title,
+          },
         },
-      })
+      }
+
+      return requestItem
     }
 
     private async createCreateIdentityAttributeRequest(peer: string) {
