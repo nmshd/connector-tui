@@ -40,6 +40,10 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
 
   private async checkConnectorVersion() {
     const connectorVersionInfo = await this.connectorClient.monitoring.getVersion()
+
+    // allow connector in debugging mode to be used
+    if (connectorVersionInfo.version !== "{{version}}") return connectorVersionInfo
+
     if (!connectorVersionInfo.version.startsWith("3.")) {
       console.log(`This TUI is made for Enmeshed V2 connectors (starting with version 3.0.0 of the connector). Current version: ${connectorVersionInfo.version}`)
 
