@@ -24,7 +24,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
               {
                 "@type": "ShareAttributeRequestItem",
                 mustBeAccepted: true,
-                attribute: { ...displayName.content, owner: "" },
+                attribute: displayName.content,
                 sourceAttributeId: displayName.id,
               },
             ],
