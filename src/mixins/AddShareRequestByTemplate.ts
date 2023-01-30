@@ -1,4 +1,4 @@
-import { ConnectorIdentityAttribute } from "@nmshd/connector-sdk"
+import { ConnectorIdentityAttribute, ConnectorRelationshipTemplateContent, ConnectorRequestContent } from "@nmshd/connector-sdk"
 import { DateTime } from "luxon"
 import qrcode from "qrcode-terminal"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
@@ -14,7 +14,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       const name = process.env.CONNECTOR_DISPLAY_NAME ?? "ConnectorV2 Demo"
       const displayName = await this.getOrCreateConnectorDisplayName(name)
 
-      const request = {
+      const request: ConnectorRequestContent = {
         items: [
           {
             "@type": "RequestItemGroup",
@@ -97,8 +97,8 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       return createAttributeResponse.result
     }
 
-    private async createQRCodeForRelationshipTemplate(request: unknown, name: string) {
-      const content = {
+    private async createQRCodeForRelationshipTemplate(request: ConnectorRequestContent, name: string) {
+      const content: ConnectorRelationshipTemplateContent = {
         "@type": "RelationshipTemplateContent",
         title: `Kontaktanfrage mit ${name}`,
         metadata: {
