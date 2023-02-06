@@ -31,17 +31,25 @@ export function AddUploadFile<TBase extends ConnectorTUIBaseConstructor>(Base: T
           name: "title",
           initial: "aFile",
         },
+        {
+          message: "Whats the files description?",
+          type: "text",
+          name: "description",
+          initial: "A file.",
+        },
       ])
 
       const title = result.title
 
       const expiresAt = DateTime.local().plus({ days: 1 }).toISO()
       const filename = result.filename
+      const description = result.description
+
       if (!title || !filename) return console.log("No file / title selected")
 
       const file = await fs.promises.readFile(path.resolve(this.assetFolder, filename))
 
-      const uploadedFile = await this.connectorClient.files.uploadOwnFile({ title, expiresAt, file, filename })
+      const uploadedFile = await this.connectorClient.files.uploadOwnFile({ title, expiresAt, file, filename, description })
 
       const render = await prompts({
         name: "yesno",
