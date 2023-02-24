@@ -362,7 +362,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createConsentRequestItem(_peer: string) {
+    private async createConsentRequestItem() {
       const result = await prompts([
         {
           message: "What's the consent the peer should agree to?",
@@ -395,7 +395,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createAuthenticationRequestItem(_peer: string) {
+    private async createAuthenticationRequestItem() {
       const result = await prompts([
         {
           message: "Enter a title of the authentication",
