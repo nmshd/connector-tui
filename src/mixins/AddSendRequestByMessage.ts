@@ -1,5 +1,7 @@
 import {
+  AuthenticationRequestItem,
   ConnectorRequestContentItemGroup,
+  ConsentRequestItem,
   CreateAttributeRequestItem,
   CreateOutgoingRequestRequestContentItemDerivations,
   ProposeAttributeRequestItem,
@@ -344,28 +346,23 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "CreateAttributeRequestItem",
-              mustBeAccepted: true,
-              attribute: {
-                "@type": "IdentityAttribute",
-                owner: peer,
-                value: {
-                  "@type": result.valueType,
-                  value: result.value,
-                },
-              },
-            },
-          ],
+      const requestItem: CreateAttributeRequestItem = {
+        "@type": "CreateAttributeRequestItem",
+        mustBeAccepted: true,
+        attribute: {
+          "@type": "IdentityAttribute",
+          owner: peer,
+          value: {
+            "@type": result.valueType,
+            value: result.value,
+          },
         },
-      })
+      }
+
+      return requestItem
     }
 
-    private async createConsentRequestItem(peer: string) {
+    private async createConsentRequestItem(_peer: string) {
       const result = await prompts([
         {
           message: "What's the consent the peer should agree to?",
@@ -387,23 +384,18 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const responseMetadata = result.consentKey ? { consentKey: result.consentKey } : undefined
       const link = result.link ? result.link : undefined
 
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "ConsentRequestItem",
-              mustBeAccepted: true,
-              consent: result.consent,
-              link,
-              responseMetadata,
-            },
-          ],
-        },
-      })
+      const requestItem: ConsentRequestItem = {
+        "@type": "ConsentRequestItem",
+        mustBeAccepted: true,
+        consent: result.consent,
+        link,
+        responseMetadata,
+      }
+
+      return requestItem
     }
 
-    private async createAuthenticationRequestItem(peer: string) {
+    private async createAuthenticationRequestItem(_peer: string) {
       const result = await prompts([
         {
           message: "Enter a title of the authentication",
@@ -419,19 +411,14 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
       const responseMetadata = result.authenticationToken ? { authenticationToken: result.authenticationToken } : undefined
 
-      return await this.connectorClient.outgoingRequests.createRequest({
-        peer,
-        content: {
-          items: [
-            {
-              "@type": "AuthenticationRequestItem",
-              mustBeAccepted: true,
-              title: result.title,
-              responseMetadata,
-            },
-          ],
-        },
-      })
+      const requestItem: AuthenticationRequestItem = {
+        "@type": "AuthenticationRequestItem",
+        mustBeAccepted: true,
+        title: result.title,
+        responseMetadata,
+      }
+
+      return requestItem
     }
   }
 }
