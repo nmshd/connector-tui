@@ -6,29 +6,25 @@ import { AddGetAttributesOfRelationship } from "./AddGetAttributesOfRelationship
 import { AddSendMail } from "./AddSendMail"
 import { AddSendRequestByMessage } from "./AddSendRequestByMessage"
 import { AddShareRequestByTemplate } from "./AddShareRequestByTemplate"
+import { AddCreateAndShowTemplate } from "./AddShowTemplate"
 import { AddSync } from "./AddSync"
 import { AddUploadFile } from "./AddUploadFile"
 
 export class ConnectorTUIBaseWithMixins
   //
   extends AddExit(
-    //
-    AddAcceptPendingRelationships(
-      AddAcceptPendingRequests(
-        //
-        AddGetAttributesOfRelationship(
-          //
-          AddSendMail(
-            //
-            AddSendRequestByMessage(
-              //
-              AddShareRequestByTemplate(
-                //
-                AddSync(
-                  //
-                  AddUploadFile(
-                    //
-                    ConnectorTUIBase
+    AddCreateAndShowTemplate(
+      AddAcceptPendingRelationships(
+        AddAcceptPendingRequests(
+          AddGetAttributesOfRelationship(
+            AddSendMail(
+              AddSendRequestByMessage(
+                AddShareRequestByTemplate(
+                  AddSync(
+                    AddUploadFile(
+                      //
+                      ConnectorTUIBase
+                    )
                   )
                 )
               )
