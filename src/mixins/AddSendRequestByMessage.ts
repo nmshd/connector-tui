@@ -45,6 +45,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createCreateRelationshipAttributeRequestItem.bind(this),
             },
             {
+              title: "CreateOwnFlagRequestItem",
+              value: this.createCreateOwnFlagRequestItem.bind(this),
+            },
+            {
               title: "CreateIdentityAttributeRequestItem",
               value: this.createCreateIdentityAttributeRequestItem.bind(this),
             },
@@ -324,6 +328,47 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           value: {
             "@type": "ProprietaryString",
             value: result.value,
+            title: result.title,
+          },
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createCreateOwnFlagRequestItem() {
+      const result = await prompts([
+        {
+          message: "What's the title of the flag you would like to create?",
+          type: "text",
+          name: "title",
+          initial: "Title of Flag",
+        },
+        {
+          message: "What's the key of the flag you would like to create?",
+          type: "text",
+          name: "key",
+          initial: "Key of Flag",
+        },
+        {
+          message: "What's the value of your flag?",
+          type: "text",
+          name: "value",
+        },
+      ])
+
+      const requestItem: CreateAttributeRequestItem = {
+        "@type": "CreateAttributeRequestItem",
+        mustBeAccepted: true,
+        attribute: {
+          "@type": "RelationshipAttribute",
+          owner: this.connectorAddress,
+          key: result.key,
+          confidentiality: "private",
+          isTechnical: true,
+          value: {
+            "@type": "ProprietaryBoolean",
+            value: !!result.value,
             title: result.title,
           },
         },
