@@ -1,7 +1,7 @@
-import { ConnectorIdentityAttribute, ConnectorRelationshipTemplateContent, ConnectorRequestContent } from "@nmshd/connector-sdk"
-import { DateTime } from "luxon"
+import {ConnectorIdentityAttribute, ConnectorRelationshipTemplateContent, ConnectorRequestContent} from "@nmshd/connector-sdk"
+import {DateTime} from "luxon"
 import qrcode from "qrcode-terminal"
-import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
+import {ConnectorTUIBaseConstructor} from "../ConnectorTUIBase"
 
 export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {
@@ -109,7 +109,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
 
       const template = await this.connectorClient.relationshipTemplates.createOwnRelationshipTemplate({
         content,
-        expiresAt: DateTime.now().plus({ days: 2 }).toISO(),
+        expiresAt: DateTime.now().plus({ days: 2 }).toISO()!,
       })
 
       const templateId = template.result.id
