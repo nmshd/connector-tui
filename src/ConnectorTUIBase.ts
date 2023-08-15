@@ -10,7 +10,10 @@ export interface ConnectorTUIChoice extends prompts.Choice {
 export class ConnectorTUIBase {
   protected choices: ConnectorTUIChoice[] = []
 
-  public constructor(protected connectorClient: ConnectorClient, protected connectorAddress: string) {}
+  public constructor(
+    protected connectorClient: ConnectorClient,
+    protected connectorAddress: string
+  ) {}
 
   protected async selectRelationship(prompt: string, status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE): Promise<ConnectorRelationship | undefined> {
     const choices = await this.getRelationshipChoices(status, true)

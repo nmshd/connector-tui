@@ -45,6 +45,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createCreateRelationshipAttributeRequestItem.bind(this),
             },
             {
+              title: "CreateRelationshipAttributeRequestItem with Boolean value",
+              value: this.createCreateRelationshipAttributeRequestItemWithBooleanValue.bind(this),
+            },
+            {
               title: "CreateIdentityAttributeRequestItem",
               value: this.createCreateIdentityAttributeRequestItem.bind(this),
             },
@@ -323,6 +327,47 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           confidentiality: "public",
           value: {
             "@type": "ProprietaryString",
+            value: result.value,
+            title: result.title,
+          },
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createCreateRelationshipAttributeRequestItemWithBooleanValue() {
+      const result = await prompts([
+        {
+          message: "What's the title of the RelationshipAttribute you would like to create?",
+          type: "text",
+          name: "title",
+          initial: "Title of RelationshipAttribute",
+        },
+        {
+          message: "What's the key of the RelationshipAttribute you would like to create?",
+          type: "text",
+          name: "key",
+          initial: "Key of RelationshipAttribute",
+        },
+        {
+          message: "What's the value of your Boolean Attribute?",
+          type: "toggle",
+          name: "value",
+        },
+      ])
+
+      const requestItem: CreateAttributeRequestItem = {
+        "@type": "CreateAttributeRequestItem",
+        mustBeAccepted: true,
+        attribute: {
+          "@type": "RelationshipAttribute",
+          owner: "",
+          key: result.key,
+          confidentiality: "public",
+          isTechnical: true,
+          value: {
+            "@type": "ProprietaryBoolean",
             value: result.value,
             title: result.title,
           },
