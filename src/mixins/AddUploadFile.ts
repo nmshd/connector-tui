@@ -1,10 +1,10 @@
 import fs from "fs"
-import {DateTime} from "luxon"
+import { DateTime } from "luxon"
 import path from "path"
 import prompts from "prompts"
 import qrcode from "qrcode-terminal"
 import url from "url"
-import {ConnectorTUIBaseConstructor} from "../ConnectorTUIBase"
+import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
 
 export function AddUploadFile<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {
