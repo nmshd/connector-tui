@@ -337,6 +337,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createCreateRelationshipAttributeRequestItemWithBooleanValue() {
+      const connectorAddress = (await this.connectorClient.account.getIdentityInfo()).result.address
+
       const result = await prompts([
         {
           message: "What's the title of the RelationshipAttribute you would like to create?",
@@ -355,6 +357,15 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "toggle",
           name: "value",
         },
+        {
+          message: "Who will be the owner of the RelationshipAttribute?",
+          type: "select",
+          name: "owner",
+          choices: [
+            { title: "You (Connector)", value: connectorAddress },
+            { title: "The other Side", value: "" },
+          ],
+        },
       ])
 
       const requestItem: CreateAttributeRequestItem = {
@@ -362,7 +373,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         attribute: {
           "@type": "RelationshipAttribute",
-          owner: "",
+          owner: result.owner,
           key: result.key,
           confidentiality: "public",
           isTechnical: true,
