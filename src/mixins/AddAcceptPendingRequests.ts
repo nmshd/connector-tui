@@ -33,11 +33,16 @@ export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstruct
         for (const item of request.content.items) {
           if (item["@type"] === "RequestItemGroup") {
             const acceptItems: DecideRequestItem[] = []
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             for (const _itemOfGroup of item.items) {
-              acceptItems.push({ accept: true })
+              if (_itemOfGroup["@type"] === "FreeTextRequestItem") {
+                acceptItems.push({ accept: true, freeText: "freeText" } as DecideRequestItem)
+              } else {
+                acceptItems.push({ accept: true })
+              }
             }
             items.push({ items: acceptItems })
+          } else if (item["@type"] === "FreeTextRequestItem") {
+            items.push({ accept: true, freeText: "freeText" } as DecideRequestItem)
           } else {
             items.push({ accept: true })
           }

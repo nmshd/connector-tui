@@ -41,7 +41,7 @@ export function AddUploadFile<TBase extends ConnectorTUIBaseConstructor>(Base: T
 
       const title = result.title
 
-      const expiresAt = DateTime.local().plus({ days: 1 }).toISO()
+      const expiresAt = DateTime.local().plus({ days: 1 }).toISO()!
       const filename = result.filename
       const description = result.description
 

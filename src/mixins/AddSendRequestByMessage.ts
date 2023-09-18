@@ -45,8 +45,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createCreateRelationshipAttributeRequestItem.bind(this),
             },
             {
-              title: "CreateOwnFlagRequestItem",
-              value: this.createCreateOwnFlagRequestItem.bind(this),
+              title: "CreateRelationshipAttributeRequestItem with Boolean value",
+              value: this.createCreateRelationshipAttributeRequestItemWithBooleanValue.bind(this),
             },
             {
               title: "CreateIdentityAttributeRequestItem",
@@ -336,24 +336,33 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createCreateOwnFlagRequestItem() {
+    private async createCreateRelationshipAttributeRequestItemWithBooleanValue() {
       const result = await prompts([
         {
-          message: "What's the title of the flag you would like to create?",
+          message: "What's the title of the RelationshipAttribute you would like to create?",
           type: "text",
           name: "title",
-          initial: "Title of Flag",
+          initial: "Title of RelationshipAttribute",
         },
         {
-          message: "What's the key of the flag you would like to create?",
+          message: "What's the key of the RelationshipAttribute you would like to create?",
           type: "text",
           name: "key",
-          initial: "Key of Flag",
+          initial: "Key of RelationshipAttribute",
         },
         {
-          message: "What's the value of your flag?",
-          type: "text",
+          message: "What's the value of your Boolean Attribute?",
+          type: "toggle",
           name: "value",
+        },
+        {
+          message: "Who will be the owner of the RelationshipAttribute?",
+          type: "select",
+          name: "owner",
+          choices: [
+            { title: "You (Connector)", value: this.connectorAddress },
+            { title: "The other Side", value: "" },
+          ],
         },
       ])
 
@@ -362,13 +371,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         attribute: {
           "@type": "RelationshipAttribute",
-          owner: this.connectorAddress,
+          owner: result.owner,
           key: result.key,
-          confidentiality: "private",
+          confidentiality: "public",
           isTechnical: true,
           value: {
             "@type": "ProprietaryBoolean",
-            value: !!result.value,
+            value: result.value,
             title: result.title,
           },
         },
