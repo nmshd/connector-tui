@@ -67,7 +67,7 @@ export class ConnectorTUIBase {
 
     const surname = relationshipAttributes.find((a) => a.content.value["@type"] === "Surname")
     const givenName = relationshipAttributes.find((a) => a.content.value["@type"] === "GivenName")
-    if (surname || givenName) {
+    if (!!surname || givenName) {
       const name = `${surname?.content.value.value || ""} ${givenName?.content.value.value || ""}`.trim()
       return {
         title: `${relationship.peer} (${name})`,
