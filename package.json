@@ -1,6 +1,6 @@
 {
   "name": "@nmshd/connector-tui",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "repository": "github:nmshd/connector-tui",
   "license": "MIT",
   "author": "j&s-soft GmbH",
@@ -24,26 +24,26 @@
     "test": "echo 'no test specified'"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^2.2.2",
+    "@nmshd/connector-sdk": "^2.2.3",
     "chalk": "^5.3.0",
     "dotenv": "^16.3.1",
-    "luxon": "^3.4.1",
+    "luxon": "^3.4.3",
     "prompts": "^2.4.2",
     "qrcode-terminal": "^0.12.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@js-soft/eslint-config-ts": "^1.6.3",
+    "@js-soft/eslint-config-ts": "^1.6.4",
     "@js-soft/license-check": "^1.0.6",
-    "@types/luxon": "^3.3.1",
-    "@types/node": "^20.5.3",
-    "@types/prompts": "^2.4.4",
-    "@types/qrcode-terminal": "^0.12.0",
-    "@types/yargs": "^17.0.24",
-    "eslint": "^8.47.0",
-    "prettier": "^3.0.2",
+    "@types/luxon": "^3.3.3",
+    "@types/node": "^20.8.7",
+    "@types/prompts": "^2.4.7",
+    "@types/qrcode-terminal": "^0.12.1",
+    "@types/yargs": "^17.0.29",
+    "eslint": "^8.51.0",
+    "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "publishConfig": {
     "access": "public"

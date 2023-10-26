@@ -37,8 +37,16 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createReadAttributeRequestItem.bind(this),
             },
             {
+              title: "IQLReadAttributeRequestItem",
+              value: this.createIQLReadAttributeRequestItem.bind(this),
+            },
+            {
               title: "ProposeAttributeRequestItem",
               value: this.createProposeAttributeRequestItem.bind(this),
+            },
+            {
+              title: "IQLProposeAttributeRequestItem",
+              value: this.createIQLProposeAttributeRequestItem.bind(this),
             },
             {
               title: "CreateRelationshipAttributeRequestItem",
@@ -241,6 +249,35 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
+    private async createIQLReadAttributeRequestItem() {
+      const result = await prompts([
+        {
+          message: "Type in the IQL query string",
+          type: "text",
+          name: "queryString",
+        },
+        {
+          message: "Type in the IQL query valueType fallback",
+          type: "text",
+          name: "valueType",
+        },
+      ])
+
+      const requestItem: ReadAttributeRequestItem = {
+        "@type": "ReadAttributeRequestItem",
+        mustBeAccepted: true,
+        query: {
+          "@type": "IQLQuery",
+          queryString: result.queryString,
+          attributeCreationHints: {
+            valueType: result.valueType,
+          },
+        },
+      }
+
+      return requestItem
+    }
+
     private async createReadIdentityAttributeRequestItem() {
       const result = await prompts([
         {
@@ -282,6 +319,45 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         query: {
           "@type": "IdentityAttributeQuery",
           valueType: result.attributeType,
+        },
+        attribute: {
+          "@type": "IdentityAttribute",
+          owner: "",
+          value: {
+            "@type": result.attributeType,
+            value: result.value,
+          },
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createIQLProposeAttributeRequestItem() {
+      const result = await prompts([
+        {
+          message: "Type in the IQL query string",
+          type: "text",
+          name: "queryString",
+        },
+        {
+          message: "What's the attribute type you would like to create?",
+          type: "text",
+          name: "attributeType",
+        },
+        {
+          message: "What's the value of your Attribute?",
+          type: "text",
+          name: "value",
+        },
+      ])
+
+      const requestItem: ProposeAttributeRequestItem = {
+        "@type": "ProposeAttributeRequestItem",
+        mustBeAccepted: true,
+        query: {
+          "@type": "IQLQuery",
+          queryString: result.queryString,
         },
         attribute: {
           "@type": "IdentityAttribute",
