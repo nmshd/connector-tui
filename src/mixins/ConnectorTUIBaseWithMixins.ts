@@ -2,6 +2,7 @@ import { ConnectorTUIBase } from "../ConnectorTUIBase.js"
 import {
   AddAcceptPendingRelationships,
   AddAcceptPendingRequests,
+  AddConnectorInfo,
   AddCreateAndShowTemplate,
   AddExit,
   AddGetAttributesOfRelationship,
@@ -15,17 +16,19 @@ import {
 export class ConnectorTUIBaseWithMixins
   //
   extends AddExit(
-    AddCreateAndShowTemplate(
-      AddAcceptPendingRelationships(
-        AddAcceptPendingRequests(
-          AddGetAttributesOfRelationship(
-            AddSendMail(
-              AddSendRequestByMessage(
-                AddShareRequestByTemplate(
-                  AddSync(
-                    AddUploadFile(
-                      //
-                      ConnectorTUIBase
+    AddConnectorInfo(
+      AddCreateAndShowTemplate(
+        AddAcceptPendingRelationships(
+          AddAcceptPendingRequests(
+            AddGetAttributesOfRelationship(
+              AddSendMail(
+                AddSendRequestByMessage(
+                  AddShareRequestByTemplate(
+                    AddSync(
+                      AddUploadFile(
+                        //
+                        ConnectorTUIBase
+                      )
                     )
                   )
                 )

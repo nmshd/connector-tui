@@ -1,5 +1,6 @@
 export * from "./AddAcceptPendingRelationships.js"
 export * from "./AddAcceptPendingRequests.js"
+export * from "./AddConnectorInfo.js"
 export * from "./AddCreateAndShowTemplate.js"
 export * from "./AddExit.js"
 export * from "./AddGetAttributesOfRelationship.js"
