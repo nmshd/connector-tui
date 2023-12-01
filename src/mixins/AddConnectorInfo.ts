@@ -28,7 +28,7 @@ Identity Info
   Address: ${chalk.yellow(connectorInfo.identityInfo.address)}
   Public Key: ${chalk.yellow(connectorInfo.identityInfo.publicKey)}
 Enabled Modules: ${chalk.yellow(enabledModules)}
-      `)
+`)
     }
   }
 }
