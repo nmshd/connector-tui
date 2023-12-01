@@ -1,6 +1,6 @@
 import { ConnectorRequestStatus, DecideRequestItem, DecideRequestItemGroup } from "@nmshd/connector-sdk"
 import prompts from "prompts"
-import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
+import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {

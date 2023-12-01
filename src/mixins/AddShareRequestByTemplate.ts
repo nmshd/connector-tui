@@ -1,7 +1,7 @@
 import { ConnectorIdentityAttribute, ConnectorRelationshipTemplateContent, ConnectorRequestContent } from "@nmshd/connector-sdk"
 import { DateTime } from "luxon"
 import qrcode from "qrcode-terminal"
-import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
+import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {

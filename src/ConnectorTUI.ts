@@ -3,7 +3,7 @@ import { ConnectorVersionInfo } from "@nmshd/connector-sdk/dist/types/monitoring
 import chalk from "chalk"
 import { readFile } from "fs/promises"
 import prompts from "prompts"
-import { ConnectorTUIBaseWithMixins } from "./mixins"
+import { ConnectorTUIBaseWithMixins } from "./mixins/index.js"
 
 export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
   public static async create(baseUrl: string, apiKey: string) {

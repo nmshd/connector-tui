@@ -1,6 +1,6 @@
 import { DateTime } from "luxon"
 import qrcode from "qrcode-terminal"
-import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
+import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddCreateAndShowTemplate<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class CreateAndShowTemplate extends Base {

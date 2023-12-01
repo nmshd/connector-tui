@@ -8,7 +8,7 @@ import {
   ReadAttributeRequestItem,
 } from "@nmshd/connector-sdk"
 import prompts from "prompts"
-import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
+import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class SendRequestByMessage extends Base {

@@ -1,5 +1,5 @@
 import prompts from "prompts"
-import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
+import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddSendMail<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class SendMail extends Base {
