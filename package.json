@@ -48,5 +48,8 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "engines": {
+    "node": ">=19.0.0"
   }
 }
