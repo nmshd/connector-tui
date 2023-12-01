@@ -1,9 +1,11 @@
+#!/usr/bin/env node
+
 import chalk from "chalk"
 import dotenv from "dotenv"
 import path from "path"
 import yargs from "yargs"
 import { hideBin } from "yargs/helpers"
-import { ConnectorTUI } from "./ConnectorTUI"
+import { ConnectorTUI } from "./ConnectorTUI.js"
 
 const argv = await yargs(hideBin(process.argv))
   .option("env", {

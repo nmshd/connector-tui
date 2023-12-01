@@ -1,4 +1,4 @@
-import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase"
+import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddSync<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class Sync extends Base {

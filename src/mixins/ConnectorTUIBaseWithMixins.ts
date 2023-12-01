@@ -1,14 +1,16 @@
-import { ConnectorTUIBase } from "../ConnectorTUIBase"
-import { AddAcceptPendingRelationships } from "./AddAcceptPendingRelationships"
-import { AddAcceptPendingRequests } from "./AddAcceptPendingRequests"
-import { AddExit } from "./AddExit"
-import { AddGetAttributesOfRelationship } from "./AddGetAttributesOfRelationship"
-import { AddSendMail } from "./AddSendMail"
-import { AddSendRequestByMessage } from "./AddSendRequestByMessage"
-import { AddShareRequestByTemplate } from "./AddShareRequestByTemplate"
-import { AddCreateAndShowTemplate } from "./AddShowTemplate"
-import { AddSync } from "./AddSync"
-import { AddUploadFile } from "./AddUploadFile"
+import { ConnectorTUIBase } from "../ConnectorTUIBase.js"
+import {
+  AddAcceptPendingRelationships,
+  AddAcceptPendingRequests,
+  AddCreateAndShowTemplate,
+  AddExit,
+  AddGetAttributesOfRelationship,
+  AddSendMail,
+  AddSendRequestByMessage,
+  AddShareRequestByTemplate,
+  AddSync,
+  AddUploadFile,
+} from "./index.js"
 
 export class ConnectorTUIBaseWithMixins
   //
