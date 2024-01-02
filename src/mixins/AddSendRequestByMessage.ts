@@ -66,7 +66,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createConsentRequestItem.bind(this),
             },
             {
-              title: "RegisterRequestItem",
+              title: "RegisterAttributeListenerRequestItem",
               value: this.createRegisterAttributeListenerRequestItem.bind(this),
             },
             {
@@ -533,14 +533,9 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createRegisterAttributeListenerRequestItem() {
       const result = await prompts([
         {
-          message: "What's the attribute type you would like to create?",
+          message: "What's the attribute type you would like to query?",
           type: "text",
           name: "attributeType",
-        },
-        {
-          message: "What's the value of your Attribute?",
-          type: "text",
-          name: "value",
         },
       ])
 
