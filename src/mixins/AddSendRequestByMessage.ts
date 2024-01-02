@@ -6,6 +6,7 @@ import {
   CreateOutgoingRequestRequestContentItemDerivations,
   ProposeAttributeRequestItem,
   ReadAttributeRequestItem,
+  RegisterAttributeListenerRequestItem,
 } from "@nmshd/connector-sdk"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
@@ -63,6 +64,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             {
               title: "ConsentRequestItem",
               value: this.createConsentRequestItem.bind(this),
+            },
+            {
+              title: "RegisterAttributeListenerRequestItem",
+              value: this.createRegisterAttributeListenerRequestItem.bind(this),
             },
             {
               title: "AuthenticationRequestItem",
@@ -520,6 +525,27 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         consent: result.consent,
         link,
         responseMetadata,
+      }
+
+      return requestItem
+    }
+
+    private async createRegisterAttributeListenerRequestItem() {
+      const result = await prompts([
+        {
+          message: "What's the attribute type you would like to query?",
+          type: "text",
+          name: "attributeType",
+        },
+      ])
+
+      const requestItem: RegisterAttributeListenerRequestItem = {
+        "@type": "RegisterAttributeListenerRequestItem",
+        mustBeAccepted: true,
+        query: {
+          "@type": "IdentityAttributeQuery",
+          valueType: result.attributeType,
+        },
       }
 
       return requestItem
