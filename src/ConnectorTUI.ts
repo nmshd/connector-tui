@@ -57,10 +57,14 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
     const jsonString = (await readFile(new URL("../package.json", import.meta.url))).toString()
     const packageJson = JSON.parse(jsonString)
 
+    const support = await this.connectorClient.monitoring.getSupport()
+    const baseUrl = (support.configuration.transportLibrary as any)?.baseUrl
+
     console.log(`Welcome to the ${chalk.blue("Enmeshed V2 TUI")}!`)
     console.log(`TUI Version: ${chalk.yellow(packageJson.version)}`)
     console.log(`Connector version: ${chalk.yellow(connectorVersionInfo.version)}`)
     console.log(`Connector Address: ${chalk.yellow(this.connectorAddress)}`)
+    console.log(`Connector Backbone BaseURL: ${chalk.yellow(baseUrl)}`)
     console.log("")
   }
 }
