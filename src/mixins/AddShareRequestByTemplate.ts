@@ -1,4 +1,4 @@
-import { ConnectorIdentityAttribute, ConnectorRelationshipTemplateContent, ConnectorRequestContent } from "@nmshd/connector-sdk"
+import { ConnectorRelationshipTemplateContent, ConnectorRequestContent } from "@nmshd/connector-sdk"
 import { DateTime } from "luxon"
 import qrcode from "qrcode-terminal"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
@@ -83,15 +83,13 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         return response.result[0]
       }
 
-      const createAttributeResponse = await this.connectorClient.attributes.createAttribute({
+      const createAttributeResponse = await this.connectorClient.attributes.createRepositoryAttribute({
         content: {
-          "@type": "IdentityAttribute",
-          owner: this.connectorAddress,
           value: {
             "@type": "DisplayName",
             value: displayName,
           },
-        } as ConnectorIdentityAttribute,
+        },
       })
 
       return createAttributeResponse.result
@@ -109,7 +107,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
 
       const template = await this.connectorClient.relationshipTemplates.createOwnRelationshipTemplate({
         content,
-        expiresAt: DateTime.now().plus({ days: 2 }).toISO()!,
+        expiresAt: DateTime.now().plus({ days: 2 }).toISO(),
       })
 
       const templateId = template.result.id
