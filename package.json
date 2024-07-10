@@ -19,7 +19,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "lint": "npm run lint:prettier && npm run lint:eslint",
+    "lint": "npm run lint:tsc && npm run lint:prettier && npm run lint:eslint",
+    "lint:tsc": "tsc --noEmit",
     "lint:eslint": "eslint --ext .ts ./src",
     "lint:prettier": "prettier --check ./src",
     "start": "node --loader ts-node/esm src/index.ts",
