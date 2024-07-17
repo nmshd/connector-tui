@@ -1,4 +1,5 @@
 import { ConnectorRequestStatus, DecideRequestItem, DecideRequestItemGroup } from "@nmshd/connector-sdk"
+import { DateTime } from "luxon"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
@@ -36,6 +37,8 @@ export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstruct
             for (const _itemOfGroup of item.items) {
               if (_itemOfGroup["@type"] === "FreeTextRequestItem") {
                 acceptItems.push({ accept: true, freeText: "freeText" } as DecideRequestItem)
+              } else if (_itemOfGroup["@type"] === "DeleteAttributeRequestItem") {
+                acceptItems.push({ accept: true, deletionDate: DateTime.utc().plus({ seconds: 5 }).toISO() } as DecideRequestItem)
               } else {
                 acceptItems.push({ accept: true })
               }
@@ -43,15 +46,25 @@ export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstruct
             items.push({ items: acceptItems })
           } else if (item["@type"] === "FreeTextRequestItem") {
             items.push({ accept: true, freeText: "freeText" } as DecideRequestItem)
+          } else if (item["@type"] === "DeleteAttributeRequestItem") {
+            items.push({ accept: true, deletionDate: DateTime.utc().plus({ seconds: 5 }).toISO() } as DecideRequestItem)
           } else {
             items.push({ accept: true })
           }
         }
+
         const canAcceptResult = await this.connectorClient.incomingRequests.canAccept(request.id, { items: items })
         if (canAcceptResult.isError) {
           console.log(canAcceptResult.error)
           return
         }
+
+        if (!canAcceptResult.result.isSuccess) {
+          console.log("Cannot accept request")
+          console.log(canAcceptResult.result)
+          return
+        }
+
         const acceptResult = await this.connectorClient.incomingRequests.accept(request.id, { items: items })
         if (acceptResult.isError) {
           console.log(acceptResult.error)
