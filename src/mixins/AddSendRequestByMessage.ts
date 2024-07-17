@@ -1,9 +1,9 @@
 import {
   AuthenticationRequestItem,
   ConnectorRequestContentItemGroup,
+  ConnectorRequestItemDerivation,
   ConsentRequestItem,
   CreateAttributeRequestItem,
-  CreateOutgoingRequestRequestContentItemDerivations,
   ProposeAttributeRequestItem,
   ReadAttributeRequestItem,
   RegisterAttributeListenerRequestItem,
@@ -24,7 +24,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
       const peer = recipient.peer
 
-      const requestItems: (CreateOutgoingRequestRequestContentItemDerivations | ConnectorRequestContentItemGroup)[] = []
+      const requestItems: (ConnectorRequestItemDerivation | ConnectorRequestContentItemGroup)[] = []
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition,no-constant-condition
       while (true) {
