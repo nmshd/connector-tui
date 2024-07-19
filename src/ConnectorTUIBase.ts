@@ -15,7 +15,9 @@ export class ConnectorTUIBase {
     protected connectorAddress: string
   ) {}
 
-  protected async selectRelationship(prompt: string, status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.Active): Promise<ConnectorRelationship | undefined> {
+  protected async selectRelationship(prompt: string, ...status: ConnectorRelationshipStatus[]): Promise<ConnectorRelationship | undefined> {
+    if (status.length === 0) status.push(ConnectorRelationshipStatus.Active)
+
     const choices = await this.getRelationshipChoices(status, true)
     if (!choices) return
 
@@ -24,7 +26,9 @@ export class ConnectorTUIBase {
     return recipientsResult.recipient as ConnectorRelationship | undefined
   }
 
-  protected async selectRelationships(prompt: string, status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.Active): Promise<string[] | undefined> {
+  protected async selectRelationships(prompt: string, ...status: ConnectorRelationshipStatus[]): Promise<string[] | undefined> {
+    if (status.length === 0) status.push(ConnectorRelationshipStatus.Active)
+
     const choices = await this.getRelationshipChoices(status, false)
     if (!choices) return
 
@@ -39,7 +43,7 @@ export class ConnectorTUIBase {
     return recipients
   }
 
-  private async getRelationshipChoices(status: ConnectorRelationshipStatus, returnRelationship: boolean) {
+  private async getRelationshipChoices(status: ConnectorRelationshipStatus[], returnRelationship: boolean) {
     const relationshipsResult = await this.connectorClient.relationships.getRelationships({ status })
     if (relationshipsResult.isError) {
       console.error(relationshipsResult.error)
