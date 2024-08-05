@@ -15,9 +15,7 @@ export function AddCreateAndShowTemplate<TBase extends ConnectorTUIBaseConstruct
         expiresAt: DateTime.now().plus({ days: 2 }).toISO(),
       })
 
-      const templateId = template.result.id
-      const tokenResponse = await this.connectorClient.relationshipTemplates.createTokenForOwnRelationshipTemplate(templateId)
-      const url = `nmshd://tr#${tokenResponse.result.truncatedReference}`
+      const url = `nmshd://tr#${template.result.truncatedReference}`
       console.log(url)
       qrcode.generate(url, { small: true })
     }
