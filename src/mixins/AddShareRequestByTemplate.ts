@@ -18,7 +18,6 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         items: [
           {
             "@type": "RequestItemGroup",
-            mustBeAccepted: true,
             title: "Shared Attributes",
             items: [
               {
@@ -31,7 +30,6 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
           },
           {
             "@type": "RequestItemGroup",
-            mustBeAccepted: true,
             title: "Requested Attributes",
             items: [
               {

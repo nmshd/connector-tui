@@ -20,15 +20,11 @@ export function AddAcceptPendingRelationships<TBase extends ConnectorTUIBaseCons
         await this.connectorClient.account.sync()
       }
 
-      const pendingRelationships = (
-        await this.connectorClient.relationships.getRelationships({
-          status: ConnectorRelationshipStatus.PENDING,
-        })
-      ).result
+      const pendingRelationships = (await this.connectorClient.relationships.getRelationships({ status: ConnectorRelationshipStatus.Pending })).result
 
       for (const relationship of pendingRelationships) {
         console.log(`Accepting relationship ${relationship.id}`)
-        await this.connectorClient.relationships.acceptRelationshipChange(relationship.id, relationship.changes[0].id)
+        await this.connectorClient.relationships.acceptRelationship(relationship.id)
       }
     }
   }
