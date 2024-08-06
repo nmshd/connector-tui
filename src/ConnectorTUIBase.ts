@@ -51,7 +51,7 @@ export class ConnectorTUIBase {
     }
     const relationships = relationshipsResult.result
     if (relationships.length === 0) {
-      console.log(`No relationships with status '${status}' found`)
+      console.log(`No relationships with status ${new Intl.ListFormat("en", { style: "long", type: "disjunction" }).format(status.map((s) => `'${s}'`))} found`)
       return
     }
 
