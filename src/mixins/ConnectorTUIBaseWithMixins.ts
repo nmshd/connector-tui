@@ -4,13 +4,14 @@ import {
   AddAcceptPendingRequests,
   AddConnectorInfo,
   AddCreateAndShowTemplate,
+  AddDecomposeRelationship,
   AddExit,
   AddGetAttributesOfRelationship,
   AddSendMail,
   AddSendRequestByMessage,
   AddShareRequestByTemplate,
   AddSync,
-  AddTerminateAndDecomposeRelationship,
+  AddTerminateRelationship,
   AddUploadFile,
 } from "./index.js"
 
@@ -18,18 +19,20 @@ export class ConnectorTUIBaseWithMixins
   //
   extends AddExit(
     AddConnectorInfo(
-      AddTerminateAndDecomposeRelationship(
-        AddCreateAndShowTemplate(
-          AddAcceptPendingRelationships(
-            AddAcceptPendingRequests(
-              AddGetAttributesOfRelationship(
-                AddSendMail(
-                  AddSendRequestByMessage(
-                    AddShareRequestByTemplate(
-                      AddSync(
-                        AddUploadFile(
-                          //
-                          ConnectorTUIBase
+      AddDecomposeRelationship(
+        AddTerminateRelationship(
+          AddCreateAndShowTemplate(
+            AddAcceptPendingRelationships(
+              AddAcceptPendingRequests(
+                AddGetAttributesOfRelationship(
+                  AddSendMail(
+                    AddSendRequestByMessage(
+                      AddShareRequestByTemplate(
+                        AddSync(
+                          AddUploadFile(
+                            //
+                            ConnectorTUIBase
+                          )
                         )
                       )
                     )
