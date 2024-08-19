@@ -1,5 +1,6 @@
-import { ConnectorRelationshipTemplateContent, ConnectorRequestContent } from "@nmshd/connector-sdk"
+import { ConnectorRelationshipTemplateContent, ConnectorRequestContent, ConnectorRequestContentItemGroup } from "@nmshd/connector-sdk"
 import { DateTime } from "luxon"
+import prompts from "prompts"
 import qrcode from "qrcode-terminal"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
@@ -14,52 +15,61 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       const name = process.env.CONNECTOR_DISPLAY_NAME ?? "ConnectorV2 Demo"
       const displayName = await this.getOrCreateConnectorDisplayName(name)
 
-      const request: ConnectorRequestContent = {
+      const sharedAttributes: ConnectorRequestContentItemGroup = {
+        "@type": "RequestItemGroup",
+        title: "Shared Attributes",
         items: [
           {
-            "@type": "RequestItemGroup",
-            title: "Shared Attributes",
-            items: [
-              {
-                "@type": "ShareAttributeRequestItem",
-                mustBeAccepted: true,
-                attribute: displayName.content,
-                sourceAttributeId: displayName.id,
-              },
-            ],
-          },
-          {
-            "@type": "RequestItemGroup",
-            title: "Requested Attributes",
-            items: [
-              {
-                "@type": "ReadAttributeRequestItem",
-                mustBeAccepted: true,
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "Surname",
-                },
-              },
-              {
-                "@type": "ReadAttributeRequestItem",
-                mustBeAccepted: true,
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "GivenName",
-                },
-              },
-              {
-                "@type": "ReadAttributeRequestItem",
-                mustBeAccepted: false,
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "EMailAddress",
-                },
-              },
-            ],
+            "@type": "ShareAttributeRequestItem",
+            mustBeAccepted: true,
+            attribute: displayName.content,
+            sourceAttributeId: displayName.id,
           },
         ],
       }
+
+      const requestedAttributes: ConnectorRequestContentItemGroup = {
+        "@type": "RequestItemGroup",
+        title: "Requested Attributes",
+        items: [
+          {
+            "@type": "ReadAttributeRequestItem",
+            mustBeAccepted: true,
+            query: {
+              "@type": "IdentityAttributeQuery",
+              valueType: "Surname",
+            },
+          },
+          {
+            "@type": "ReadAttributeRequestItem",
+            mustBeAccepted: true,
+            query: {
+              "@type": "IdentityAttributeQuery",
+              valueType: "GivenName",
+            },
+          },
+          {
+            "@type": "ReadAttributeRequestItem",
+            mustBeAccepted: false,
+            query: {
+              "@type": "IdentityAttributeQuery",
+              valueType: "EMailAddress",
+            },
+          },
+        ],
+      }
+
+      const request: ConnectorRequestContent = { items: [] }
+
+      const result = await prompts({
+        message: "Do you want to send your connectors name?",
+        type: "confirm",
+        name: "includeName",
+        initial: true,
+      })
+
+      if (result.includeName) request.items.push(sharedAttributes)
+      request.items.push(requestedAttributes)
 
       await this.createQRCodeForRelationshipTemplate(request, name)
     }
