@@ -3,7 +3,7 @@ import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddAcceptPendingRelationships<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class Sync extends Base {
+  return class AcceptPendingRelationships extends Base {
     public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Accept Pending Relationships", value: this.acceptPendingRelationships })

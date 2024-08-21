@@ -7,7 +7,7 @@ import url from "url"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddUploadFile<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class Sync extends Base {
+  return class UploadFile extends Base {
     private readonly assetFolder = path.resolve(url.fileURLToPath(new URL(".", import.meta.url)), "../../__assets__")
 
     public constructor(...args: any[]) {

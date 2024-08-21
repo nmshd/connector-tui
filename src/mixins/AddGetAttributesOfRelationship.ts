@@ -2,7 +2,7 @@ import { ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddGetAttributesOfRelationship<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class AddGetAttributesOfRelationship extends Base {
+  return class GetAttributesOfRelationship extends Base {
     public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Get Attributes Of Relationship", value: this.getAttributesOfRelationship })

@@ -4,7 +4,7 @@ import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class Sync extends Base {
+  return class AcceptPendingRequests extends Base {
     public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Accept Pending Requests", value: this.acceptPendingRequests })
