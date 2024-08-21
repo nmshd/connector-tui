@@ -5,7 +5,7 @@ import qrcode from "qrcode-terminal"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class Sync extends Base {
+  return class ShareRequestByTemplate extends Base {
     public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Share Request By Template", value: this.shareRequestByTemplate })
@@ -59,7 +59,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         ],
       }
 
-      const request: ConnectorRequestContent = { items: [] }
+      const request: ConnectorRequestContent = { "@type": "Request", items: [] }
 
       const result = await prompts({
         message: "Do you want to send your connectors name?",

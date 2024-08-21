@@ -13,7 +13,8 @@ export function AddSync<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) 
         console.error(syncRequest.error)
         return
       }
-      console.log(syncRequest.result)
+
+      console.log("Successfully synced the connector.")
     }
   }
 }

@@ -11,7 +11,7 @@ export function AddCreateAndShowTemplate<TBase extends ConnectorTUIBaseConstruct
 
     public async createAndShowTemplate() {
       const template = await this.connectorClient.relationshipTemplates.createOwnRelationshipTemplate({
-        content: {},
+        content: { "@type": "ArbitraryRelationshipTemplateContent", value: {} },
         expiresAt: DateTime.now().plus({ days: 2 }).toISO(),
       })
 
