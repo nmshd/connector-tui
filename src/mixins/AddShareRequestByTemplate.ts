@@ -62,7 +62,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       const request: RequestJSON = { "@type": "Request", items: [] }
 
       const result = await prompts({
-        message: "Do you want to send your connectors name?",
+        message: "Do you want to send your connector's name?",
         type: "confirm",
         name: "includeName",
         initial: true,
