@@ -184,9 +184,9 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "select",
           name: "owner",
           choices: [
-            { title: "You (Connector)", value: "" },
-            { title: "The other Side", value: "recipient" },
-            { title: "Third Party", value: "thirdParty" },
+            { title: "The other side or the third party", value: "" },
+            { title: "The other side", value: "recipient" },
+            { title: "The third party", value: "thirdParty" },
           ],
         },
         {
