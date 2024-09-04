@@ -1,4 +1,4 @@
-import { ConnectorRelationshipTemplateContent, ConnectorRequestContent, ConnectorRequestContentItemGroup } from "@nmshd/connector-sdk"
+import { RelationshipTemplateContentJSON, RequestItemGroupJSON, RequestJSON } from "@nmshd/content"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import qrcode from "qrcode-terminal"
@@ -15,7 +15,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       const name = process.env.CONNECTOR_DISPLAY_NAME ?? "ConnectorV2 Demo"
       const displayName = await this.getOrCreateConnectorDisplayName(name)
 
-      const sharedAttributes: ConnectorRequestContentItemGroup = {
+      const sharedAttributes: RequestItemGroupJSON = {
         "@type": "RequestItemGroup",
         title: "Shared Attributes",
         items: [
@@ -28,7 +28,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         ],
       }
 
-      const requestedAttributes: ConnectorRequestContentItemGroup = {
+      const requestedAttributes: RequestItemGroupJSON = {
         "@type": "RequestItemGroup",
         title: "Requested Attributes",
         items: [
@@ -59,7 +59,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         ],
       }
 
-      const request: ConnectorRequestContent = { "@type": "Request", items: [] }
+      const request: RequestJSON = { "@type": "Request", items: [] }
 
       const result = await prompts({
         message: "Do you want to send your connectors name?",
@@ -103,8 +103,8 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       return createAttributeResponse.result
     }
 
-    private async createQRCodeForRelationshipTemplate(request: ConnectorRequestContent, name: string) {
-      const content: ConnectorRelationshipTemplateContent = {
+    private async createQRCodeForRelationshipTemplate(request: RequestJSON, name: string) {
+      const content: RelationshipTemplateContentJSON = {
         "@type": "RelationshipTemplateContent",
         title: `Kontaktanfrage mit ${name}`,
         metadata: {

@@ -1,4 +1,5 @@
 import { ConnectorClient, ConnectorFile, ConnectorRelationship, ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
+import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
 import prompts from "prompts"
 
 export type ConnectorTUIBaseConstructor = new (...args: any[]) => ConnectorTUIBase
@@ -66,13 +67,13 @@ export class ConnectorTUIBase {
 
     const displayName = relationshipAttributes.find((a) => a.content.value["@type"] === "DisplayName")
     if (displayName) {
-      return { title: `${relationship.peer} (${displayName.content.value.value})`, value }
+      return { title: `${relationship.peer} (${(displayName.content.value as DisplayNameJSON).value})`, value }
     }
 
     const surname = relationshipAttributes.find((a) => a.content.value["@type"] === "Surname")
     const givenName = relationshipAttributes.find((a) => a.content.value["@type"] === "GivenName")
     if (!!surname || givenName) {
-      const name = `${surname?.content.value.value || ""} ${givenName?.content.value.value || ""}`.trim()
+      const name = `${(surname?.content.value as SurnameJSON).value || ""} ${(givenName?.content.value as GivenNameJSON).value || ""}`.trim()
       return {
         title: `${relationship.peer} (${name})`,
         value,
