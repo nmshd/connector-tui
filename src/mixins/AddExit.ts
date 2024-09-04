@@ -1,7 +1,7 @@
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddExit<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class Sync extends Base {
+  return class Exit extends Base {
     public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Exit", value: this.exit })

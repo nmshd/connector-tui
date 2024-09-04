@@ -1,4 +1,5 @@
 import { ConnectorClient, ConnectorFile, ConnectorRelationship, ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
+import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
 import prompts from "prompts"
 
 export type ConnectorTUIBaseConstructor = new (...args: any[]) => ConnectorTUIBase
@@ -15,7 +16,9 @@ export class ConnectorTUIBase {
     protected connectorAddress: string
   ) {}
 
-  protected async selectRelationship(prompt: string, status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE): Promise<ConnectorRelationship | undefined> {
+  protected async selectRelationship(prompt: string, ...status: ConnectorRelationshipStatus[]): Promise<ConnectorRelationship | undefined> {
+    if (status.length === 0) status.push(ConnectorRelationshipStatus.Active)
+
     const choices = await this.getRelationshipChoices(status, true)
     if (!choices) return
 
@@ -24,7 +27,9 @@ export class ConnectorTUIBase {
     return recipientsResult.recipient as ConnectorRelationship | undefined
   }
 
-  protected async selectRelationships(prompt: string, status: ConnectorRelationshipStatus = ConnectorRelationshipStatus.ACTIVE): Promise<string[] | undefined> {
+  protected async selectRelationships(prompt: string, ...status: ConnectorRelationshipStatus[]): Promise<string[] | undefined> {
+    if (status.length === 0) status.push(ConnectorRelationshipStatus.Active)
+
     const choices = await this.getRelationshipChoices(status, false)
     if (!choices) return
 
@@ -39,7 +44,7 @@ export class ConnectorTUIBase {
     return recipients
   }
 
-  private async getRelationshipChoices(status: ConnectorRelationshipStatus, returnRelationship: boolean) {
+  private async getRelationshipChoices(status: ConnectorRelationshipStatus[], returnRelationship: boolean) {
     const relationshipsResult = await this.connectorClient.relationships.getRelationships({ status })
     if (relationshipsResult.isError) {
       console.error(relationshipsResult.error)
@@ -47,7 +52,7 @@ export class ConnectorTUIBase {
     }
     const relationships = relationshipsResult.result
     if (relationships.length === 0) {
-      console.log(`No relationships with status '${status}' found`)
+      console.log(`No relationships with status ${new Intl.ListFormat("en", { style: "long", type: "disjunction" }).format(status.map((s) => `'${s}'`))} found`)
       return
     }
 
@@ -62,13 +67,13 @@ export class ConnectorTUIBase {
 
     const displayName = relationshipAttributes.find((a) => a.content.value["@type"] === "DisplayName")
     if (displayName) {
-      return { title: `${relationship.peer} (${displayName.content.value.value})`, value }
+      return { title: `${relationship.peer} (${(displayName.content.value as DisplayNameJSON).value})`, value }
     }
 
     const surname = relationshipAttributes.find((a) => a.content.value["@type"] === "Surname")
     const givenName = relationshipAttributes.find((a) => a.content.value["@type"] === "GivenName")
     if (!!surname || givenName) {
-      const name = `${surname?.content.value.value || ""} ${givenName?.content.value.value || ""}`.trim()
+      const name = `${(surname?.content.value as SurnameJSON).value || ""} ${(givenName?.content.value as GivenNameJSON).value || ""}`.trim()
       return {
         title: `${relationship.peer} (${name})`,
         value,

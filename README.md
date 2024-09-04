@@ -2,9 +2,9 @@
 
 > A terminal user interface for Demos.
 >
-> Showcase how to integrate Enmeshed and use the TypeScript Connector SDK.
+> Showcase how to integrate enmeshed and use the TypeScript Connector SDK.
 >
-> This TUI only works with Enmeshed v2 (Connector version 3.0.0+)
+> This TUI only works with enmeshed v5 (Connector version 5.0.0+)
 
 ## Installation
 

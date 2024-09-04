@@ -1,10 +1,11 @@
 import { ConnectorRequestStatus, DecideRequestItem, DecideRequestItemGroup } from "@nmshd/connector-sdk"
+import { RequestItemGroupJSON } from "@nmshd/content"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class Sync extends Base {
+  return class AcceptPendingRequests extends Base {
     public constructor(...args: any[]) {
       super(...args)
       this.choices.push({ title: "Accept Pending Requests", value: this.acceptPendingRequests })
@@ -34,7 +35,7 @@ export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstruct
         for (const item of request.content.items) {
           if (item["@type"] === "RequestItemGroup") {
             const acceptItems: DecideRequestItem[] = []
-            for (const _itemOfGroup of item.items) {
+            for (const _itemOfGroup of (item as RequestItemGroupJSON).items) {
               if (_itemOfGroup["@type"] === "FreeTextRequestItem") {
                 acceptItems.push({ accept: true, freeText: "freeText" } as DecideRequestItem)
               } else if (_itemOfGroup["@type"] === "DeleteAttributeRequestItem") {

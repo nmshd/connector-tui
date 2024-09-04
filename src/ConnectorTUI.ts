@@ -44,8 +44,8 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
     // allow connector in debugging mode to be used
     if (connectorVersionInfo.version === "{{version}}") return connectorVersionInfo
 
-    if (!(connectorVersionInfo.version.startsWith("3.") || connectorVersionInfo.version.startsWith("4."))) {
-      console.log(`This TUI is made for Enmeshed V2 connectors (starting with version 3.0.0 of the connector). Current version: ${connectorVersionInfo.version}`)
+    if (!connectorVersionInfo.version.startsWith("5.")) {
+      console.log(`This TUI is made for enmeshed V5 connectors (starting with version 5.0.0 of the connector). Current version: ${connectorVersionInfo.version}`)
 
       return
     }
@@ -60,7 +60,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
     const support = await this.connectorClient.monitoring.getSupport()
     const baseUrl = (support.configuration.transportLibrary as any)?.baseUrl
 
-    console.log(`Welcome to the ${chalk.blue("Enmeshed V2 TUI")}!`)
+    console.log(`Welcome to the ${chalk.blue("enmeshed V2 TUI")}!`)
     console.log(`TUI Version: ${chalk.yellow(packageJson.version)}`)
     console.log(`Connector version: ${chalk.yellow(connectorVersionInfo.version)}`)
     console.log(`Connector Address: ${chalk.yellow(this.connectorAddress)}`)

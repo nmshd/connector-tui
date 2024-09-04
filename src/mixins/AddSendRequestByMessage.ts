@@ -1,13 +1,14 @@
 import {
-  AuthenticationRequestItem,
-  ConnectorRequestContentItemGroup,
-  ConnectorRequestItemDerivation,
-  ConsentRequestItem,
-  CreateAttributeRequestItem,
-  ProposeAttributeRequestItem,
-  ReadAttributeRequestItem,
-  RegisterAttributeListenerRequestItem,
-} from "@nmshd/connector-sdk"
+  AuthenticationRequestItemJSON,
+  ConsentRequestItemJSON,
+  CreateAttributeRequestItemJSON,
+  ProposeAttributeRequestItemJSON,
+  ReadAttributeRequestItemJSON,
+  RegisterAttributeListenerRequestItemJSON,
+  RelationshipAttributeConfidentiality,
+  RequestItemGroupJSON,
+  RequestItemJSON,
+} from "@nmshd/content"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
@@ -24,7 +25,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
       const peer = recipient.peer
 
-      const requestItems: (ConnectorRequestItemDerivation | ConnectorRequestContentItemGroup)[] = []
+      const requestItems: (RequestItemJSON | RequestItemGroupJSON)[] = []
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition,no-constant-condition
       while (true) {
@@ -180,8 +181,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
         {
           message: "Who is the owner of the RelationshipAttribute?",
-          type: "text",
+          type: "select",
           name: "owner",
+          choices: [
+            { title: "The other side or a third party", value: "" },
+            { title: "The other side", value: "recipient" },
+            { title: "A third party", value: "thirdParty" },
+          ],
         },
         {
           message: "What are the third party addresses? (comma-separated, optional)",
@@ -191,7 +197,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       ])
       const title = result.attributeTitle ? result.attributeTitle : `A ${result.attributeType} attribute`
 
-      const requestItem: ReadAttributeRequestItem = {
+      const requestItem: ReadAttributeRequestItemJSON = {
         "@type": "ReadAttributeRequestItem",
         mustBeAccepted: true,
         query: {
@@ -200,7 +206,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           attributeCreationHints: {
             title: title,
             description: result.attributeDescription,
-            confidentiality: "public",
+            confidentiality: RelationshipAttributeConfidentiality.Public,
             valueType: result.attributeType,
           },
           key: result.key,
@@ -240,7 +246,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         .map((address: string) => address.trim())
         .filter((address: string) => address.length > 0)
 
-      const requestItem: ReadAttributeRequestItem = {
+      const requestItem: ReadAttributeRequestItemJSON = {
         "@type": "ReadAttributeRequestItem",
         mustBeAccepted: true,
         query: {
@@ -268,7 +274,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const requestItem: ReadAttributeRequestItem = {
+      const requestItem: ReadAttributeRequestItemJSON = {
         "@type": "ReadAttributeRequestItem",
         mustBeAccepted: true,
         query: {
@@ -292,7 +298,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const requestItem: ReadAttributeRequestItem = {
+      const requestItem: ReadAttributeRequestItemJSON = {
         "@type": "ReadAttributeRequestItem",
         mustBeAccepted: true,
         query: {
@@ -318,7 +324,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const requestItem: ProposeAttributeRequestItem = {
+      const requestItem: ProposeAttributeRequestItemJSON = {
         "@type": "ProposeAttributeRequestItem",
         mustBeAccepted: true,
         query: {
@@ -357,7 +363,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const requestItem: ProposeAttributeRequestItem = {
+      const requestItem: ProposeAttributeRequestItemJSON = {
         "@type": "ProposeAttributeRequestItem",
         mustBeAccepted: true,
         query: {
@@ -398,14 +404,14 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const requestItem: CreateAttributeRequestItem = {
+      const requestItem: CreateAttributeRequestItemJSON = {
         "@type": "CreateAttributeRequestItem",
         mustBeAccepted: true,
         attribute: {
           "@type": "RelationshipAttribute",
           owner: "",
           key: result.key,
-          confidentiality: "public",
+          confidentiality: RelationshipAttributeConfidentiality.Public,
           value: {
             "@type": "ProprietaryString",
             value: result.value,
@@ -447,14 +453,14 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const requestItem: CreateAttributeRequestItem = {
+      const requestItem: CreateAttributeRequestItemJSON = {
         "@type": "CreateAttributeRequestItem",
         mustBeAccepted: true,
         attribute: {
           "@type": "RelationshipAttribute",
           owner: result.owner,
           key: result.key,
-          confidentiality: "public",
+          confidentiality: RelationshipAttributeConfidentiality.Public,
           isTechnical: true,
           value: {
             "@type": "ProprietaryBoolean",
@@ -481,7 +487,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const requestItem: CreateAttributeRequestItem = {
+      const requestItem: CreateAttributeRequestItemJSON = {
         "@type": "CreateAttributeRequestItem",
         mustBeAccepted: true,
         attribute: {
@@ -519,12 +525,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const responseMetadata = result.consentKey ? { consentKey: result.consentKey } : undefined
       const link = result.link ? result.link : undefined
 
-      const requestItem: ConsentRequestItem = {
+      const requestItem: ConsentRequestItemJSON = {
         "@type": "ConsentRequestItem",
         mustBeAccepted: true,
         consent: result.consent,
         link,
-        responseMetadata,
+        metadata: responseMetadata,
       }
 
       return requestItem
@@ -539,7 +545,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const requestItem: RegisterAttributeListenerRequestItem = {
+      const requestItem: RegisterAttributeListenerRequestItemJSON = {
         "@type": "RegisterAttributeListenerRequestItem",
         mustBeAccepted: true,
         query: {
@@ -567,11 +573,11 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
       const responseMetadata = result.authenticationToken ? { authenticationToken: result.authenticationToken } : undefined
 
-      const requestItem: AuthenticationRequestItem = {
+      const requestItem: AuthenticationRequestItemJSON = {
         "@type": "AuthenticationRequestItem",
         mustBeAccepted: true,
         title: result.title,
-        responseMetadata,
+        metadata: responseMetadata,
       }
 
       return requestItem

@@ -1,3 +1,4 @@
+import { MailJSON } from "@nmshd/content"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
@@ -29,7 +30,7 @@ export function AddSendMail<TBase extends ConnectorTUIBaseConstructor>(Base: TBa
         },
       ])
 
-      const content = {
+      const content: MailJSON = {
         "@type": "Mail",
         to: recipients,
         subject: result.subject,
