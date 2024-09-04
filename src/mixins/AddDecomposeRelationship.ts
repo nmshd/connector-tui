@@ -17,7 +17,7 @@ export function AddDecomposeRelationship<TBase extends ConnectorTUIBaseConstruct
       console.log(`Decomposing relationship ${relationship.id}`)
       const decomposeResult = await this.connectorClient.relationships.decomposeRelationship(relationship.id)
       if (decomposeResult.isError) {
-        console.error(`Failed to terminate relationship ${relationship.id}: ${JSON.stringify(decomposeResult.error)}`)
+        console.error(`Failed to decompose relationship ${relationship.id}: ${JSON.stringify(decomposeResult.error)}`)
         return
       }
     }
