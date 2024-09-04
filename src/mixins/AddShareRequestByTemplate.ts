@@ -12,7 +12,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
     }
 
     public async shareRequestByTemplate() {
-      const name = process.env.CONNECTOR_DISPLAY_NAME ?? "ConnectorV2 Demo"
+      const name = process.env.CONNECTOR_DISPLAY_NAME ?? "Connector TUI"
       const displayName = await this.getOrCreateConnectorDisplayName(name)
 
       const sharedAttributes: RequestItemGroupJSON = {

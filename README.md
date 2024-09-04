@@ -4,7 +4,7 @@
 >
 > Showcase how to integrate enmeshed and use the TypeScript Connector SDK.
 >
-> This TUI only works with enmeshed v2 (Connector version 3.0.0+)
+> This TUI only works with enmeshed v5 (Connector version 5.0.0+)
 
 ## Installation
 
