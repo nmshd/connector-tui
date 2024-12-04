@@ -71,7 +71,8 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       if (result.includeName) request.items.push(sharedAttributes)
       request.items.push(requestedAttributes)
 
-      await this.createQRCodeForRelationshipTemplate(request, name)
+      const passwordProtection = await this.createPasswordProtection()
+      await this.createQRCodeForRelationshipTemplate(request, name, passwordProtection)
     }
 
     private async getOrCreateConnectorDisplayName(displayName: string) {
@@ -103,7 +104,50 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       return createAttributeResponse.result
     }
 
-    private async createQRCodeForRelationshipTemplate(request: RequestJSON, name: string) {
+    private async createPasswordProtection(): Promise<{ password: string; passwordIsPin?: true } | undefined> {
+      const result = await prompts({
+        message: "What kind of password protection do you want to use?",
+        type: "select",
+        name: "passwordProtection",
+        choices: [
+          { title: "None", value: "None", selected: true },
+          { title: "Password", value: "Password" },
+          { title: "PIN", value: "PIN" },
+        ],
+      })
+
+      if (result.passwordProtection === "None") return
+
+      if (result.passwordProtection === "Password") {
+        const password = await prompts({
+          message: "Enter the password",
+          type: "text",
+          validate: (value) => {
+            if (value.length < 1) return "Password must have at least 1 character"
+            return true
+          },
+          name: "password",
+        })
+
+        return { password: password.password }
+      }
+
+      const password = await prompts({
+        message: "Enter the PIN",
+        type: "text",
+        validate: (value) => {
+          if (!/^\d+$/.test(value)) return "PIN must only contain digits"
+          if (value.length < 4) return "PIN must have at least 4 digits"
+          if (value.length > 16) return "PIN must have at most 16 digits"
+          return true
+        },
+        name: "password",
+      })
+
+      return { password: password.password, passwordIsPin: true }
+    }
+
+    private async createQRCodeForRelationshipTemplate(request: RequestJSON, name: string, passwordProtection?: { password: string; passwordIsPin?: true }) {
       const content: RelationshipTemplateContentJSON = {
         "@type": "RelationshipTemplateContent",
         title: `Kontaktanfrage mit ${name}`,
@@ -116,6 +160,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       const template = await this.connectorClient.relationshipTemplates.createOwnRelationshipTemplate({
         content,
         expiresAt: DateTime.now().plus({ days: 2 }).toISO(),
+        passwordProtection,
       })
 
       const url = `nmshd://tr#${template.result.truncatedReference}`
