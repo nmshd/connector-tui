@@ -7,6 +7,7 @@ import {
   AddDecomposeRelationship,
   AddExit,
   AddGetAttributesOfRelationship,
+  AddIdentityDeletionProcess,
   AddSendMail,
   AddSendRequestByMessage,
   AddShareRequestByTemplate,
@@ -30,8 +31,10 @@ export class ConnectorTUIBaseWithMixins
                       AddShareRequestByTemplate(
                         AddSync(
                           AddUploadFile(
-                            //
-                            ConnectorTUIBase
+                            AddIdentityDeletionProcess(
+                              //
+                              ConnectorTUIBase
+                            )
                           )
                         )
                       )

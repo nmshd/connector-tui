@@ -2,6 +2,7 @@ import { ConnectorClient } from "@nmshd/connector-sdk"
 import { ConnectorVersionInfo } from "@nmshd/connector-sdk/dist/types/monitoring"
 import chalk from "chalk"
 import { readFile } from "fs/promises"
+import { DateTime } from "luxon"
 import prompts from "prompts"
 import { ConnectorTUIBaseWithMixins } from "./mixins/index.js"
 
@@ -9,8 +10,9 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
   public static async create(baseUrl: string, apiKey: string) {
     const client = ConnectorClient.create({ baseUrl, apiKey })
     const address = (await client.account.getIdentityInfo()).result.address
+    const support = await client.monitoring.getSupport()
 
-    return new ConnectorTUI(client, address)
+    return new ConnectorTUI(client, address, support)
   }
 
   public async run() {
@@ -21,11 +23,22 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
     while (true) {
+      const activeIdentityDeletionProcess = this.isDebugMode() ? await this.identityDeletionProcessEndpoint.getActiveIdentityDeletionProcess() : undefined
+
+      if (activeIdentityDeletionProcess?.isSuccess && activeIdentityDeletionProcess.result.status === "Approved") {
+        const gracePeriodEndsAtDateTime = DateTime.fromISO(activeIdentityDeletionProcess.result.gracePeriodEndsAt!)
+
+        if (gracePeriodEndsAtDateTime.diffNow().milliseconds < 0) {
+          console.log(chalk.red("Grace period has ended. Identity is deleted."))
+          process.exit(0)
+        }
+      }
+
       const result = await prompts({
         type: "select",
         name: "action",
         message: "What do you want to do?",
-        choices: this.choices,
+        choices: activeIdentityDeletionProcess?.isSuccess ? this.choicesInDeletion : this.choices,
       })
 
       if (!result.action) break
@@ -57,8 +70,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
     const jsonString = (await readFile(new URL("../package.json", import.meta.url))).toString()
     const packageJson = JSON.parse(jsonString)
 
-    const support = await this.connectorClient.monitoring.getSupport()
-    const baseUrl = (support.configuration.transportLibrary as any)?.baseUrl
+    const baseUrl = (this.support.configuration.transportLibrary as any)?.baseUrl
 
     console.log(`Welcome to the ${chalk.blue("enmeshed V2 TUI")}!`)
     console.log(`TUI Version: ${chalk.yellow(packageJson.version)}`)
