@@ -47,6 +47,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createProposeAttributeRequestItem.bind(this),
             },
             {
+              title: "ProposeAttributeRequestItem with RelationshipAttribute",
+              value: this.createProposeRelationshipAttributeRequestItem.bind(this),
+            },
+            {
               title: "IQLProposeAttributeRequestItem",
               value: this.createIQLProposeAttributeRequestItem.bind(this),
             },
