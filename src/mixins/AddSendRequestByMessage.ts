@@ -47,6 +47,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createProposeAttributeRequestItem.bind(this),
             },
             {
+              title: "ProposeAttributeRequestItem with RelationshipAttribute",
+              value: this.createProposeRelationshipAttributeRequestItem.bind(this),
+            },
+            {
               title: "IQLProposeAttributeRequestItem",
               value: this.createIQLProposeAttributeRequestItem.bind(this),
             },
@@ -336,6 +340,49 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           owner: "",
           value: {
             "@type": result.attributeType,
+            value: result.value,
+          },
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createProposeRelationshipAttributeRequestItem() {
+      const result = await prompts([
+        {
+          message: "What's the title of your Attribute?",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "What's the value of your Attribute?",
+          type: "text",
+          name: "value",
+        },
+      ])
+
+      const requestItem: ProposeAttributeRequestItemJSON = {
+        "@type": "ProposeAttributeRequestItem",
+        mustBeAccepted: true,
+        query: {
+          "@type": "RelationshipAttributeQuery",
+          attributeCreationHints: {
+            title: result.title,
+            confidentiality: RelationshipAttributeConfidentiality.Public,
+            valueType: "ProprietaryString",
+          },
+          key: "aKey",
+          owner: "",
+        },
+        attribute: {
+          "@type": "RelationshipAttribute",
+          owner: "",
+          key: "aKey",
+          confidentiality: RelationshipAttributeConfidentiality.Public,
+          value: {
+            "@type": "ProprietaryString",
+            title: result.title,
             value: result.value,
           },
         },
