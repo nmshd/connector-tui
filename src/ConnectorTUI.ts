@@ -23,10 +23,10 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
     while (true) {
-      const identityDeletionProcess = this.isDebugMode() ? await this.getIdentityDeletionProcesses() : undefined
+      const activeIdentityDeletionProcess = this.isDebugMode() ? await this.identityDeletionProcessEndpoint.getActiveIdentityDeletionProcess() : undefined
 
-      if (identityDeletionProcess?.status === 200) {
-        const gracePeriodEndsAtDateTime = DateTime.fromISO(identityDeletionProcess.data.result.gracePeriodEndsAt)
+      if (activeIdentityDeletionProcess?.isSuccess && activeIdentityDeletionProcess.result.status === "Approved") {
+        const gracePeriodEndsAtDateTime = DateTime.fromISO(activeIdentityDeletionProcess.result.gracePeriodEndsAt!)
 
         if (gracePeriodEndsAtDateTime.diffNow().milliseconds < 0) {
           console.log(chalk.red("Grace period has ended. Identity is deleted."))
@@ -38,7 +38,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
         type: "select",
         name: "action",
         message: "What do you want to do?",
-        choices: identityDeletionProcess?.status === 200 ? this.choicesInDeletion : this.choices,
+        choices: activeIdentityDeletionProcess?.isSuccess ? this.choicesInDeletion : this.choices,
       })
 
       if (!result.action) break

@@ -1,8 +1,8 @@
 import { ConnectorClient, ConnectorFile, ConnectorRelationship, ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
 import { ConnectorSupportInformation } from "@nmshd/connector-sdk/dist/types/monitoring"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
-import { AxiosInstance } from "axios"
 import prompts from "prompts"
+import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint"
 
 export type ConnectorTUIBaseConstructor = new (...args: any[]) => ConnectorTUIBase
 
@@ -13,14 +13,14 @@ export interface ConnectorTUIChoice extends prompts.Choice {
 export class ConnectorTUIBase {
   protected choices: ConnectorTUIChoice[] = []
   protected choicesInDeletion: ConnectorTUIChoice[] = []
-  protected plainHttpClient: AxiosInstance
+  protected identityDeletionProcessEndpoint: IdentityDeletionProcessEndpoint
 
   public constructor(
     protected connectorClient: ConnectorClient,
     protected connectorAddress: string,
     protected support: ConnectorSupportInformation
   ) {
-    this.plainHttpClient = this.connectorClient.account["httpClient"]
+    this.identityDeletionProcessEndpoint = new IdentityDeletionProcessEndpoint(this.connectorClient.account["httpClient"])
   }
 
   protected async selectRelationship(prompt: string, ...status: ConnectorRelationshipStatus[]): Promise<ConnectorRelationship | undefined> {
@@ -118,10 +118,6 @@ export class ConnectorTUIBase {
 
   private renderFile(file: ConnectorFile): prompts.Choice {
     return { title: file.title, value: file }
-  }
-
-  protected async getIdentityDeletionProcesses() {
-    return await this.plainHttpClient.get("/api/v2/IdentityDeletionProcess")
   }
 
   protected isDebugMode() {

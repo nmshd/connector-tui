@@ -2,29 +2,29 @@ import chalk from "chalk"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
+import { IdentityDeletionProcess } from "../IdentityDeletionProcessEndpoint.js"
 
 export function AddIdentityDeletionProcess<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
-  return class IdentityDeletionProcess extends Base {
+  return class IdentityDeletionProcessHandler extends Base {
     public constructor(...args: any[]) {
       super(...args)
-      if (this.isDebugMode()) {
-        const identityDeletionProcessChoices = { title: "IdentityDeletionProcess", value: this.identityDeletionProcess }
+      if (!this.isDebugMode()) return
 
-        this.choices.push(identityDeletionProcessChoices)
+      const identityDeletionProcessChoices = { title: "IdentityDeletionProcess", value: this.identityDeletionProcess }
 
-        this.choicesInDeletion.push(identityDeletionProcessChoices)
-      }
+      this.choices.push(identityDeletionProcessChoices)
+      this.choicesInDeletion.push(identityDeletionProcessChoices)
     }
 
     protected async identityDeletionProcess() {
       const choices = []
 
-      const identityDeletionProcess = await this.getIdentityDeletionProcesses()
+      const activeIdentityDeletionProcess = await this.identityDeletionProcessEndpoint.getActiveIdentityDeletionProcess()
 
-      if (identityDeletionProcess.status === 200) {
+      if (activeIdentityDeletionProcess.isSuccess) {
         choices.push({ title: "Show IdentityDeletionProcess", value: "Show" })
 
-        if (identityDeletionProcess.data.result.status === "Approved") {
+        if (activeIdentityDeletionProcess.result.status === "Approved") {
           choices.push({ title: "Cancel IdentityDeletionProcess", value: "Cancel" })
         }
       } else {
@@ -40,7 +40,7 @@ export function AddIdentityDeletionProcess<TBase extends ConnectorTUIBaseConstru
 
       switch (result["Identity Deletion Process"]) {
         case "Show":
-          this.showIdentityDeletionProcesses(identityDeletionProcess.data)
+          this.showIdentityDeletionProcesses(activeIdentityDeletionProcess.result)
           break
         case "Init":
           await this.initIdentityDeletionProcess()
@@ -59,8 +59,8 @@ export function AddIdentityDeletionProcess<TBase extends ConnectorTUIBaseConstru
       })
 
       const oneSecondInDays = 1 / (24 * 60 * 60)
-      const query = confirmation["IdentityDeletionProcess grace period"] ? `?lengthOfGracePeriodInDays=${oneSecondInDays}` : ""
-      const identityDeletionProcess = (await this.plainHttpClient.post(`/api/v2/IdentityDeletionProcess${query}`)).data
+      const lengthOfGracePeriodInDays = confirmation["IdentityDeletionProcess grace period"] ? oneSecondInDays : undefined
+      const identityDeletionProcess = (await this.identityDeletionProcessEndpoint.initiateIdentityDeletionProcess(lengthOfGracePeriodInDays)).result
 
       console.log("Identity Deletion Process initiated.")
 
@@ -68,16 +68,17 @@ export function AddIdentityDeletionProcess<TBase extends ConnectorTUIBaseConstru
     }
 
     protected async cancelIdentityDeletionProcess() {
-      const identityDeletionProcess = (await this.plainHttpClient.delete("/api/v2/IdentityDeletionProcess")).data
+      const identityDeletionProcess = (await this.identityDeletionProcessEndpoint.cancelIdentityDeletionProcess()).result
       console.log("Identity Deletion Process canceled.")
 
       this.showIdentityDeletionProcesses(identityDeletionProcess)
     }
-    protected showIdentityDeletionProcesses(identityDeletionProcess: any) {
-      console.log(`Identity deletion status: ${chalk.yellow(identityDeletionProcess.result.status)}`)
 
-      if (identityDeletionProcess.result.status === "Approved") {
-        console.log(`End of grace period: ${chalk.yellow(DateTime.fromISO(identityDeletionProcess.result.gracePeriodEndsAt).toLocaleString())}`)
+    protected showIdentityDeletionProcesses(identityDeletionProcess: IdentityDeletionProcess) {
+      console.log(`Identity deletion status: ${chalk.yellow(identityDeletionProcess.status)}`)
+
+      if (identityDeletionProcess.status === "Approved") {
+        console.log(`End of grace period: ${chalk.yellow(DateTime.fromISO(identityDeletionProcess.gracePeriodEndsAt!).toLocaleString())}`)
       }
     }
   }
