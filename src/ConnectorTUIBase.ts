@@ -1,5 +1,4 @@
-import { ConnectorClient, ConnectorFile, ConnectorRelationship, ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
-import { ConnectorSupportInformation } from "@nmshd/connector-sdk/dist/types/monitoring"
+import { ConnectorClient, ConnectorFile, ConnectorRelationship, ConnectorRelationshipStatus, ConnectorSupportInformation } from "@nmshd/connector-sdk"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
 import prompts from "prompts"
 import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint"
