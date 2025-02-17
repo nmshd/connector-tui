@@ -1,7 +1,7 @@
 import { ConnectorClient, ConnectorFile, ConnectorRelationship, ConnectorRelationshipStatus, ConnectorSupportInformation } from "@nmshd/connector-sdk"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
 import prompts from "prompts"
-import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint"
+import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint.js"
 
 export type ConnectorTUIBaseConstructor = new (...args: any[]) => ConnectorTUIBase
 
