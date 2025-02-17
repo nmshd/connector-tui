@@ -12,7 +12,6 @@
     "ctui": "dist/index.js"
   },
   "files": [
-    "index.js",
     "dist",
     "__assets__",
     ".env.example"
@@ -28,9 +27,9 @@
     "watch": "node --watch --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/index.ts"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^6.7.0",
+    "@nmshd/connector-sdk": "^6.14.5",
     "axios": "^1.7.9",
-    "chalk": "^5.3.0",
+    "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
     "luxon": "^3.5.0",
     "prompts": "^2.4.2",
@@ -41,14 +40,14 @@
     "@js-soft/eslint-config-ts": "^1.6.13",
     "@js-soft/license-check": "^1.0.9",
     "@types/luxon": "^3.4.2",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.13.4",
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/yargs": "^17.0.33",
     "eslint": "^8.57.0",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   },
   "engines": {
     "node": ">=19.0.0"
