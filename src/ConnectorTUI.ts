@@ -17,10 +17,10 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements Connecto
   }
 
   public async run() {
-    const connectorVersionInfo = await this.checkConnectorVersion()
+    const connectorVersionInfo = await this.#checkConnectorVersion()
     if (!connectorVersionInfo) return
 
-    await this.showStartupMessage(connectorVersionInfo)
+    await this.#showStartupMessage(connectorVersionInfo)
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
     while (true) {
@@ -52,7 +52,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements Connecto
     }
   }
 
-  private async checkConnectorVersion() {
+  async #checkConnectorVersion() {
     const connectorVersionInfo = await this.connectorClient.monitoring.getVersion()
 
     // allow connector in debugging mode to be used
@@ -67,7 +67,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements Connecto
     return connectorVersionInfo
   }
 
-  private async showStartupMessage(connectorVersionInfo: ConnectorVersionInfo) {
+  async #showStartupMessage(connectorVersionInfo: ConnectorVersionInfo) {
     const jsonString = (await readFile(new URL("../package.json", import.meta.url))).toString()
     const packageJson = JSON.parse(jsonString)
 
