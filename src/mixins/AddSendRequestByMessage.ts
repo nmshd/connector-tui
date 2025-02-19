@@ -2,6 +2,7 @@ import {
   AuthenticationRequestItemJSON,
   ConsentRequestItemJSON,
   CreateAttributeRequestItemJSON,
+  FreeTextRequestItemJSON,
   ProposeAttributeRequestItemJSON,
   ReadAttributeRequestItemJSON,
   RegisterAttributeListenerRequestItemJSON,
@@ -77,6 +78,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             {
               title: "AuthenticationRequestItem",
               value: this.createAuthenticationRequestItem.bind(this),
+            },
+            {
+              title: "FreeTextRequestItem",
+              value: this.createFreeTextRequestItem.bind(this),
             },
             {
               title: "No more items please",
@@ -625,6 +630,24 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         title: result.title,
         metadata: responseMetadata,
+      }
+
+      return requestItem
+    }
+
+    private async createFreeTextRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a free text",
+          type: "text",
+          name: "freeText",
+        },
+      ])
+
+      const requestItem: FreeTextRequestItemJSON = {
+        "@type": "FreeTextRequestItem",
+        mustBeAccepted: true,
+        freeText: result.freeText,
       }
 
       return requestItem
