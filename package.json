@@ -8,9 +8,9 @@
   "main": "dist/index.js",
   "types": "src/index.d.ts",
   "bin": {
-    "connector-tui": "dist/index.js",
-    "connector_tui": "dist/index.js",
-    "ctui": "dist/index.js"
+    "connector-tui": "dist/run.js",
+    "connector_tui": "dist/run.js",
+    "ctui": "dist/run.js"
   },
   "files": [
     "dist",
