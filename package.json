@@ -6,6 +6,7 @@
   "author": "j&s-soft GmbH",
   "type": "module",
   "main": "index.js",
+  "types": "src/index.d.ts",
   "bin": {
     "connector-tui": "dist/index.js",
     "connector_tui": "dist/index.js",
@@ -14,7 +15,8 @@
   "files": [
     "dist",
     "__assets__",
-    ".env.example"
+    ".env.example",
+    "src/index.d.ts"
   ],
   "scripts": {
     "build": "tsc",
