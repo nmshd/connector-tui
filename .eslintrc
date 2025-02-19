@@ -1,5 +1,5 @@
 {
-  "ignorePatterns": ["/*", "!/src"],
+  "ignorePatterns": ["/*", "!/src", "/src/index.d.ts"],
   "extends": ["@js-soft/ts"],
   "parserOptions": {
     "project": ["./tsconfig.json"]

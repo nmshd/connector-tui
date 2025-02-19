@@ -4,9 +4,10 @@ import chalk from "chalk"
 import { readFile } from "fs/promises"
 import { DateTime } from "luxon"
 import prompts from "prompts"
+import type { ConnectorTUI as ConnectorTUIInterface } from "./index.d.js"
 import { ConnectorTUIBaseWithMixins } from "./mixins/index.js"
 
-export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
+export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements ConnectorTUIInterface {
   public static async create(baseUrl: string, apiKey: string) {
     const client = ConnectorClient.create({ baseUrl, apiKey })
     const address = (await client.account.getIdentityInfo()).result.address
@@ -16,10 +17,10 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
   }
 
   public async run() {
-    const connectorVersionInfo = await this.checkConnectorVersion()
+    const connectorVersionInfo = await this.#checkConnectorVersion()
     if (!connectorVersionInfo) return
 
-    await this.showStartupMessage(connectorVersionInfo)
+    await this.#showStartupMessage(connectorVersionInfo)
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
     while (true) {
@@ -51,7 +52,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
     }
   }
 
-  private async checkConnectorVersion() {
+  async #checkConnectorVersion() {
     const connectorVersionInfo = await this.connectorClient.monitoring.getVersion()
 
     // allow connector in debugging mode to be used
@@ -66,7 +67,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
     return connectorVersionInfo
   }
 
-  private async showStartupMessage(connectorVersionInfo: ConnectorVersionInfo) {
+  async #showStartupMessage(connectorVersionInfo: ConnectorVersionInfo) {
     const jsonString = (await readFile(new URL("../package.json", import.meta.url))).toString()
     const packageJson = JSON.parse(jsonString)
 
