@@ -1,9 +1,9 @@
 {
   "name": "@nmshd/connector-tui",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "repository": "github:nmshd/connector-tui",
   "license": "MIT",
-  "author": "j&s-soft GmbH",
+  "author": "j&s-soft AG",
   "type": "module",
   "main": "dist/index.js",
   "types": "src/index.d.ts",
