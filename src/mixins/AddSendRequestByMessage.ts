@@ -638,7 +638,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createFreeTextRequestItem() {
       const result = await prompts([
         {
-          message: "Enter the free text",
+          message: "Enter a free text",
           type: "text",
           name: "freeText",
         },
