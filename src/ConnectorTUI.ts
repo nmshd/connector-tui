@@ -4,9 +4,10 @@ import chalk from "chalk"
 import { readFile } from "fs/promises"
 import { DateTime } from "luxon"
 import prompts from "prompts"
+import type { ConnectorTUI as ConnectorTUIInterface } from "./index.d.js"
 import { ConnectorTUIBaseWithMixins } from "./mixins/index.js"
 
-export class ConnectorTUI extends ConnectorTUIBaseWithMixins {
+export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements ConnectorTUIInterface {
   public static async create(baseUrl: string, apiKey: string) {
     const client = ConnectorClient.create({ baseUrl, apiKey })
     const address = (await client.account.getIdentityInfo()).result.address
