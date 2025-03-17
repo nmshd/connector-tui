@@ -37,7 +37,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
             mustBeAccepted: true,
             query: {
               "@type": "IdentityAttributeQuery",
-              valueType: "Surname",
+              valueType: "GivenName",
             },
           },
           {
@@ -45,7 +45,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
             mustBeAccepted: true,
             query: {
               "@type": "IdentityAttributeQuery",
-              valueType: "GivenName",
+              valueType: "Surname",
             },
           },
           {
@@ -59,7 +59,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         ],
       }
 
-      const request: RequestJSON = { "@type": "Request", items: [] }
+      const onNewRelationship: RequestJSON = { "@type": "Request", items: [] }
 
       const result = await prompts({
         message: "Do you want to send your connector's name?",
@@ -68,11 +68,34 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         initial: true,
       })
 
-      if (result.includeName) request.items.push(sharedAttributes)
-      request.items.push(requestedAttributes)
+      if (result.includeName) onNewRelationship.items.push(sharedAttributes)
+      onNewRelationship.items.push(requestedAttributes)
+
+      const onExistingRelationship: RequestJSON = {
+        "@type": "Request",
+        title: "Existing Relationship",
+        description: "Please accept the following request, because you already have a relationship with the requestor.",
+        items: [
+          {
+            "@type": "RequestItemGroup",
+            title: "A Title",
+            description: "A Description that is long enough to show what a long description looks like in the app when rendered inside the expandable area",
+            items: [
+              {
+                "@type": "ReadAttributeRequestItem",
+                mustBeAccepted: true,
+                query: {
+                  "@type": "IdentityAttributeQuery",
+                  valueType: "GivenName",
+                },
+              },
+            ],
+          },
+        ],
+      }
 
       const passwordProtection = await this.createPasswordProtection()
-      await this.createQRCodeForRelationshipTemplate(request, name, passwordProtection)
+      await this.createQRCodeForRelationshipTemplate(onNewRelationship, onExistingRelationship, name, passwordProtection)
     }
 
     private async getOrCreateConnectorDisplayName(displayName: string) {
@@ -147,14 +170,20 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       return { password: password.password, passwordIsPin: true }
     }
 
-    private async createQRCodeForRelationshipTemplate(request: RequestJSON, name: string, passwordProtection?: { password: string; passwordIsPin?: true }) {
+    private async createQRCodeForRelationshipTemplate(
+      onNewRelationship: RequestJSON,
+      onExistingRelationship: RequestJSON,
+      name: string,
+      passwordProtection?: { password: string; passwordIsPin?: true }
+    ) {
       const content: RelationshipTemplateContentJSON = {
         "@type": "RelationshipTemplateContent",
         title: `Kontaktanfrage mit ${name}`,
         metadata: {
           webSessionId: "12345",
         },
-        onNewRelationship: request,
+        onNewRelationship,
+        onExistingRelationship,
       }
 
       const template = await this.connectorClient.relationshipTemplates.createOwnRelationshipTemplate({
