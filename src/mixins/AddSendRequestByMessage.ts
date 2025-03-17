@@ -204,14 +204,14 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           name: "thirdParties",
         },
       ])
-      const title = result.attributeTitle ? result.attributeTitle : `A ${result.attributeType} attribute`
+      const title = result.attributeTitle ?? `A ${result.attributeType} attribute`
 
       const requestItem: ReadAttributeRequestItemJSON = {
         "@type": "ReadAttributeRequestItem",
         mustBeAccepted: true,
         query: {
           "@type": "RelationshipAttributeQuery",
-          owner: result.owner ? result.owner : "",
+          owner: result.owner ?? "",
           attributeCreationHints: {
             title: title,
             description: result.attributeDescription,
@@ -260,7 +260,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         query: {
           "@type": "ThirdPartyRelationshipAttributeQuery",
-          owner: result.owner ? result.owner : "",
+          owner: result.owner ?? "",
           key: result.key,
           thirdParty: thirdParties,
         },
@@ -575,7 +575,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       ])
 
       const responseMetadata = result.consentKey ? { consentKey: result.consentKey } : undefined
-      const link = result.link ? result.link : undefined
+      const link = result.link ?? undefined
 
       const requestItem: ConsentRequestItemJSON = {
         "@type": "ConsentRequestItem",
