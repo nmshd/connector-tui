@@ -108,6 +108,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const response = await this.connectorClient.outgoingRequests.createRequest({
         peer,
         content: {
+          title: "The title of the Request",
+          description: "The description of the Request",
           items: requestItems,
         },
       })
