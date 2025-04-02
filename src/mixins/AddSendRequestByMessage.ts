@@ -9,6 +9,7 @@ import {
   RelationshipAttributeConfidentiality,
   RequestItemGroupJSON,
   RequestItemJSON,
+  TransferFileOwnershipRequestItemJSON,
 } from "@nmshd/content"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
@@ -82,6 +83,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             {
               title: "FreeTextRequestItem",
               value: this.createFreeTextRequestItem.bind(this),
+            },
+            {
+              title: "TransferFileOwnershipRequestItem",
+              value: this.createTransferFileOwnershipRequestItem.bind(this),
             },
             {
               title: "No more items please",
@@ -650,6 +655,27 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         "@type": "FreeTextRequestItem",
         mustBeAccepted: true,
         freeText: result.freeText,
+      }
+
+      return requestItem
+    }
+
+    private async createTransferFileOwnershipRequestItem() {
+      const ownFiles = (await this.connectorClient.files.getOwnFiles()).result
+
+      const result = await prompts([
+        {
+          message: "The ownership of which File do you want to transfer?",
+          type: "select",
+          name: "truncatedFileReference",
+          choices: ownFiles.map((filename) => ({ title: filename.title, value: filename.truncatedReference })),
+        },
+      ])
+
+      const requestItem: TransferFileOwnershipRequestItemJSON = {
+        "@type": "TransferFileOwnershipRequestItem",
+        mustBeAccepted: true,
+        fileReference: result.truncatedFileReference,
       }
 
       return requestItem
