@@ -661,27 +661,14 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createTransferFileOwnershipRequestItem() {
-      const getFilesResult = await this.connectorClient.files.getOwnFiles()
-      if (getFilesResult.error.code === "error.runtime.recordNotFound") {
-        console.log("No Files available. You have to upload a File first.")
-        return
-      }
+      const result = await this.selectFile("The ownership of which File do you want to transfer?")
 
-      const ownFiles = getFilesResult.result
-
-      const result = await prompts([
-        {
-          message: "The ownership of which File do you want to transfer?",
-          type: "select",
-          name: "truncatedFileReference",
-          choices: ownFiles.map((filename) => ({ title: filename.title, value: filename.truncatedReference })),
-        },
-      ])
+      if (!result) return
 
       const requestItem: TransferFileOwnershipRequestItemJSON = {
         "@type": "TransferFileOwnershipRequestItem",
         mustBeAccepted: true,
-        fileReference: result.truncatedFileReference,
+        fileReference: result.truncatedReference,
       }
 
       return requestItem
