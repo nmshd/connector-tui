@@ -102,7 +102,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         }
 
         const requestItemJSON = await whatRequest.requestMethod(peer)
-        requestItems.push(requestItemJSON)
+        if (requestItemJSON) requestItems.push(requestItemJSON)
       }
 
       if (requestItems.length === 0) {
@@ -661,7 +661,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createTransferFileOwnershipRequestItem() {
-      const ownFiles = (await this.connectorClient.files.getOwnFiles()).result
+      const getFilesResult = await this.connectorClient.files.getOwnFiles()
+      if (getFilesResult.error.code === "error.runtime.recordNotFound") {
+        console.log("No Files available. You have to upload a File first.")
+        return
+      }
+
+      const ownFiles = getFilesResult.result
 
       const result = await prompts([
         {
