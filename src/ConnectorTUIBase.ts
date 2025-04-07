@@ -106,7 +106,7 @@ export class ConnectorTUIBase {
   }
 
   private async getFileChoices(): Promise<prompts.Choice[] | undefined> {
-    const files = (await this.connectorClient.files.getFiles()).result
+    const files = (await this.connectorClient.files.getOwnFiles()).result
     if (files.length === 0) {
       console.log("No files found")
       return

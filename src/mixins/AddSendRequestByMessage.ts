@@ -9,6 +9,7 @@ import {
   RelationshipAttributeConfidentiality,
   RequestItemGroupJSON,
   RequestItemJSON,
+  TransferFileOwnershipRequestItemJSON,
 } from "@nmshd/content"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
@@ -84,6 +85,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createFreeTextRequestItem.bind(this),
             },
             {
+              title: "TransferFileOwnershipRequestItem",
+              value: this.createTransferFileOwnershipRequestItem.bind(this),
+            },
+            {
               title: "No more items please",
               value: "no-more",
             },
@@ -97,7 +102,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         }
 
         const requestItemJSON = await whatRequest.requestMethod(peer)
-        requestItems.push(requestItemJSON)
+        if (requestItemJSON) requestItems.push(requestItemJSON)
       }
 
       if (requestItems.length === 0) {
@@ -108,6 +113,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const response = await this.connectorClient.outgoingRequests.createRequest({
         peer,
         content: {
+          title: "The title of the Request",
+          description: "The description of the Request",
           items: requestItems,
         },
       })
@@ -648,6 +655,20 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         "@type": "FreeTextRequestItem",
         mustBeAccepted: true,
         freeText: result.freeText,
+      }
+
+      return requestItem
+    }
+
+    private async createTransferFileOwnershipRequestItem() {
+      const result = await this.selectFile("The ownership of which File do you want to transfer?")
+
+      if (!result) return
+
+      const requestItem: TransferFileOwnershipRequestItemJSON = {
+        "@type": "TransferFileOwnershipRequestItem",
+        mustBeAccepted: true,
+        fileReference: result.truncatedReference,
       }
 
       return requestItem
