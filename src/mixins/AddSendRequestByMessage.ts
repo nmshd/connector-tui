@@ -575,6 +575,11 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           name: "link",
         },
         {
+          message: "[Optional] Enter a link display text",
+          type: "text",
+          name: "linkDisplayText",
+        },
+        {
           message: "[Optional] Enter a consentKey to know which consent the user agreed to",
           type: "text",
           name: "consentKey",
@@ -589,6 +594,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         consent: result.consent,
         link,
+        linkDisplayText: link ? result.linkDisplayText : undefined,
         metadata: responseMetadata,
       }
 
