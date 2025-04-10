@@ -120,7 +120,20 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       })
 
       if (response.isError) {
-        return console.error("Error while creating LocalRequest", response.error)
+        console.error("Error while creating LocalRequest", response.error)
+
+        const details = await this.connectorClient.outgoingRequests.canCreateRequest({
+          peer,
+          content: {
+            title: "The title of the Request",
+            description: "The description of the Request",
+            items: requestItems,
+          },
+        })
+
+        console.log("Details: ", details.result)
+
+        return
       }
 
       const messageResponse = await this.connectorClient.messages.sendMessage({
@@ -667,14 +680,22 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createTransferFileOwnershipRequestItem() {
-      const result = await this.selectFile("The ownership of which File do you want to transfer?")
+      const file = await this.selectFile("The ownership of which File do you want to transfer?")
 
-      if (!result) return
+      const result = await prompts({
+        name: "requireManualDecision",
+        message: "Do you want to require a manual decision?",
+        initial: false,
+        type: "confirm",
+      })
+
+      if (!file) return
 
       const requestItem: TransferFileOwnershipRequestItemJSON = {
         "@type": "TransferFileOwnershipRequestItem",
         mustBeAccepted: true,
-        fileReference: result.truncatedReference,
+        requireManualDecision: result.requireManualDecision,
+        fileReference: file.truncatedReference,
       }
 
       return requestItem
