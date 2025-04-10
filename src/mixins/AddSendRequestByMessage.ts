@@ -667,14 +667,22 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createTransferFileOwnershipRequestItem() {
-      const result = await this.selectFile("The ownership of which File do you want to transfer?")
+      const file = await this.selectFile("The ownership of which File do you want to transfer?")
 
-      if (!result) return
+      const result = await prompts({
+        name: "requireManualDecision",
+        message: "Do you want to require a manual decision?",
+        initial: false,
+        type: "confirm",
+      })
+
+      if (!file) return
 
       const requestItem: TransferFileOwnershipRequestItemJSON = {
         "@type": "TransferFileOwnershipRequestItem",
         mustBeAccepted: true,
-        fileReference: result.truncatedReference,
+        requireManualDecision: result.requireManualDecision,
+        fileReference: file.truncatedReference,
       }
 
       return requestItem
