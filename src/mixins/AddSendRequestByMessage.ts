@@ -120,7 +120,20 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       })
 
       if (response.isError) {
-        return console.error("Error while creating LocalRequest", response.error)
+        console.error("Error while creating LocalRequest", response.error)
+
+        const details = await this.connectorClient.outgoingRequests.canCreateRequest({
+          peer,
+          content: {
+            title: "The title of the Request",
+            description: "The description of the Request",
+            items: requestItems,
+          },
+        })
+
+        console.log("Details: ", details.result)
+
+        return
       }
 
       const messageResponse = await this.connectorClient.messages.sendMessage({
