@@ -132,16 +132,17 @@ export class ConnectorTUIBase {
     if (!choices) return
 
     const attributesResult = await prompts({ message: prompt, type: "select", name: "attribute", choices })
-
     return attributesResult.attribute as ConnectorAttribute | undefined
   }
 
   private async getAttributeChoices(query?: GetAttributesRequest) {
     const attributesResult = await this.connectorClient.attributes.getAttributes(query ?? {})
+
     if (attributesResult.isError) {
       console.error(attributesResult.error)
       return
     }
+
     const attributes = attributesResult.result
     if (attributes.length === 0) {
       console.log("No matching Attributes found")

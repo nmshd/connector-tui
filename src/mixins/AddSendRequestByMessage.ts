@@ -686,8 +686,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
     private async createShareAttributeRequestItem() {
       const query = { content: { "@type": "IdentityAttribute", owner: this.connectorAddress }, shareInfo: { peer: "!" }, succeededBy: "!" }
-      const attribute = await this.selectAttribute("Which Attribute would you like to share?", query)
 
+      const attribute = await this.selectAttribute("Which Attribute would you like to share?", query)
       if (!attribute) return
 
       const requestItem: ShareAttributeRequestItemJSON = {
