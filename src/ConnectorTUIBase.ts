@@ -156,12 +156,7 @@ export class ConnectorTUIBase {
   private renderAttribute(attribute: ConnectorAttribute): prompts.Choice {
     const attributeValueType = attribute.content.value["@type"]
 
-    let attributeValue: unknown
-    try {
-      attributeValue = (attribute.content.value as any).value
-    } catch (_) {
-      attributeValue = "complex Attribute value"
-    }
+    const attributeValue = "value" in attribute.content.value ? attribute.content.value.value : JSON.stringify(attribute.content.value)
 
     return { title: `${attributeValueType}: ${attributeValue} `, value: attribute }
   }
