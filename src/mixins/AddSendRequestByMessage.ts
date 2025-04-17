@@ -9,6 +9,7 @@ import {
   RelationshipAttributeConfidentiality,
   RequestItemGroupJSON,
   RequestItemJSON,
+  ShareAttributeRequestItemJSON,
   TransferFileOwnershipRequestItemJSON,
 } from "@nmshd/content"
 import prompts from "prompts"
@@ -83,6 +84,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             {
               title: "FreeTextRequestItem",
               value: this.createFreeTextRequestItem.bind(this),
+            },
+            {
+              title: "ShareAttributeRequestItem",
+              value: this.createShareAttributeRequestItem.bind(this),
             },
             {
               title: "TransferFileOwnershipRequestItem",
@@ -674,6 +679,22 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         "@type": "FreeTextRequestItem",
         mustBeAccepted: true,
         freeText: result.freeText,
+      }
+
+      return requestItem
+    }
+
+    private async createShareAttributeRequestItem() {
+      const query = { content: { "@type": "IdentityAttribute", owner: this.connectorAddress }, shareInfo: { peer: "!" }, succeededBy: "!" }
+
+      const attribute = await this.selectAttribute("Which Attribute would you like to share?", query)
+      if (!attribute) return
+
+      const requestItem: ShareAttributeRequestItemJSON = {
+        "@type": "ShareAttributeRequestItem",
+        mustBeAccepted: true,
+        sourceAttributeId: attribute.id,
+        attribute: attribute.content,
       }
 
       return requestItem

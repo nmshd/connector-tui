@@ -1,4 +1,12 @@
-import { ConnectorClient, ConnectorFile, ConnectorRelationship, ConnectorRelationshipStatus, ConnectorSupportInformation } from "@nmshd/connector-sdk"
+import {
+  ConnectorAttribute,
+  ConnectorClient,
+  ConnectorFile,
+  ConnectorRelationship,
+  ConnectorRelationshipStatus,
+  ConnectorSupportInformation,
+  GetAttributesRequest,
+} from "@nmshd/connector-sdk"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
 import prompts from "prompts"
 import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint.js"
@@ -117,6 +125,40 @@ export class ConnectorTUIBase {
 
   private renderFile(file: ConnectorFile): prompts.Choice {
     return { title: file.title, value: file }
+  }
+
+  protected async selectAttribute(prompt: string, query?: GetAttributesRequest): Promise<ConnectorAttribute | undefined> {
+    const choices = await this.getAttributeChoices(query)
+    if (!choices) return
+
+    const attributesResult = await prompts({ message: prompt, type: "select", name: "attribute", choices })
+    return attributesResult.attribute as ConnectorAttribute | undefined
+  }
+
+  private async getAttributeChoices(query?: GetAttributesRequest) {
+    const attributesResult = await this.connectorClient.attributes.getAttributes(query ?? {})
+
+    if (attributesResult.isError) {
+      console.error(attributesResult.error)
+      return
+    }
+
+    const attributes = attributesResult.result
+    if (attributes.length === 0) {
+      console.log("No matching Attributes found")
+      return
+    }
+
+    const choices = await Promise.all(attributes.map((attribute) => this.renderAttribute(attribute)))
+    return choices
+  }
+
+  private renderAttribute(attribute: ConnectorAttribute): prompts.Choice {
+    const attributeValueType = attribute.content.value["@type"]
+
+    const attributeValue = "value" in attribute.content.value ? attribute.content.value.value : JSON.stringify(attribute.content.value)
+
+    return { title: `${attributeValueType}: ${attributeValue} `, value: attribute }
   }
 
   protected isDebugMode() {
