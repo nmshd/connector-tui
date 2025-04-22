@@ -596,29 +596,29 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter the URL to to the consent details?",
           type: "text",
           name: "link",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
         {
           message: "[Optional] Enter a link display text",
           type: "text",
           name: "linkDisplayText",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
         {
           message: "[Optional] Enter a consentKey to know which consent the user agreed to",
           type: "text",
-          name: "consentKey",
+          name: "responseMetadata",
+          format: (value) => (value.length > 0 ? { consentKey: value } : undefined),
         },
       ])
-
-      const responseMetadata = result.consentKey ? { consentKey: result.consentKey } : undefined
-      const link = result.link ?? undefined
 
       const requestItem: ConsentRequestItemJSON = {
         "@type": "ConsentRequestItem",
         mustBeAccepted: true,
         consent: result.consent,
-        link,
-        linkDisplayText: link ? result.linkDisplayText : undefined,
-        metadata: responseMetadata,
+        link: result.link,
+        linkDisplayText: result.link ? result.linkDisplayText : undefined,
+        metadata: result.responseMetadata,
       }
 
       return requestItem
@@ -655,17 +655,16 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         {
           message: "[Optional] Enter an unique authenticationToken to know which authentication did the user grant",
           type: "text",
-          name: "authenticationToken",
+          name: "responseMetadata",
+          format: (value) => (value.length > 0 ? { authenticationToken: value } : undefined),
         },
       ])
-
-      const responseMetadata = result.authenticationToken ? { authenticationToken: result.authenticationToken } : undefined
 
       const requestItem: AuthenticationRequestItemJSON = {
         "@type": "AuthenticationRequestItem",
         mustBeAccepted: true,
         title: result.title,
-        metadata: responseMetadata,
+        metadata: result.responseMetadata,
       }
 
       return requestItem
