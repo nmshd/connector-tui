@@ -766,22 +766,21 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter the name of the unit of the requested double",
           type: "text",
           name: "unit",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
         {
           message: "[Optional] Enter a number as lower limit for the requested double",
           type: "number",
           name: "min",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
         {
           message: "[Optional] Enter a number as upper limit for the requested double",
           type: "number",
           name: "max",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
       ])
-
-      const unit = result.unit ?? undefined
-      const min = result.min ?? undefined
-      const max = result.max ?? undefined
 
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
@@ -789,9 +788,9 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         title: title,
         settings: {
           "@type": "DoubleFormFieldSettings",
-          unit: unit,
-          min: min,
-          max: max,
+          unit: result.unit,
+          min: result.min,
+          max: result.max,
         },
       }
 
@@ -804,22 +803,21 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter the name of the unit of the requested integer",
           type: "text",
           name: "unit",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
         {
           message: "[Optional] Enter an integer as lower limit for the requested integer",
           type: "number",
           name: "min",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
         {
           message: "[Optional] Enter an integer as upper limit for the requested integer",
           type: "number",
           name: "max",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
       ])
-
-      const unit = result.unit ?? undefined
-      const min = result.min ?? undefined
-      const max = result.max ?? undefined
 
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
@@ -827,9 +825,9 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         title: title,
         settings: {
           "@type": "IntegerFormFieldSettings",
-          unit: unit,
-          min: min,
-          max: max,
+          unit: result.unit,
+          min: result.min,
+          max: result.max,
         },
       }
 
@@ -845,15 +843,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const maxRating = result.maxRating ?? undefined
-
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
         title: title,
         settings: {
           "@type": "RatingFormFieldSettings",
-          maxRating: maxRating,
+          maxRating: result.maxRating,
         },
       }
 
@@ -908,17 +904,17 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter a non-negative integer as lower limit for the length of the requested string",
           type: "number",
           name: "min",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
         {
           message: "[Optional] Enter a non-negative integer as upper limit for the length of the requested string",
           type: "number",
           name: "max",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
       ])
 
       const allowNewlines = result.allowNewlines ? true : undefined
-      const min = result.min ?? undefined
-      const max = result.max ?? undefined
 
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
@@ -927,8 +923,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         settings: {
           "@type": "StringFormFieldSettings",
           allowNewlines: allowNewlines,
-          min: min,
-          max: max,
+          min: result.min,
+          max: result.max,
         },
       }
 
