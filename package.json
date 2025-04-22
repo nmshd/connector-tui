@@ -1,6 +1,6 @@
 {
   "name": "@nmshd/connector-tui",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "repository": "github:nmshd/connector-tui",
   "license": "MIT",
   "author": "j&s-soft AG",
@@ -29,7 +29,7 @@
     "watch": "node --watch --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/run.ts"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^6.21.0",
+    "@nmshd/connector-sdk": "^6.22.0",
     "axios": "^1.8.4",
     "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
