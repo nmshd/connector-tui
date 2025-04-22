@@ -672,75 +672,74 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createFormFieldRequestItem() {
-      const whatFormField = await prompts({
-        message: "What kind of form field should be created?",
-        type: "select",
-        name: "settings",
-        choices: [
-          {
-            title: "Boolean form field",
-            value: "BooleanFormFieldSettings",
-          },
-          {
-            title: "Date form field",
-            value: "DateFormFieldSettings",
-          },
-          {
-            title: "Double form field",
-            value: "DoubleFormFieldSettings",
-          },
-          {
-            title: "Integer form field",
-            value: "IntegerFormFieldSettings",
-          },
-          {
-            title: "Rating form field",
-            value: "RatingFormFieldSettings",
-          },
-          {
-            title: "Selection form field",
-            value: "SelectionFormFieldSettings",
-          },
-          {
-            title: "String form field",
-            value: "StringFormFieldSettings",
-          },
-        ],
-      })
+      const whatFormField = await prompts([
+        {
+          message: "Enter a title for the form field",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "What kind of form field should be created?",
+          type: "select",
+          name: "settings",
+          choices: [
+            {
+              title: "Boolean form field",
+              value: "BooleanFormFieldSettings",
+            },
+            {
+              title: "Date form field",
+              value: "DateFormFieldSettings",
+            },
+            {
+              title: "Double form field",
+              value: "DoubleFormFieldSettings",
+            },
+            {
+              title: "Integer form field",
+              value: "IntegerFormFieldSettings",
+            },
+            {
+              title: "Rating form field",
+              value: "RatingFormFieldSettings",
+            },
+            {
+              title: "Selection form field",
+              value: "SelectionFormFieldSettings",
+            },
+            {
+              title: "String form field",
+              value: "StringFormFieldSettings",
+            },
+          ],
+        },
+      ])
 
       switch (whatFormField.settings) {
         case "BooleanFormFieldSettings":
-          return await this.createBooleanFormFieldRequestItem()
+          return this.createBooleanFormFieldRequestItem(whatFormField.title)
         case "DateFormFieldSettings":
-          return await this.createDateFormFieldRequestItem()
+          return this.createDateFormFieldRequestItem(whatFormField.title)
         case "DoubleFormFieldSettings":
-          return await this.createDoubleFormFieldRequestItem()
+          return await this.createDoubleFormFieldRequestItem(whatFormField.title)
         case "IntegerFormFieldSettings":
-          return await this.createIntegerFormFieldRequestItem()
+          return await this.createIntegerFormFieldRequestItem(whatFormField.title)
         case "RatingFormFieldSettings":
-          return await this.createRatingFormFieldRequestItem()
+          return await this.createRatingFormFieldRequestItem(whatFormField.title)
         case "SelectionFormFieldSettings":
-          return await this.createSelectionFormFieldRequestItem()
+          return await this.createSelectionFormFieldRequestItem(whatFormField.title)
         case "StringFormFieldSettings":
-          return await this.createStringFormFieldRequestItem()
+          return await this.createStringFormFieldRequestItem(whatFormField.title)
         default:
           return console.log("Invalid form field settings")
       }
     }
 
-    private async createBooleanFormFieldRequestItem() {
-      const result = await prompts([
-        {
-          message: "Enter a title for the boolean form field",
-          type: "text",
-          name: "title",
-        },
-      ])
-
+    private createBooleanFormFieldRequestItem(title: string) {
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: result.title,
+        title: title,
         settings: {
           "@type": "BooleanFormFieldSettings",
         },
@@ -749,19 +748,11 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createDateFormFieldRequestItem() {
-      const result = await prompts([
-        {
-          message: "Enter a title for the date form field",
-          type: "text",
-          name: "title",
-        },
-      ])
-
+    private createDateFormFieldRequestItem(title: string) {
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: result.title,
+        title: title,
         settings: {
           "@type": "DateFormFieldSettings",
         },
@@ -770,13 +761,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createDoubleFormFieldRequestItem() {
+    private async createDoubleFormFieldRequestItem(title: string) {
       const result = await prompts([
-        {
-          message: "Enter a title for the double form field",
-          type: "text",
-          name: "title",
-        },
         {
           message: "[Optional] Enter the name of the unit of the requested double",
           type: "text",
@@ -801,7 +787,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: result.title,
+        title: title,
         settings: {
           "@type": "DoubleFormFieldSettings",
           unit: unit,
@@ -813,13 +799,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createIntegerFormFieldRequestItem() {
+    private async createIntegerFormFieldRequestItem(title: string) {
       const result = await prompts([
-        {
-          message: "Enter a title for the integer form field",
-          type: "text",
-          name: "title",
-        },
         {
           message: "[Optional] Enter the name of the unit of the requested integer",
           type: "text",
@@ -844,7 +825,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: result.title,
+        title: title,
         settings: {
           "@type": "IntegerFormFieldSettings",
           unit: unit,
@@ -856,13 +837,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createRatingFormFieldRequestItem() {
+    private async createRatingFormFieldRequestItem(title: string) {
       const result = await prompts([
-        {
-          message: "Enter a title for the rating form field",
-          type: "text",
-          name: "title",
-        },
         {
           message: "Enter an integer between five and ten as upper limit for the requested rating",
           type: "number",
@@ -875,7 +851,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: result.title,
+        title: title,
         settings: {
           "@type": "RatingFormFieldSettings",
           maxRating: maxRating,
@@ -885,13 +861,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createSelectionFormFieldRequestItem() {
+    private async createSelectionFormFieldRequestItem(title: string) {
       const result = await prompts([
-        {
-          message: "Enter a title for the selection form field",
-          type: "text",
-          name: "title",
-        },
         {
           message: "Which options can be selected? (comma-separated)",
           type: "text",
@@ -915,7 +886,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: result.title,
+        title: title,
         settings: {
           "@type": "SelectionFormFieldSettings",
           options: options,
@@ -926,13 +897,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createStringFormFieldRequestItem() {
+    private async createStringFormFieldRequestItem(title: string) {
       const result = await prompts([
-        {
-          message: "Enter a title for the string form field",
-          type: "text",
-          name: "title",
-        },
         {
           message: "[Optional] Should the text field be displayed as a text area field?",
           type: "confirm",
@@ -958,7 +924,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: result.title,
+        title: title,
         settings: {
           "@type": "StringFormFieldSettings",
           allowNewlines: allowNewlines,
