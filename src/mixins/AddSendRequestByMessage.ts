@@ -650,17 +650,16 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         {
           message: "[Optional] Enter an unique authenticationToken to know which authentication did the user grant",
           type: "text",
-          name: "authenticationToken",
+          name: "responseMetadata",
+          format: (value) => (value.length > 0 ? { authenticationToken: value } : undefined),
         },
       ])
-
-      const responseMetadata = result.authenticationToken ? { authenticationToken: result.authenticationToken } : undefined
 
       const requestItem: AuthenticationRequestItemJSON = {
         "@type": "AuthenticationRequestItem",
         mustBeAccepted: true,
         title: result.title,
-        metadata: responseMetadata,
+        metadata: result.responseMetadata,
       }
 
       return requestItem
