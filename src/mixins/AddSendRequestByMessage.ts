@@ -2,6 +2,7 @@ import {
   AuthenticationRequestItemJSON,
   ConsentRequestItemJSON,
   CreateAttributeRequestItemJSON,
+  FormFieldRequestItemJSON,
   FreeTextRequestItemJSON,
   ProposeAttributeRequestItemJSON,
   ReadAttributeRequestItemJSON,
@@ -80,6 +81,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             {
               title: "AuthenticationRequestItem",
               value: this.createAuthenticationRequestItem.bind(this),
+            },
+            {
+              title: "FormFieldRequestItem",
+              value: this.createFormFieldRequestItem.bind(this),
             },
             {
               title: "FreeTextRequestItem",
@@ -661,6 +666,305 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         title: result.title,
         metadata: responseMetadata,
+      }
+
+      return requestItem
+    }
+
+    private async createFormFieldRequestItem() {
+      const whatFormField = await prompts({
+        message: "What kind of form field should be created?",
+        type: "select",
+        name: "settings",
+        choices: [
+          {
+            title: "Boolean form field",
+            value: "BooleanFormFieldSettings",
+          },
+          {
+            title: "Date form field",
+            value: "DateFormFieldSettings",
+          },
+          {
+            title: "Double form field",
+            value: "DoubleFormFieldSettings",
+          },
+          {
+            title: "Integer form field",
+            value: "IntegerFormFieldSettings",
+          },
+          {
+            title: "Rating form field",
+            value: "RatingFormFieldSettings",
+          },
+          {
+            title: "Selection form field",
+            value: "SelectionFormFieldSettings",
+          },
+          {
+            title: "String form field",
+            value: "StringFormFieldSettings",
+          },
+        ],
+      })
+
+      switch (whatFormField.settings) {
+        case "BooleanFormFieldSettings":
+          return await this.createBooleanFormFieldRequestItem()
+        case "DateFormFieldSettings":
+          return await this.createDateFormFieldRequestItem()
+        case "DoubleFormFieldSettings":
+          return await this.createDoubleFormFieldRequestItem()
+        case "IntegerFormFieldSettings":
+          return await this.createIntegerFormFieldRequestItem()
+        case "RatingFormFieldSettings":
+          return await this.createRatingFormFieldRequestItem()
+        case "SelectionFormFieldSettings":
+          return await this.createSelectionFormFieldRequestItem()
+        case "StringFormFieldSettings":
+          return await this.createStringFormFieldRequestItem()
+        default:
+          return console.log("Invalid form field settings")
+      }
+    }
+
+    private async createBooleanFormFieldRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a title for the boolean form field",
+          type: "text",
+          name: "title",
+        },
+      ])
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title: result.title,
+        settings: {
+          "@type": "BooleanFormFieldSettings",
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createDateFormFieldRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a title for the date form field",
+          type: "text",
+          name: "title",
+        },
+      ])
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title: result.title,
+        settings: {
+          "@type": "DateFormFieldSettings",
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createDoubleFormFieldRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a title for the double form field",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "[Optional] Enter the name of the unit of the requested double",
+          type: "text",
+          name: "unit",
+        },
+        {
+          message: "[Optional] Enter a number as lower limit for the requested double",
+          type: "number",
+          name: "min",
+        },
+        {
+          message: "[Optional] Enter a number as upper limit for the requested double",
+          type: "number",
+          name: "max",
+        },
+      ])
+
+      const unit = result.unit ?? undefined
+      const min = result.min ?? undefined
+      const max = result.max ?? undefined
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title: result.title,
+        settings: {
+          "@type": "DoubleFormFieldSettings",
+          unit: unit,
+          min: min,
+          max: max,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createIntegerFormFieldRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a title for the integer form field",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "[Optional] Enter the name of the unit of the requested integer",
+          type: "text",
+          name: "unit",
+        },
+        {
+          message: "[Optional] Enter an integer as lower limit for the requested integer",
+          type: "number",
+          name: "min",
+        },
+        {
+          message: "[Optional] Enter an integer as upper limit for the requested integer",
+          type: "number",
+          name: "max",
+        },
+      ])
+
+      const unit = result.unit ?? undefined
+      const min = result.min ?? undefined
+      const max = result.max ?? undefined
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title: result.title,
+        settings: {
+          "@type": "IntegerFormFieldSettings",
+          unit: unit,
+          min: min,
+          max: max,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createRatingFormFieldRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a title for the rating form field",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "Enter an integer between five and ten as upper limit for the requested rating",
+          type: "number",
+          name: "maxRating",
+        },
+      ])
+
+      const maxRating = result.maxRating ?? undefined
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title: result.title,
+        settings: {
+          "@type": "RatingFormFieldSettings",
+          maxRating: maxRating,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createSelectionFormFieldRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a title for the selection form field",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "Which options can be selected? (comma-separated)",
+          type: "text",
+          name: "options",
+        },
+        {
+          message: "[Optional] Should multiple selection be allowed?",
+          type: "confirm",
+          name: "allowMultipleSelection",
+          initial: false,
+        },
+      ])
+
+      const options = result.options
+        .split(",")
+        .map((option: string) => option.trim())
+        .filter((option: string) => option.length > 0)
+
+      const allowMultipleSelection = result.allowMultipleSelection ? true : undefined
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title: result.title,
+        settings: {
+          "@type": "SelectionFormFieldSettings",
+          options: options,
+          allowMultipleSelection: allowMultipleSelection,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createStringFormFieldRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a title for the string form field",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "[Optional] Should the text field be displayed as a text area field?",
+          type: "confirm",
+          name: "allowNewlines",
+          initial: false,
+        },
+        {
+          message: "[Optional] Enter a non-negative integer as lower limit for the length of the requested string",
+          type: "number",
+          name: "min",
+        },
+        {
+          message: "[Optional] Enter a non-negative integer as upper limit for the length of the requested string",
+          type: "number",
+          name: "max",
+        },
+      ])
+
+      const allowNewlines = result.allowNewlines ? true : undefined
+      const min = result.min ?? undefined
+      const max = result.max ?? undefined
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title: result.title,
+        settings: {
+          "@type": "StringFormFieldSettings",
+          allowNewlines: allowNewlines,
+          min: min,
+          max: max,
+        },
       }
 
       return requestItem
