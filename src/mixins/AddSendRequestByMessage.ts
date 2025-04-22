@@ -591,6 +591,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter the URL to to the consent details?",
           type: "text",
           name: "link",
+          format: (value) => (value.length > 0 ? value : undefined),
         },
         {
           message: "[Optional] Enter a link display text",
