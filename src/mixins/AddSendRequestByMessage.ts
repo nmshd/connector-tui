@@ -673,11 +673,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createFormFieldRequestItem() {
       const whatFormField = await prompts([
         {
-          message: "Enter a title for the form field",
-          type: "text",
-          name: "title",
-        },
-        {
           message: "What kind of form field should be created?",
           type: "select",
           name: "settings",
@@ -714,21 +709,29 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
+      if (!whatFormField.settings) return
+
+      const response = await prompts({
+        message: "Enter a title for the form field",
+        type: "text",
+        name: "title",
+      })
+
       switch (whatFormField.settings) {
         case "BooleanFormFieldSettings":
-          return this.createBooleanFormFieldRequestItem(whatFormField.title)
+          return this.createBooleanFormFieldRequestItem(response.title)
         case "DateFormFieldSettings":
-          return this.createDateFormFieldRequestItem(whatFormField.title)
+          return this.createDateFormFieldRequestItem(response.title)
         case "DoubleFormFieldSettings":
-          return await this.createDoubleFormFieldRequestItem(whatFormField.title)
+          return await this.createDoubleFormFieldRequestItem(response.title)
         case "IntegerFormFieldSettings":
-          return await this.createIntegerFormFieldRequestItem(whatFormField.title)
+          return await this.createIntegerFormFieldRequestItem(response.title)
         case "RatingFormFieldSettings":
-          return await this.createRatingFormFieldRequestItem(whatFormField.title)
+          return await this.createRatingFormFieldRequestItem(response.title)
         case "SelectionFormFieldSettings":
-          return await this.createSelectionFormFieldRequestItem(whatFormField.title)
+          return await this.createSelectionFormFieldRequestItem(response.title)
         case "StringFormFieldSettings":
-          return await this.createStringFormFieldRequestItem(whatFormField.title)
+          return await this.createStringFormFieldRequestItem(response.title)
         default:
           return console.log("Invalid form field settings")
       }
@@ -772,13 +775,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter a number as lower limit for the requested double",
           type: "number",
           name: "min",
-          format: (value) => (value.length > 0 ? value : undefined),
+          format: (value) => (typeof value === "number" ? value : undefined),
         },
         {
           message: "[Optional] Enter a number as upper limit for the requested double",
           type: "number",
           name: "max",
-          format: (value) => (value.length > 0 ? value : undefined),
+          format: (value) => (typeof value === "number" ? value : undefined),
         },
       ])
 
@@ -809,13 +812,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter an integer as lower limit for the requested integer",
           type: "number",
           name: "min",
-          format: (value) => (value.length > 0 ? value : undefined),
+          format: (value) => (typeof value === "number" ? value : undefined),
         },
         {
           message: "[Optional] Enter an integer as upper limit for the requested integer",
           type: "number",
           name: "max",
-          format: (value) => (value.length > 0 ? value : undefined),
+          format: (value) => (typeof value === "number" ? value : undefined),
         },
       ])
 
@@ -904,13 +907,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter a non-negative integer as lower limit for the length of the requested string",
           type: "number",
           name: "min",
-          format: (value) => (value.length > 0 ? value : undefined),
+          format: (value) => (typeof value === "number" ? value : undefined),
         },
         {
           message: "[Optional] Enter a non-negative integer as upper limit for the length of the requested string",
           type: "number",
           name: "max",
-          format: (value) => (value.length > 0 ? value : undefined),
+          format: (value) => (typeof value === "number" ? value : undefined),
         },
       ])
 
