@@ -587,12 +587,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "text",
           name: "consent",
           format: (value: string) => value.replaceAll("\\n", "\n"),
+          validate: (value: string) => (value.length < 1 ? "Consent must not be empty" : true),
         },
         {
           message: "[Optional] Enter a description for the consent",
           type: "text",
           name: "description",
-          format: (value: string) => (value.length > 0 ? value.replaceAll("\\n", "\n") : 0),
+          format: (value: string) => (value.length > 0 ? value.replaceAll("\\n", "\n") : undefined),
         },
         {
           message: "Does the consent have to be accepted?",
