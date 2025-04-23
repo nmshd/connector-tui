@@ -591,6 +591,26 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "What's the consent the peer should agree to?",
           type: "text",
           name: "consent",
+          format: (value: string) => value.replaceAll("\\n", "\n"),
+          validate: (value: string) => (value.length < 1 ? "Consent must not be empty" : true),
+        },
+        {
+          message: "[Optional] Enter a description for the consent",
+          type: "text",
+          name: "description",
+          format: (value: string) => (value.length > 0 ? value.replaceAll("\\n", "\n") : undefined),
+        },
+        {
+          message: "Does the consent have to be accepted?",
+          type: "confirm",
+          name: "mustBeAccepted",
+          initial: true,
+        },
+        {
+          message: "Do you want to require a manual decision?",
+          type: "confirm",
+          name: "requireManualDecision",
+          initial: false,
         },
         {
           message: "[Optional] Enter the URL to to the consent details?",
@@ -614,8 +634,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
       const requestItem: ConsentRequestItemJSON = {
         "@type": "ConsentRequestItem",
-        mustBeAccepted: true,
+        mustBeAccepted: result.mustBeAccepted,
+        requireManualDecision: result.requireManualDecision,
         consent: result.consent,
+        description: result.description,
         link: result.link,
         linkDisplayText: result.link ? result.linkDisplayText : undefined,
         metadata: result.responseMetadata,
