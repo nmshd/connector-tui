@@ -783,6 +783,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createDoubleFormFieldRequestItem(title: string) {
+      const maxNumberOfDecimalDigits = 16
+
       const result = await prompts([
         {
           message: "[Optional] Enter the name of the unit of the requested double",
@@ -793,12 +795,16 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         {
           message: "[Optional] Enter a number as lower limit for the requested double",
           type: "number",
+          float: true,
+          round: maxNumberOfDecimalDigits,
           name: "min",
           format: (value) => (typeof value === "number" ? value : undefined),
         },
         {
           message: "[Optional] Enter a number as upper limit for the requested double",
           type: "number",
+          float: true,
+          round: maxNumberOfDecimalDigits,
           name: "max",
           format: (value) => (typeof value === "number" ? value : undefined),
         },
