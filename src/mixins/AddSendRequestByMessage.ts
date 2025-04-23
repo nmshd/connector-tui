@@ -838,12 +838,14 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "number",
           name: "min",
           format: (value) => (typeof value === "number" ? value : undefined),
+          validate: (value) => (Number.isInteger(value) ? true : "The min must be an integer"),
         },
         {
           message: "[Optional] Enter an integer as upper limit for the requested integer",
           type: "number",
           name: "max",
           format: (value) => (typeof value === "number" ? value : undefined),
+          validate: (value) => (Number.isInteger(value) ? true : "The max must be an integer"),
         },
       ])
 
@@ -864,9 +866,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
     private async createRatingFormFieldRequestItem(title: string) {
       const result = await prompts({
-        message: "Enter an integer between five and ten as upper limit for the requested rating",
+        message: "Enter an integer from five to ten as upper limit for the requested rating",
         type: "number",
         name: "maxRating",
+        validate: (value) => (Number.isInteger(value) && value >= 5 && value <= 10 ? true : "The maxRating must be an integer from five to ten"),
       })
 
       const requestItem: FormFieldRequestItemJSON = {
@@ -934,12 +937,14 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "number",
           name: "min",
           format: (value) => (typeof value === "number" ? value : undefined),
+          validate: (value) => (Number.isInteger(value) && value > 0 ? true : "The min must be a non-negative integer"),
         },
         {
           message: "[Optional] Enter a non-negative integer as upper limit for the length of the requested string",
           type: "number",
           name: "max",
           format: (value) => (typeof value === "number" ? value : undefined),
+          validate: (value) => (Number.isInteger(value) && value > 0 ? true : "The max must be a non-negative integer"),
         },
       ])
 
