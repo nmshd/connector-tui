@@ -673,6 +673,11 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createFormFieldRequestItem() {
       const whatFormField = await prompts([
         {
+          message: "Enter a title for the form field",
+          type: "text",
+          name: "title",
+        },
+        {
           message: "What kind of form field should be created?",
           type: "select",
           name: "settings",
@@ -709,29 +714,21 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      if (!whatFormField.settings) return
-
-      const response = await prompts({
-        message: "Enter a title for the form field",
-        type: "text",
-        name: "title",
-      })
-
       switch (whatFormField.settings) {
         case "BooleanFormFieldSettings":
-          return this.createBooleanFormFieldRequestItem(response.title)
+          return this.createBooleanFormFieldRequestItem(whatFormField.title)
         case "DateFormFieldSettings":
-          return this.createDateFormFieldRequestItem(response.title)
+          return this.createDateFormFieldRequestItem(whatFormField.title)
         case "DoubleFormFieldSettings":
-          return await this.createDoubleFormFieldRequestItem(response.title)
+          return await this.createDoubleFormFieldRequestItem(whatFormField.title)
         case "IntegerFormFieldSettings":
-          return await this.createIntegerFormFieldRequestItem(response.title)
+          return await this.createIntegerFormFieldRequestItem(whatFormField.title)
         case "RatingFormFieldSettings":
-          return await this.createRatingFormFieldRequestItem(response.title)
+          return await this.createRatingFormFieldRequestItem(whatFormField.title)
         case "SelectionFormFieldSettings":
-          return await this.createSelectionFormFieldRequestItem(response.title)
+          return await this.createSelectionFormFieldRequestItem(whatFormField.title)
         case "StringFormFieldSettings":
-          return await this.createStringFormFieldRequestItem(response.title)
+          return await this.createStringFormFieldRequestItem(whatFormField.title)
         default:
           return console.log("Invalid form field settings")
       }
@@ -838,13 +835,11 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createRatingFormFieldRequestItem(title: string) {
-      const result = await prompts([
-        {
-          message: "Enter an integer between five and ten as upper limit for the requested rating",
-          type: "number",
-          name: "maxRating",
-        },
-      ])
+      const result = await prompts({
+        message: "Enter an integer between five and ten as upper limit for the requested rating",
+        type: "number",
+        name: "maxRating",
+      })
 
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
@@ -860,11 +855,19 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createSelectionFormFieldRequestItem(title: string) {
+      const parseOptions = (input: string) =>
+        input
+          .split(",")
+          .map((option: string) => option.trim())
+          .filter((option: string) => option.length > 0)
+
       const result = await prompts([
         {
           message: "Which options can be selected? (comma-separated)",
           type: "text",
           name: "options",
+          format: (value) => (parseOptions(value).length > 0 ? parseOptions(value) : undefined),
+          validate: (value) => (parseOptions(value).length > 0 ? true : "At least one option must be provided"),
         },
         {
           message: "[Optional] Should multiple selection be allowed?",
@@ -874,11 +877,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      const options = result.options
-        .split(",")
-        .map((option: string) => option.trim())
-        .filter((option: string) => option.length > 0)
-
       const allowMultipleSelection = result.allowMultipleSelection ? true : undefined
 
       const requestItem: FormFieldRequestItemJSON = {
@@ -887,7 +885,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         title: title,
         settings: {
           "@type": "SelectionFormFieldSettings",
-          options: options,
+          options: result.options,
           allowMultipleSelection: allowMultipleSelection,
         },
       }
@@ -898,7 +896,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     private async createStringFormFieldRequestItem(title: string) {
       const result = await prompts([
         {
-          message: "[Optional] Should the text field be displayed as a text area field?",
+          message: "[Optional] Should newlines be allowed?",
           type: "confirm",
           name: "allowNewlines",
           initial: false,
