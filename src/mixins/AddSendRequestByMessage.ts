@@ -693,7 +693,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createFormFieldRequestItem() {
-      const whatFormField = await prompts([
+      const result = await prompts([
         {
           message: "Enter a title for the form field",
           type: "text",
@@ -736,21 +736,21 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
       ])
 
-      switch (whatFormField.settings) {
+      switch (result.settings) {
         case "BooleanFormFieldSettings":
-          return this.createBooleanFormFieldRequestItem(whatFormField.title)
+          return this.createBooleanFormFieldRequestItem(result.title)
         case "DateFormFieldSettings":
-          return this.createDateFormFieldRequestItem(whatFormField.title)
+          return this.createDateFormFieldRequestItem(result.title)
         case "DoubleFormFieldSettings":
-          return await this.createDoubleFormFieldRequestItem(whatFormField.title)
+          return await this.createDoubleFormFieldRequestItem(result.title)
         case "IntegerFormFieldSettings":
-          return await this.createIntegerFormFieldRequestItem(whatFormField.title)
+          return await this.createIntegerFormFieldRequestItem(result.title)
         case "RatingFormFieldSettings":
-          return await this.createRatingFormFieldRequestItem(whatFormField.title)
+          return await this.createRatingFormFieldRequestItem(result.title)
         case "SelectionFormFieldSettings":
-          return await this.createSelectionFormFieldRequestItem(whatFormField.title)
+          return await this.createSelectionFormFieldRequestItem(result.title)
         case "StringFormFieldSettings":
-          return await this.createStringFormFieldRequestItem(whatFormField.title)
+          return await this.createStringFormFieldRequestItem(result.title)
         default:
           return console.log("Invalid form field settings")
       }
