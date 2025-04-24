@@ -243,7 +243,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           "@type": "RelationshipAttributeQuery",
           owner: result.owner ?? "",
           attributeCreationHints: {
-            title: title,
+            title,
             description: result.attributeDescription,
             confidentiality: RelationshipAttributeConfidentiality.Public,
             valueType: result.attributeType,
@@ -760,7 +760,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: title,
+        title,
         settings: {
           "@type": "BooleanFormFieldSettings",
         },
@@ -773,7 +773,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: title,
+        title,
         settings: {
           "@type": "DateFormFieldSettings",
         },
@@ -813,7 +813,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: title,
+        title,
         settings: {
           "@type": "DoubleFormFieldSettings",
           unit: result.unit,
@@ -852,7 +852,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: title,
+        title,
         settings: {
           "@type": "IntegerFormFieldSettings",
           unit: result.unit,
@@ -875,7 +875,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: title,
+        title,
         settings: {
           "@type": "RatingFormFieldSettings",
           maxRating: result.maxRating,
@@ -913,11 +913,11 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: title,
+        title,
         settings: {
           "@type": "SelectionFormFieldSettings",
           options: result.options,
-          allowMultipleSelection: allowMultipleSelection,
+          allowMultipleSelection,
         },
       }
 
@@ -953,10 +953,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: FormFieldRequestItemJSON = {
         "@type": "FormFieldRequestItem",
         mustBeAccepted: true,
-        title: title,
+        title,
         settings: {
           "@type": "StringFormFieldSettings",
-          allowNewlines: allowNewlines,
+          allowNewlines,
           min: result.min,
           max: result.max,
         },

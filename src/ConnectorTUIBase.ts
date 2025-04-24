@@ -101,7 +101,7 @@ export class ConnectorTUIBase {
     const choices = await this.getFileChoices()
     if (!choices) return
 
-    const result = await prompts({ message: prompt, type: "select", name: "file", choices: choices })
+    const result = await prompts({ message: prompt, type: "select", name: "file", choices })
     return result.file as ConnectorFile | undefined
   }
 
@@ -109,7 +109,7 @@ export class ConnectorTUIBase {
     const choices = await this.getFileChoices()
     if (!choices) return
 
-    const result = await prompts({ message: prompt, type: "multiselect", name: "files", choices: choices })
+    const result = await prompts({ message: prompt, type: "multiselect", name: "files", choices })
     return result.files as ConnectorFile[] | undefined
   }
 
