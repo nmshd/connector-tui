@@ -54,7 +54,7 @@ export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstruct
           }
         }
 
-        const canAcceptResult = await this.connectorClient.incomingRequests.canAccept(request.id, { items: items })
+        const canAcceptResult = await this.connectorClient.incomingRequests.canAccept(request.id, { items })
         if (canAcceptResult.isError) {
           console.log(canAcceptResult.error)
           return
@@ -66,7 +66,7 @@ export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstruct
           return
         }
 
-        const acceptResult = await this.connectorClient.incomingRequests.accept(request.id, { items: items })
+        const acceptResult = await this.connectorClient.incomingRequests.accept(request.id, { items })
         if (acceptResult.isError) {
           console.log(acceptResult.error)
           return

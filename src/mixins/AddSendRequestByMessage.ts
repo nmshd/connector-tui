@@ -2,6 +2,7 @@ import {
   AuthenticationRequestItemJSON,
   ConsentRequestItemJSON,
   CreateAttributeRequestItemJSON,
+  FormFieldRequestItemJSON,
   FreeTextRequestItemJSON,
   ProposeAttributeRequestItemJSON,
   ReadAttributeRequestItemJSON,
@@ -80,6 +81,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             {
               title: "AuthenticationRequestItem",
               value: this.createAuthenticationRequestItem.bind(this),
+            },
+            {
+              title: "FormFieldRequestItem",
+              value: this.createFormFieldRequestItem.bind(this),
             },
             {
               title: "FreeTextRequestItem",
@@ -223,12 +228,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             { title: "A third party", value: "thirdParty" },
           ],
         },
-        {
-          message: "What are the third party addresses? (comma-separated, optional)",
-          type: "text",
-          name: "thirdParties",
-        },
       ])
+
       const title = result.attributeTitle ?? `A ${result.attributeType} attribute`
 
       const requestItem: ReadAttributeRequestItemJSON = {
@@ -238,7 +239,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           "@type": "RelationshipAttributeQuery",
           owner: result.owner ?? "",
           attributeCreationHints: {
-            title: title,
+            title,
             description: result.attributeDescription,
             confidentiality: RelationshipAttributeConfidentiality.Public,
             valueType: result.attributeType,
@@ -270,15 +271,19 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
         {
           message: "What are the third party addresses? (comma-separated)",
-          type: "text",
+          type: "list",
+          separator: ",",
           name: "thirdParties",
+          format: (value) => value.filter((address: string) => address.length > 0),
+          validate: (value) =>
+            value
+              .split(",")
+              .map((address: string) => address.trim())
+              .filter((address: string) => address.length > 0).length > 0
+              ? true
+              : "At least one third party must be specified",
         },
       ])
-
-      const thirdParties = result.thirdParties
-        .split(",")
-        .map((address: string) => address.trim())
-        .filter((address: string) => address.length > 0)
 
       const requestItem: ReadAttributeRequestItemJSON = {
         "@type": "ReadAttributeRequestItem",
@@ -287,7 +292,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           "@type": "ThirdPartyRelationshipAttributeQuery",
           owner: result.owner ?? "",
           key: result.key,
-          thirdParty: thirdParties,
+          thirdParty: result.thirdParties,
         },
       }
 
@@ -682,6 +687,280 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         title: result.title,
         metadata: result.responseMetadata,
+      }
+
+      return requestItem
+    }
+
+    private async createFormFieldRequestItem() {
+      const result = await prompts([
+        {
+          message: "Enter a title for the form field",
+          type: "text",
+          name: "title",
+        },
+        {
+          message: "What kind of form field should be created?",
+          type: "select",
+          name: "settings",
+          choices: [
+            {
+              title: "Boolean form field",
+              value: "BooleanFormFieldSettings",
+            },
+            {
+              title: "Date form field",
+              value: "DateFormFieldSettings",
+            },
+            {
+              title: "Double form field",
+              value: "DoubleFormFieldSettings",
+            },
+            {
+              title: "Integer form field",
+              value: "IntegerFormFieldSettings",
+            },
+            {
+              title: "Rating form field",
+              value: "RatingFormFieldSettings",
+            },
+            {
+              title: "Selection form field",
+              value: "SelectionFormFieldSettings",
+            },
+            {
+              title: "String form field",
+              value: "StringFormFieldSettings",
+            },
+          ],
+        },
+      ])
+
+      switch (result.settings) {
+        case "BooleanFormFieldSettings":
+          return this.createBooleanFormFieldRequestItem(result.title)
+        case "DateFormFieldSettings":
+          return this.createDateFormFieldRequestItem(result.title)
+        case "DoubleFormFieldSettings":
+          return await this.createDoubleFormFieldRequestItem(result.title)
+        case "IntegerFormFieldSettings":
+          return await this.createIntegerFormFieldRequestItem(result.title)
+        case "RatingFormFieldSettings":
+          return await this.createRatingFormFieldRequestItem(result.title)
+        case "SelectionFormFieldSettings":
+          return await this.createSelectionFormFieldRequestItem(result.title)
+        case "StringFormFieldSettings":
+          return await this.createStringFormFieldRequestItem(result.title)
+        default:
+          return console.log("Invalid form field settings")
+      }
+    }
+
+    private createBooleanFormFieldRequestItem(title: string) {
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title,
+        settings: {
+          "@type": "BooleanFormFieldSettings",
+        },
+      }
+
+      return requestItem
+    }
+
+    private createDateFormFieldRequestItem(title: string) {
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title,
+        settings: {
+          "@type": "DateFormFieldSettings",
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createDoubleFormFieldRequestItem(title: string) {
+      const maxNumberOfDecimalDigits = 16
+
+      const result = await prompts([
+        {
+          message: "[Optional] Enter the name of the unit of the requested double",
+          type: "text",
+          name: "unit",
+          format: (value) => (value.length > 0 ? value : undefined),
+        },
+        {
+          message: "[Optional] Enter a number as lower limit for the requested double",
+          type: "number",
+          float: true,
+          round: maxNumberOfDecimalDigits,
+          name: "min",
+          format: (value) => (typeof value === "number" ? value : undefined),
+        },
+        {
+          message: "[Optional] Enter a number as upper limit for the requested double",
+          type: "number",
+          float: true,
+          round: maxNumberOfDecimalDigits,
+          name: "max",
+          format: (value) => (typeof value === "number" ? value : undefined),
+        },
+      ])
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title,
+        settings: {
+          "@type": "DoubleFormFieldSettings",
+          unit: result.unit,
+          min: result.min,
+          max: result.max,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createIntegerFormFieldRequestItem(title: string) {
+      const result = await prompts([
+        {
+          message: "[Optional] Enter the name of the unit of the requested integer",
+          type: "text",
+          name: "unit",
+          format: (value) => (value.length > 0 ? value : undefined),
+        },
+        {
+          message: "[Optional] Enter an integer as lower limit for the requested integer",
+          type: "number",
+          name: "min",
+          format: (value) => (typeof value === "number" ? value : undefined),
+          validate: (value) => (Number.isInteger(value) ? true : "The min must be an integer"),
+        },
+        {
+          message: "[Optional] Enter an integer as upper limit for the requested integer",
+          type: "number",
+          name: "max",
+          format: (value) => (typeof value === "number" ? value : undefined),
+          validate: (value) => (Number.isInteger(value) ? true : "The max must be an integer"),
+        },
+      ])
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title,
+        settings: {
+          "@type": "IntegerFormFieldSettings",
+          unit: result.unit,
+          min: result.min,
+          max: result.max,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createRatingFormFieldRequestItem(title: string) {
+      const result = await prompts({
+        message: "Enter an integer from five to ten as upper limit for the requested rating",
+        type: "number",
+        name: "maxRating",
+        validate: (value) => (Number.isInteger(value) && value >= 5 && value <= 10 ? true : "The maxRating must be an integer from five to ten"),
+      })
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title,
+        settings: {
+          "@type": "RatingFormFieldSettings",
+          maxRating: result.maxRating,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createSelectionFormFieldRequestItem(title: string) {
+      const result = await prompts([
+        {
+          message: "Which options can be selected? (comma-separated)",
+          type: "list",
+          separator: ",",
+          name: "options",
+          format: (value) => value.filter((option: string) => option.length > 0),
+          validate: (value) =>
+            value
+              .split(",")
+              .map((option: string) => option.trim())
+              .filter((option: string) => option.length > 0).length > 0
+              ? true
+              : "At least one option must be provided",
+        },
+        {
+          message: "[Optional] Should multiple selection be allowed?",
+          type: "confirm",
+          name: "allowMultipleSelection",
+          initial: false,
+        },
+      ])
+
+      const allowMultipleSelection = result.allowMultipleSelection ? true : undefined
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title,
+        settings: {
+          "@type": "SelectionFormFieldSettings",
+          options: result.options,
+          allowMultipleSelection,
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createStringFormFieldRequestItem(title: string) {
+      const result = await prompts([
+        {
+          message: "[Optional] Should newlines be allowed?",
+          type: "confirm",
+          name: "allowNewlines",
+          initial: false,
+        },
+        {
+          message: "[Optional] Enter a non-negative integer as lower limit for the length of the requested string",
+          type: "number",
+          name: "min",
+          format: (value) => (typeof value === "number" ? value : undefined),
+          validate: (value) => (Number.isInteger(value) && value > 0 ? true : "The min must be a non-negative integer"),
+        },
+        {
+          message: "[Optional] Enter a non-negative integer as upper limit for the length of the requested string",
+          type: "number",
+          name: "max",
+          format: (value) => (typeof value === "number" ? value : undefined),
+          validate: (value) => (Number.isInteger(value) && value > 0 ? true : "The max must be a non-negative integer"),
+        },
+      ])
+
+      const allowNewlines = result.allowNewlines ? true : undefined
+
+      const requestItem: FormFieldRequestItemJSON = {
+        "@type": "FormFieldRequestItem",
+        mustBeAccepted: true,
+        title,
+        settings: {
+          "@type": "StringFormFieldSettings",
+          allowNewlines,
+          min: result.min,
+          max: result.max,
+        },
       }
 
       return requestItem
