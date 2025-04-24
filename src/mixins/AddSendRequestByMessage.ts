@@ -895,9 +895,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const result = await prompts([
         {
           message: "Which options can be selected? (comma-separated)",
-          type: "text",
+          type: "list",
+          separator: ",",
           name: "options",
-          format: (value) => (parseOptions(value).length > 0 ? parseOptions(value) : undefined),
+          format: (value) => value.filter((option: string) => option.length > 0),
           validate: (value) => (parseOptions(value).length > 0 ? true : "At least one option must be provided"),
         },
         {
