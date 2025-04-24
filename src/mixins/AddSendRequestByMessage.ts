@@ -228,12 +228,8 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             { title: "A third party", value: "thirdParty" },
           ],
         },
-        {
-          message: "What are the third party addresses? (comma-separated, optional)",
-          type: "text",
-          name: "thirdParties",
-        },
       ])
+
       const title = result.attributeTitle ?? `A ${result.attributeType} attribute`
 
       const requestItem: ReadAttributeRequestItemJSON = {
