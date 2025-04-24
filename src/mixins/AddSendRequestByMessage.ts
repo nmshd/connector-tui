@@ -252,12 +252,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createReadThirdPartyRelationshipAttributeRequestItem() {
-      const parseThirdParties = (input: string) =>
-        input
-          .split(",")
-          .map((address: string) => address.trim())
-          .filter((address: string) => address.length > 0)
-
       const result = await prompts([
         {
           message: "What's the attribute type you would like to query?",
@@ -281,7 +275,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           separator: ",",
           name: "thirdParties",
           format: (value) => value.filter((address: string) => address.length > 0),
-          validate: (value) => (parseThirdParties(value).length > 0 ? true : "At least one third party must be specified"),
+          validate: (value) =>
+            value
+              .split(",")
+              .map((address: string) => address.trim())
+              .filter((address: string) => address.length > 0).length > 0
+              ? true
+              : "At least one third party must be specified",
         },
       ])
 
@@ -886,12 +886,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createSelectionFormFieldRequestItem(title: string) {
-      const parseOptions = (input: string) =>
-        input
-          .split(",")
-          .map((option: string) => option.trim())
-          .filter((option: string) => option.length > 0)
-
       const result = await prompts([
         {
           message: "Which options can be selected? (comma-separated)",
@@ -899,7 +893,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           separator: ",",
           name: "options",
           format: (value) => value.filter((option: string) => option.length > 0),
-          validate: (value) => (parseOptions(value).length > 0 ? true : "At least one option must be provided"),
+          validate: (value) =>
+            value
+              .split(",")
+              .map((option: string) => option.trim())
+              .filter((option: string) => option.length > 0).length > 0
+              ? true
+              : "At least one option must be provided",
         },
         {
           message: "[Optional] Should multiple selection be allowed?",
