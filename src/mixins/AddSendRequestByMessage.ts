@@ -252,6 +252,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
     }
 
     private async createReadThirdPartyRelationshipAttributeRequestItem() {
+      const parseThirdParties = (input: string) =>
+        input
+          .split(",")
+          .map((address: string) => address.trim())
+          .filter((address: string) => address.length > 0)
+
       const result = await prompts([
         {
           message: "What's the attribute type you would like to query?",
@@ -271,15 +277,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
         {
           message: "What are the third party addresses? (comma-separated)",
-          type: "text",
+          type: "list",
+          separator: ",",
           name: "thirdParties",
+          format: (value) => value.filter((address: string) => address.length > 0),
+          validate: (value) => (parseThirdParties(value).length > 0 ? true : "At least one third party must be specified"),
         },
       ])
-
-      const thirdParties = result.thirdParties
-        .split(",")
-        .map((address: string) => address.trim())
-        .filter((address: string) => address.length > 0)
 
       const requestItem: ReadAttributeRequestItemJSON = {
         "@type": "ReadAttributeRequestItem",
@@ -288,7 +292,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           "@type": "ThirdPartyRelationshipAttributeQuery",
           owner: result.owner ?? "",
           key: result.key,
-          thirdParty: thirdParties,
+          thirdParty: result.thirdParties,
         },
       }
 
