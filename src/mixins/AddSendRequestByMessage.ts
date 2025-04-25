@@ -678,7 +678,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "[Optional] Enter a description of the authentication",
           type: "text",
           name: "description",
-          format: (value) => (value.length > 0 ? value : undefined),
+          format: (value: string) => (value.length > 0 ? value.replaceAll("\\n", "\n") : undefined),
         },
         {
           message: "[Optional] Enter an unique authenticationToken to know which authentication did the user grant",
