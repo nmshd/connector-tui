@@ -675,6 +675,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           name: "title",
         },
         {
+          message: "[Optional] Enter a description of the authentication",
+          type: "text",
+          name: "description",
+          format: (value) => (value.length > 0 ? value : undefined),
+        },
+        {
           message: "[Optional] Enter an unique authenticationToken to know which authentication did the user grant",
           type: "text",
           name: "responseMetadata",
@@ -686,6 +692,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         "@type": "AuthenticationRequestItem",
         mustBeAccepted: true,
         title: result.title,
+        description: result.description,
         metadata: result.responseMetadata,
       }
 
