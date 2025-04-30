@@ -127,7 +127,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       return createAttributeResponse.result
     }
 
-    private async createPasswordProtection(): Promise<{ password: string; passwordIsPin?: true } | undefined> {
+    private async createPasswordProtection(): Promise<{ password: string; passwordIsPin?: true; passwordLocationIndicator?: string | number } | undefined> {
       const result = await prompts({
         message: "What kind of password protection do you want to use?",
         type: "select",
@@ -152,7 +152,8 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
           name: "password",
         })
 
-        return { password: password.password }
+        const passwordLocationIndicator = await this.selectPasswordLocationIndicator()
+        return { password: password.password, passwordLocationIndicator }
       }
 
       const password = await prompts({
@@ -167,14 +168,52 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         name: "password",
       })
 
-      return { password: password.password, passwordIsPin: true }
+      const passwordLocationIndicator = await this.selectPasswordLocationIndicator()
+      return { password: password.password, passwordIsPin: true, passwordLocationIndicator }
+    }
+
+    private async selectPasswordLocationIndicator(): Promise<string | number | undefined> {
+      const result = await prompts({
+        message: "Where can the user find the password?",
+        type: "select",
+        name: "passwordLocationIndicator",
+        choices: [
+          { title: "None", value: "None", selected: true },
+          { title: "Custom (Number between 50 and 99)", value: "Custom" },
+          { title: "Self", value: "Self" },
+          { title: "Letter", value: "Letter" },
+          { title: "RegistrationLetter", value: "RegistrationLetter" },
+          { title: "Email", value: "Email" },
+          { title: "SMS", value: "SMS" },
+          { title: "Website", value: "Website" },
+        ],
+      })
+
+      if (result.passwordLocationIndicator === "None") return
+      if (result.passwordLocationIndicator !== "Custom") return result.passwordLocationIndicator
+
+      const customLocation = await prompts({
+        message: "Enter a number between 50 and 99",
+        type: "number",
+        validate: (value) => {
+          if (value < 50 || value > 99) return "Number must be between 50 and 99"
+          return true
+        },
+        name: "passwordLocationIndicator",
+      })
+
+      return customLocation.passwordLocationIndicator
     }
 
     private async createQRCodeForRelationshipTemplate(
       onNewRelationship: RequestJSON,
       onExistingRelationship: RequestJSON,
       name: string,
-      passwordProtection?: { password: string; passwordIsPin?: true }
+      passwordProtection?: {
+        password: string
+        passwordIsPin?: true
+        passwordLocationIndicator?: string | number
+      }
     ) {
       const content: RelationshipTemplateContentJSON = {
         "@type": "RelationshipTemplateContent",
