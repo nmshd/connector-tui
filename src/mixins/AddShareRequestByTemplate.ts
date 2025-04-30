@@ -169,6 +169,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       })
 
       const passwordLocationIndicator = await this.selectPasswordLocationIndicator()
+      console.log(passwordLocationIndicator)
       return { password: password.password, passwordIsPin: true, passwordLocationIndicator }
     }
 
@@ -178,7 +179,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         type: "select",
         name: "passwordLocationIndicator",
         choices: [
-          { title: "None", value: undefined, selected: true },
+          { title: "None", value: "None", selected: true },
           { title: "Custom (Number between 50 and 99)", value: "Custom" },
           { title: "Self", value: "Self" },
           { title: "Letter", value: "Letter" },
@@ -189,6 +190,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         ],
       })
 
+      if (result.passwordLocationIndicator === "None") return
       if (result.passwordLocationIndicator !== "Custom") return result.passwordLocationIndicator
 
       const customLocation = await prompts({
