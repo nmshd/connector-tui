@@ -169,7 +169,6 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       })
 
       const passwordLocationIndicator = await this.selectPasswordLocationIndicator()
-      console.log(passwordLocationIndicator)
       return { password: password.password, passwordIsPin: true, passwordLocationIndicator }
     }
 
