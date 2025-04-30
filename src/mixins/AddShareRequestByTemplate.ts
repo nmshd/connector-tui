@@ -174,7 +174,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
 
     private async selectPasswordLocationIndicator(): Promise<string | number | undefined> {
       const result = await prompts({
-        message: "Where do you want to show the password?",
+        message: "Where can the user find the password?",
         type: "select",
         name: "passwordLocationIndicator",
         choices: [
