@@ -59,7 +59,7 @@ export function AddUploadFile<TBase extends ConnectorTUIBaseConstructor>(Base: T
       })
 
       if (render.yesno) {
-        const url = `nmshd://tr#${uploadedFile.result.truncatedReference}`
+        const url = uploadedFile.result.reference.url
         console.log(url)
         qrcode.generate(url, { small: true })
       }

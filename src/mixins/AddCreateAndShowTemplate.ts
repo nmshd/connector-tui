@@ -15,7 +15,7 @@ export function AddCreateAndShowTemplate<TBase extends ConnectorTUIBaseConstruct
         expiresAt: DateTime.now().plus({ days: 2 }).toISO(),
       })
 
-      const url = `nmshd://tr#${template.result.truncatedReference}`
+      const url = template.result.reference.url
       console.log(url)
       qrcode.generate(url, { small: true })
     }
