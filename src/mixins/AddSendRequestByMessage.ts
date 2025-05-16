@@ -1022,7 +1022,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         "@type": "TransferFileOwnershipRequestItem",
         mustBeAccepted: true,
         requireManualDecision: result.requireManualDecision,
-        fileReference: file.truncatedReference,
+        fileReference: file.reference.truncated,
       }
 
       return requestItem
