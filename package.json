@@ -29,7 +29,7 @@
     "watch": "node --watch --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/run.ts"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^6.24.0",
+    "@nmshd/connector-sdk": "^6.26.2",
     "axios": "^1.9.0",
     "chalk": "^5.4.1",
     "dotenv": "^16.5.0",
@@ -42,7 +42,7 @@
     "@js-soft/eslint-config-ts": "^1.6.14",
     "@js-soft/license-check": "^1.0.9",
     "@types/luxon": "^3.6.2",
-    "@types/node": "^22.15.3",
+    "@types/node": "^22.15.18",
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/yargs": "^17.0.33",
