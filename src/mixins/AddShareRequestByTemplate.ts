@@ -1,4 +1,5 @@
 import { RelationshipTemplateContentJSON, RequestItemGroupJSON, RequestJSON } from "@nmshd/content"
+import { exec } from "child_process"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import qrcode from "qrcode-terminal"
@@ -243,6 +244,28 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       })
 
       if (!result.open) return
+
+      const androidOrIOS = await prompts({
+        message: "Is the connected device Android or iOS?",
+        type: "select",
+        name: "deviceType",
+        choices: [
+          { title: "Android", value: "Android" },
+          { title: "iOS", value: "iOS" },
+        ],
+      })
+
+      if (!androidOrIOS.deviceType) return
+
+      const command = androidOrIOS.deviceType === "Android" ? `adb shell am start -a android.intent.action.VIEW -d "${url}"` : `xcrun simctl openurl booted "${url}"`
+
+      await new Promise<void>((resolve) => {
+        exec(command, (err, _, __) => {
+          if (err) return console.error(`Error executing command: ${err.message}`)
+
+          resolve()
+        })
+      })
     }
   }
 }
