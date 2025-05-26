@@ -11,6 +11,6 @@ if printf -- "$VERSION" | grep -q " "; then
     exit 1
 fi
 
-npm version $VERSION --no
+npm version $VERSION --no-git-tag-version
 
 npx enhanced-publish --if-possible --use-preid-as-tag
