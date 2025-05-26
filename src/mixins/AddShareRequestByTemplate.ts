@@ -234,6 +234,15 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       const url = template.result.reference.url
       console.log(url)
       qrcode.generate(url, { small: true })
+
+      const result = await prompts({
+        message: "Do you want to open the link on a connected device?",
+        type: "confirm",
+        name: "open",
+        initial: false,
+      })
+
+      if (!result.open) return
     }
   }
 }
