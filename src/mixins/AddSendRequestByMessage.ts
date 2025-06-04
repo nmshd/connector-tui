@@ -1023,6 +1023,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         mustBeAccepted: true,
         requireManualDecision: result.requireManualDecision,
         fileReference: file.reference.truncated,
+        ownershipToken: file.ownershipToken,
       }
 
       return requestItem
