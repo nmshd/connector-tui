@@ -6,7 +6,6 @@ import {
   ConnectorRelationshipStatus,
   ConnectorSupportInformation,
   GetAttributesRequest,
-  GetOwnFilesRequest,
 } from "@nmshd/connector-sdk"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
 import { DateTime } from "luxon"
@@ -99,25 +98,27 @@ export class ConnectorTUIBase {
     return { title: relationship.peer, value }
   }
 
-  protected async selectFile(prompt: string, includeExpiredFiles = false): Promise<ConnectorFile | undefined> {
-    const choices = await this.getFileChoices(includeExpiredFiles)
+  protected async selectFile(prompt: string): Promise<ConnectorFile | undefined> {
+    const choices = await this.getFileChoices()
     if (!choices) return
 
     const result = await prompts({ message: prompt, type: "select", name: "file", choices })
     return result.file as ConnectorFile | undefined
   }
 
-  protected async selectFiles(prompt: string, includeExpiredFiles = false): Promise<ConnectorFile[] | undefined> {
-    const choices = await this.getFileChoices(includeExpiredFiles)
+  protected async selectFiles(prompt: string): Promise<ConnectorFile[] | undefined> {
+    const choices = await this.getFileChoices()
     if (!choices) return
 
     const result = await prompts({ message: prompt, type: "multiselect", name: "files", choices })
     return result.files as ConnectorFile[] | undefined
   }
 
-  private async getFileChoices(includeExpiredFiles: boolean): Promise<prompts.Choice[] | undefined> {
-    const query = this.createQueryForFiles(includeExpiredFiles)
-    const files = (await this.connectorClient.files.getOwnFiles(query)).result
+  private async getFileChoices(): Promise<prompts.Choice[] | undefined> {
+    const currentDate = DateTime.utc().toISO()
+    const datesInFuture = `>=${currentDate}`
+
+    const files = (await this.connectorClient.files.getOwnFiles({ expiresAt: datesInFuture })).result
 
     if (files.length === 0) {
       console.log("No appropriate files found")
@@ -125,14 +126,6 @@ export class ConnectorTUIBase {
     }
 
     return files.map((f) => this.renderFile(f))
-  }
-
-  private createQueryForFiles(includeExpiredFiles: boolean): GetOwnFilesRequest {
-    if (includeExpiredFiles) return {}
-
-    const currentDate = DateTime.utc().toISO()
-    const datesInFuture = `>=${currentDate}`
-    return { expiresAt: datesInFuture }
   }
 
   private renderFile(file: ConnectorFile): prompts.Choice {
