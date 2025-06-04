@@ -8,6 +8,7 @@ import {
   GetAttributesRequest,
 } from "@nmshd/connector-sdk"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
+import { DateTime } from "luxon"
 import prompts from "prompts"
 import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint.js"
 
@@ -114,9 +115,13 @@ export class ConnectorTUIBase {
   }
 
   private async getFileChoices(): Promise<prompts.Choice[] | undefined> {
-    const files = (await this.connectorClient.files.getOwnFiles()).result
+    const currentDate = DateTime.utc().toISO()
+    const datesInFuture = `>=${currentDate}`
+
+    const files = (await this.connectorClient.files.getOwnFiles({ expiresAt: datesInFuture })).result
+
     if (files.length === 0) {
-      console.log("No files found")
+      console.log("No appropriate files found")
       return
     }
 
