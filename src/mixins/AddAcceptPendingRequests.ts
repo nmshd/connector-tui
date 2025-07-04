@@ -1,5 +1,6 @@
-import { ConnectorRequestStatus, DecideRequestItem, DecideRequestItemGroup } from "@nmshd/connector-sdk"
+import { DecideRequestItem, DecideRequestItemGroup } from "@nmshd/connector-sdk"
 import { RequestItemGroupJSON } from "@nmshd/content"
+import { LocalRequestStatus } from "@nmshd/runtime-types"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
@@ -22,11 +23,7 @@ export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstruct
         await this.connectorClient.account.sync()
       }
 
-      const pendingRequests = (
-        await this.connectorClient.incomingRequests.getRequests({
-          status: ConnectorRequestStatus.ManualDecisionRequired,
-        })
-      ).result
+      const pendingRequests = (await this.connectorClient.incomingRequests.getRequests({ status: LocalRequestStatus.ManualDecisionRequired })).result
 
       for (const request of pendingRequests) {
         const title = request.content.title ? `title ${request.content.title}` : "no title"

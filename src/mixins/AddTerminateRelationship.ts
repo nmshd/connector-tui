@@ -1,4 +1,4 @@
-import { ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
+import { RelationshipStatus } from "@nmshd/runtime-types"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddTerminateRelationship<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
@@ -11,7 +11,7 @@ export function AddTerminateRelationship<TBase extends ConnectorTUIBaseConstruct
     protected async terminateRelationship() {
       await this.connectorClient.account.sync()
 
-      const relationship = await this.selectRelationship("Select relationship to terminate", ConnectorRelationshipStatus.Active)
+      const relationship = await this.selectRelationship("Select relationship to terminate", RelationshipStatus.Active)
       if (!relationship) return
 
       console.log(`Terminating relationship ${relationship.id}`)

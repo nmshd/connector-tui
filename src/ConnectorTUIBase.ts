@@ -1,13 +1,6 @@
-import {
-  ConnectorAttribute,
-  ConnectorClient,
-  ConnectorFile,
-  ConnectorRelationship,
-  ConnectorRelationshipStatus,
-  ConnectorSupportInformation,
-  GetAttributesRequest,
-} from "@nmshd/connector-sdk"
+import { ConnectorClient, ConnectorSupportInformation, GetAttributesRequest } from "@nmshd/connector-sdk"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
+import { FileDTO, LocalAttributeDTO, RelationshipDTO, RelationshipStatus } from "@nmshd/runtime-types"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint.js"
@@ -31,19 +24,19 @@ export class ConnectorTUIBase {
     this.identityDeletionProcessEndpoint = new IdentityDeletionProcessEndpoint(this.connectorClient.account["httpClient"])
   }
 
-  protected async selectRelationship(prompt: string, ...status: ConnectorRelationshipStatus[]): Promise<ConnectorRelationship | undefined> {
-    if (status.length === 0) status.push(ConnectorRelationshipStatus.Active)
+  protected async selectRelationship(prompt: string, ...status: RelationshipStatus[]): Promise<RelationshipDTO | undefined> {
+    if (status.length === 0) status.push(RelationshipStatus.Active)
 
     const choices = await this.getRelationshipChoices(status, true)
     if (!choices) return
 
     const recipientsResult = await prompts({ message: prompt, type: "select", name: "recipient", choices })
 
-    return recipientsResult.recipient as ConnectorRelationship | undefined
+    return recipientsResult.recipient as RelationshipDTO | undefined
   }
 
-  protected async selectRelationships(prompt: string, ...status: ConnectorRelationshipStatus[]): Promise<string[] | undefined> {
-    if (status.length === 0) status.push(ConnectorRelationshipStatus.Active)
+  protected async selectRelationships(prompt: string, ...status: RelationshipStatus[]): Promise<string[] | undefined> {
+    if (status.length === 0) status.push(RelationshipStatus.Active)
 
     const choices = await this.getRelationshipChoices(status, false)
     if (!choices) return
@@ -59,7 +52,7 @@ export class ConnectorTUIBase {
     return recipients
   }
 
-  private async getRelationshipChoices(status: ConnectorRelationshipStatus[], returnRelationship: boolean) {
+  private async getRelationshipChoices(status: RelationshipStatus[], returnRelationship: boolean) {
     const relationshipsResult = await this.connectorClient.relationships.getRelationships({ status })
     if (relationshipsResult.isError) {
       console.error(relationshipsResult.error)
@@ -75,7 +68,7 @@ export class ConnectorTUIBase {
     return choices
   }
 
-  private async renderRelationship(relationship: ConnectorRelationship, returnRelationship: boolean): Promise<prompts.Choice> {
+  private async renderRelationship(relationship: RelationshipDTO, returnRelationship: boolean): Promise<prompts.Choice> {
     const value = returnRelationship ? relationship : relationship.peer
     const response = await this.connectorClient.relationships.getAttributesForRelationship(relationship.id)
     const relationshipAttributes = response.result.filter((a) => a.content.owner === relationship.peer)
@@ -98,20 +91,20 @@ export class ConnectorTUIBase {
     return { title: relationship.peer, value }
   }
 
-  protected async selectFile(prompt: string): Promise<ConnectorFile | undefined> {
+  protected async selectFile(prompt: string): Promise<FileDTO | undefined> {
     const choices = await this.getFileChoices()
     if (!choices) return
 
     const result = await prompts({ message: prompt, type: "select", name: "file", choices })
-    return result.file as ConnectorFile | undefined
+    return result.file as FileDTO | undefined
   }
 
-  protected async selectFiles(prompt: string): Promise<ConnectorFile[] | undefined> {
+  protected async selectFiles(prompt: string): Promise<FileDTO[] | undefined> {
     const choices = await this.getFileChoices()
     if (!choices) return
 
     const result = await prompts({ message: prompt, type: "multiselect", name: "files", choices })
-    return result.files as ConnectorFile[] | undefined
+    return result.files as FileDTO[] | undefined
   }
 
   private async getFileChoices(): Promise<prompts.Choice[] | undefined> {
@@ -128,16 +121,16 @@ export class ConnectorTUIBase {
     return files.map((f) => this.renderFile(f))
   }
 
-  private renderFile(file: ConnectorFile): prompts.Choice {
+  private renderFile(file: FileDTO): prompts.Choice {
     return { title: file.title, value: file }
   }
 
-  protected async selectAttribute(prompt: string, query?: GetAttributesRequest): Promise<ConnectorAttribute | undefined> {
+  protected async selectAttribute(prompt: string, query?: GetAttributesRequest): Promise<LocalAttributeDTO | undefined> {
     const choices = await this.getAttributeChoices(query)
     if (!choices) return
 
     const attributesResult = await prompts({ message: prompt, type: "select", name: "attribute", choices })
-    return attributesResult.attribute as ConnectorAttribute | undefined
+    return attributesResult.attribute as LocalAttributeDTO | undefined
   }
 
   private async getAttributeChoices(query?: GetAttributesRequest) {
@@ -158,7 +151,7 @@ export class ConnectorTUIBase {
     return choices
   }
 
-  private renderAttribute(attribute: ConnectorAttribute): prompts.Choice {
+  private renderAttribute(attribute: LocalAttributeDTO): prompts.Choice {
     const attributeValueType = attribute.content.value["@type"]
 
     const attributeValue = "value" in attribute.content.value ? attribute.content.value.value : JSON.stringify(attribute.content.value)
