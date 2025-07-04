@@ -1,4 +1,4 @@
-import { ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
+import { RelationshipStatus } from "@nmshd/runtime-types"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddDecomposeRelationship<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
@@ -11,7 +11,7 @@ export function AddDecomposeRelationship<TBase extends ConnectorTUIBaseConstruct
     protected async decomposeRelationship() {
       await this.connectorClient.account.sync()
 
-      const relationship = await this.selectRelationship("Select relationship to decompose", ConnectorRelationshipStatus.Terminated, ConnectorRelationshipStatus.DeletionProposed)
+      const relationship = await this.selectRelationship("Select relationship to decompose", RelationshipStatus.Terminated, RelationshipStatus.DeletionProposed)
       if (!relationship) return
 
       console.log(`Decomposing relationship ${relationship.id}`)

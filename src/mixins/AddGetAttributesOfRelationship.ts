@@ -1,4 +1,4 @@
-import { ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
+import { RelationshipStatus } from "@nmshd/runtime-types"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddGetAttributesOfRelationship<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
@@ -11,10 +11,10 @@ export function AddGetAttributesOfRelationship<TBase extends ConnectorTUIBaseCon
     protected async getAttributesOfRelationship() {
       const relationship = await this.selectRelationship(
         "From which relationship do you want to get the attributes?",
-        ConnectorRelationshipStatus.Active,
-        ConnectorRelationshipStatus.Pending,
-        ConnectorRelationshipStatus.Terminated,
-        ConnectorRelationshipStatus.DeletionProposed
+        RelationshipStatus.Active,
+        RelationshipStatus.Pending,
+        RelationshipStatus.Terminated,
+        RelationshipStatus.DeletionProposed
       )
       if (!relationship) return console.log("No recipient selected")
 

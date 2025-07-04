@@ -1,4 +1,4 @@
-import { ConnectorRelationshipStatus } from "@nmshd/connector-sdk"
+import { RelationshipStatus } from "@nmshd/runtime-types"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
@@ -20,7 +20,7 @@ export function AddAcceptPendingRelationships<TBase extends ConnectorTUIBaseCons
         await this.connectorClient.account.sync()
       }
 
-      const pendingRelationships = (await this.connectorClient.relationships.getRelationships({ status: ConnectorRelationshipStatus.Pending })).result
+      const pendingRelationships = (await this.connectorClient.relationships.getRelationships({ status: RelationshipStatus.Pending })).result
 
       for (const relationship of pendingRelationships) {
         console.log(`Accepting relationship ${relationship.id}`)

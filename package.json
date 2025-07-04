@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@nmshd/connector-sdk": "^6.32.1",
+    "@nmshd/runtime-types": "^6.60.2",
     "axios": "^1.10.0",
     "chalk": "^5.4.1",
     "dotenv": "^17.0.1",
