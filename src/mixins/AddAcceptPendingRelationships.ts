@@ -1,4 +1,4 @@
-import { RelationshipStatus } from "@nmshd/runtime-types"
+import { RelationshipStatus } from "@nmshd/connector-sdk"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 

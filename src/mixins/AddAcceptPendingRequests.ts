@@ -1,6 +1,5 @@
-import { DecideRequestItem, DecideRequestItemGroup } from "@nmshd/connector-sdk"
+import { DecideRequestItem, DecideRequestItemGroup, LocalRequestStatus } from "@nmshd/connector-sdk"
 import { RequestItemGroupJSON } from "@nmshd/content"
-import { LocalRequestStatus } from "@nmshd/runtime-types"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"

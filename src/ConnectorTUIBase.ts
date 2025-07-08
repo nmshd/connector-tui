@@ -1,6 +1,5 @@
-import { ConnectorClient, ConnectorSupportInformation, GetAttributesRequest } from "@nmshd/connector-sdk"
+import { ConnectorClient, ConnectorSupportInformation, FileDTO, GetAttributesRequest, LocalAttributeDTO, RelationshipDTO, RelationshipStatus } from "@nmshd/connector-sdk"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
-import { FileDTO, LocalAttributeDTO, RelationshipDTO, RelationshipStatus } from "@nmshd/runtime-types"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint.js"
