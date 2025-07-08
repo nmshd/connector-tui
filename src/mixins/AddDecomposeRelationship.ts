@@ -1,4 +1,4 @@
-import { RelationshipStatus } from "@nmshd/runtime-types"
+import { RelationshipStatus } from "@nmshd/connector-sdk"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
 export function AddDecomposeRelationship<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {

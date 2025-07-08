@@ -28,8 +28,7 @@
     "watch": "node --watch --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/run.ts"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^6.33.1",
-    "@nmshd/runtime-types": "^6.60.4",
+    "@nmshd/connector-sdk": "^6.33.2",
     "axios": "^1.10.0",
     "chalk": "^5.4.1",
     "dotenv": "^17.1.0",
