@@ -22,7 +22,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements Connecto
 
     await this.#showStartupMessage(connectorVersionInfo)
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
       const activeIdentityDeletionProcess = this.isDebugMode() ? await this.identityDeletionProcessEndpoint.getActiveIdentityDeletionProcess() : undefined
 

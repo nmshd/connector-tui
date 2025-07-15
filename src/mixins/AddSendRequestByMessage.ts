@@ -31,7 +31,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
 
       const requestItems: (RequestItemJSON | RequestItemGroupJSON)[] = []
 
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition,no-constant-condition
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (true) {
         const whatRequest = await prompts({
           message: "What kind of request do you want to send?",
