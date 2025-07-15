@@ -38,14 +38,14 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@js-soft/eslint-config-ts": "^1.6.14",
+    "@js-soft/eslint-config-ts": "^2.0.1",
     "@js-soft/license-check": "^1.0.9",
     "@types/luxon": "^3.6.2",
     "@types/node": "^22.16.3",
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/yargs": "^17.0.33",
-    "eslint": "^8.57.1",
+    "eslint": "^9.31.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
