@@ -3,10 +3,8 @@ import {
   ConsentRequestItemJSON,
   CreateAttributeRequestItemJSON,
   FormFieldRequestItemJSON,
-  FreeTextRequestItemJSON,
   ProposeAttributeRequestItemJSON,
   ReadAttributeRequestItemJSON,
-  RegisterAttributeListenerRequestItemJSON,
   RelationshipAttributeConfidentiality,
   RequestItemGroupJSON,
   RequestItemJSON,
@@ -75,20 +73,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createConsentRequestItem.bind(this),
             },
             {
-              title: "RegisterAttributeListenerRequestItem",
-              value: this.createRegisterAttributeListenerRequestItem.bind(this),
-            },
-            {
               title: "AuthenticationRequestItem",
               value: this.createAuthenticationRequestItem.bind(this),
             },
             {
               title: "FormFieldRequestItem",
               value: this.createFormFieldRequestItem.bind(this),
-            },
-            {
-              title: "FreeTextRequestItem",
-              value: this.createFreeTextRequestItem.bind(this),
             },
             {
               title: "ShareAttributeRequestItem",
@@ -607,9 +597,9 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           initial: true,
         },
         {
-          message: "Do you want to require a manual decision?",
+          message: "Do you want to require a manual interaction?",
           type: "confirm",
-          name: "requireManualDecision",
+          name: "requiresInteraction",
           initial: false,
         },
         {
@@ -635,33 +625,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: ConsentRequestItemJSON = {
         "@type": "ConsentRequestItem",
         mustBeAccepted: result.mustBeAccepted,
-        requireManualDecision: result.requireManualDecision,
+        requiresInteraction: result.requiresInteraction,
         consent: result.consent,
         description: result.description,
         link: result.link,
         linkDisplayText: result.link ? result.linkDisplayText : undefined,
         metadata: result.responseMetadata,
-      }
-
-      return requestItem
-    }
-
-    private async createRegisterAttributeListenerRequestItem() {
-      const result = await prompts([
-        {
-          message: "What's the attribute type you would like to query?",
-          type: "text",
-          name: "attributeType",
-        },
-      ])
-
-      const requestItem: RegisterAttributeListenerRequestItemJSON = {
-        "@type": "RegisterAttributeListenerRequestItem",
-        mustBeAccepted: true,
-        query: {
-          "@type": "IdentityAttributeQuery",
-          valueType: result.attributeType,
-        },
       }
 
       return requestItem
@@ -973,24 +942,6 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       return requestItem
     }
 
-    private async createFreeTextRequestItem() {
-      const result = await prompts([
-        {
-          message: "Enter a free text",
-          type: "text",
-          name: "freeText",
-        },
-      ])
-
-      const requestItem: FreeTextRequestItemJSON = {
-        "@type": "FreeTextRequestItem",
-        mustBeAccepted: true,
-        freeText: result.freeText,
-      }
-
-      return requestItem
-    }
-
     private async createShareAttributeRequestItem() {
       const query = { content: { "@type": "IdentityAttribute", owner: this.connectorAddress }, shareInfo: { peer: "!" }, succeededBy: "!" }
 
@@ -1011,17 +962,14 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const file = await this.selectFile("The ownership of which File do you want to transfer?")
       if (!file) return
 
-      const result = await prompts({
-        name: "requireManualDecision",
-        message: "Do you want to require a manual decision?",
-        initial: false,
-        type: "confirm",
-      })
+      if (!file.ownershipToken) {
+        console.log("The selected file does not have an ownership token, so it cannot be transferred.")
+        return
+      }
 
       const requestItem: TransferFileOwnershipRequestItemJSON = {
         "@type": "TransferFileOwnershipRequestItem",
         mustBeAccepted: true,
-        requireManualDecision: result.requireManualDecision,
         fileReference: file.reference.truncated,
         ownershipToken: file.ownershipToken,
       }

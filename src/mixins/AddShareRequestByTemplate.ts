@@ -100,31 +100,11 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
     }
 
     private async getOrCreateConnectorDisplayName(displayName: string) {
-      const response = await this.connectorClient.attributes.getValidAttributes({
-        content: {
-          owner: this.connectorAddress,
-          value: {
-            "@type": "DisplayName",
-          },
-        },
-        shareInfo: {
-          peer: "!",
-        },
-      })
+      const response = await this.connectorClient.attributes.getOwnRepositoryAttributes({ "content.value.@type": "DisplayName" })
 
-      if (response.result.length > 0) {
-        return response.result[0]
-      }
+      if (response.result.length > 0) return response.result[0]
 
-      const createAttributeResponse = await this.connectorClient.attributes.createRepositoryAttribute({
-        content: {
-          value: {
-            "@type": "DisplayName",
-            value: displayName,
-          },
-        },
-      })
-
+      const createAttributeResponse = await this.connectorClient.attributes.createRepositoryAttribute({ content: { value: { "@type": "DisplayName", value: displayName } } })
       return createAttributeResponse.result
     }
 
