@@ -59,7 +59,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements Connecto
     if (connectorVersionInfo.version === "{{version}}") return connectorVersionInfo
 
     if (!connectorVersionInfo.version.startsWith("7.")) {
-      console.log(`This TUI is made for enmeshed V6 connectors (starting with version 6.0.0 of the connector). Current version: ${connectorVersionInfo.version}`)
+      console.log(`This TUI is made for enmeshed V7 connectors (starting with version 7.0.0 of the connector). Current version: ${connectorVersionInfo.version}`)
 
       return
     }
