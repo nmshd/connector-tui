@@ -1,4 +1,4 @@
-import { ConnectorClient } from "@nmshd/connector-sdk"
+import { ApiKeyAuthenticator, ConnectorClient } from "@nmshd/connector-sdk"
 import { ConnectorVersionInfo } from "@nmshd/connector-sdk/dist/types/monitoring"
 import chalk from "chalk"
 import { readFile } from "fs/promises"
@@ -9,7 +9,7 @@ import { ConnectorTUIBaseWithMixins } from "./mixins/index.js"
 
 export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements ConnectorTUIInterface {
   public static async create(baseUrl: string, apiKey: string) {
-    const client = ConnectorClient.create({ baseUrl, apiKey })
+    const client = ConnectorClient.create({ baseUrl, authenticator: new ApiKeyAuthenticator(apiKey) })
     const address = (await client.account.getIdentityInfo()).result.address
     const support = await client.monitoring.getSupport()
 
