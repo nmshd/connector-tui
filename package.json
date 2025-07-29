@@ -40,7 +40,7 @@
   "devDependencies": {
     "@js-soft/eslint-config-ts": "^2.0.1",
     "@js-soft/license-check": "^1.0.9",
-    "@types/luxon": "^3.6.2",
+    "@types/luxon": "^3.7.0",
     "@types/node": "^22.16.5",
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
