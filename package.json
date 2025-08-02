@@ -38,7 +38,7 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@js-soft/eslint-config-ts": "^2.0.1",
+    "@js-soft/eslint-config-ts": "^2.0.2",
     "@js-soft/license-check": "^1.0.9",
     "@types/luxon": "^3.7.1",
     "@types/node": "^22.17.0",
