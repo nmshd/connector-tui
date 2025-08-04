@@ -30,7 +30,7 @@
   "dependencies": {
     "@nmshd/connector-sdk": "^6.36.1",
     "axios": "^1.11.0",
-    "chalk": "^5.4.1",
+    "chalk": "^5.5.0",
     "dotenv": "^17.2.1",
     "luxon": "^3.7.1",
     "prompts": "^2.4.2",
@@ -48,7 +48,7 @@
     "eslint": "^9.32.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "engines": {
     "node": ">=22.18.0"
