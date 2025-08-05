@@ -28,9 +28,9 @@
     "watch": "node --watch --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/run.ts"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^7.0.0-alpha.20",
+    "@nmshd/connector-sdk": "^7.0.0-alpha.21",
     "axios": "^1.11.0",
-    "chalk": "^5.4.1",
+    "chalk": "^5.5.0",
     "dotenv": "^17.2.1",
     "luxon": "^3.7.1",
     "prompts": "^2.4.2",
@@ -38,20 +38,20 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@js-soft/eslint-config-ts": "^2.0.1",
+    "@js-soft/eslint-config-ts": "^2.0.3",
     "@js-soft/license-check": "^1.0.9",
-    "@types/luxon": "^3.6.2",
-    "@types/node": "^22.16.5",
+    "@types/luxon": "^3.7.1",
+    "@types/node": "^24.2.0",
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/yargs": "^17.0.33",
-    "eslint": "^9.31.0",
+    "eslint": "^9.32.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "engines": {
-    "node": ">=22.17.1"
+    "node": ">=22.18.0"
   },
   "publishConfig": {
     "access": "public",
