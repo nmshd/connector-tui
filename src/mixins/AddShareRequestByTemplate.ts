@@ -103,9 +103,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
       const response = await this.connectorClient.attributes.getOwnRepositoryAttributes({ "content.value.@type": "DisplayName" })
       const displayNameWithValue = response.result.find((attr) => attr.content.value["@type"] === "DisplayName" && attr.content.value.value === displayName)
 
-      if (response.result.length > 0) {
-        return response.result[0]
-      }
+      if (displayNameWithValue) return displayNameWithValue
 
       const createAttributeResponse = await this.connectorClient.attributes.createRepositoryAttribute({
         content: {
