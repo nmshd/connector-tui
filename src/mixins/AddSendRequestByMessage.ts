@@ -274,8 +274,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
         {
           message: "Who is the owner of the RelationshipAttribute?",
-          type: "text",
+          type: "select",
           name: "owner",
+          choices: [
+            { title: "The other side or a third party", value: "" },
+            { title: "The recipient", value: "recipient" },
+            { title: "The third party", value: "thirdParty" },
+          ],
         },
         {
           message: "What are the third party addresses? (comma-separated)",
