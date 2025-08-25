@@ -2,7 +2,7 @@ import chalk from "chalk"
 import { DateTime } from "luxon"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
-import { IdentityDeletionProcess } from "../IdentityDeletionProcessEndpoint.js"
+import { IdentityDeletionProcess } from "../client/IdentityDeletionProcessEndpoint.js"
 
 export function AddIdentityDeletionProcess<TBase extends ConnectorTUIBaseConstructor>(Base: TBase) {
   return class IdentityDeletionProcessHandler extends Base {
@@ -19,7 +19,7 @@ export function AddIdentityDeletionProcess<TBase extends ConnectorTUIBaseConstru
     protected async identityDeletionProcess() {
       const choices = []
 
-      const activeIdentityDeletionProcess = await this.identityDeletionProcessEndpoint.getActiveIdentityDeletionProcess()
+      const activeIdentityDeletionProcess = await this.connectorClient.identityDeletionProcess.getActiveIdentityDeletionProcess()
 
       if (activeIdentityDeletionProcess.isSuccess) {
         choices.push({ title: "Show IdentityDeletionProcess", value: "Show" })
@@ -60,7 +60,7 @@ export function AddIdentityDeletionProcess<TBase extends ConnectorTUIBaseConstru
 
       const oneSecondInDays = 1 / (24 * 60 * 60)
       const lengthOfGracePeriodInDays = confirmation["IdentityDeletionProcess grace period"] ? oneSecondInDays : undefined
-      const identityDeletionProcess = (await this.identityDeletionProcessEndpoint.initiateIdentityDeletionProcess(lengthOfGracePeriodInDays)).result
+      const identityDeletionProcess = (await this.connectorClient.identityDeletionProcess.initiateIdentityDeletionProcess(lengthOfGracePeriodInDays)).result
 
       console.log("Identity Deletion Process initiated.")
 
@@ -68,7 +68,7 @@ export function AddIdentityDeletionProcess<TBase extends ConnectorTUIBaseConstru
     }
 
     protected async cancelIdentityDeletionProcess() {
-      const identityDeletionProcess = (await this.identityDeletionProcessEndpoint.cancelIdentityDeletionProcess()).result
+      const identityDeletionProcess = (await this.connectorClient.identityDeletionProcess.cancelIdentityDeletionProcess()).result
       console.log("Identity Deletion Process canceled.")
 
       this.showIdentityDeletionProcesses(identityDeletionProcess)
