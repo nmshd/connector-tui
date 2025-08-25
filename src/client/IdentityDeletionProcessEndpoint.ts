@@ -1,5 +1,4 @@
-import { ConnectorHttpResponse } from "@nmshd/connector-sdk"
-import { Endpoint } from "@nmshd/connector-sdk/dist/endpoints/Endpoint.js"
+import { ConnectorHttpResponse, Endpoint } from "@nmshd/connector-sdk"
 
 export enum IdentityDeletionProcessStatus {
   WaitingForApproval = "WaitingForApproval",

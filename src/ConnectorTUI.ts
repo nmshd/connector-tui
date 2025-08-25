@@ -1,15 +1,16 @@
-import { ApiKeyAuthenticator, ConnectorClient } from "@nmshd/connector-sdk"
+import { ApiKeyAuthenticator } from "@nmshd/connector-sdk"
 import { ConnectorVersionInfo } from "@nmshd/connector-sdk/dist/types/monitoring"
 import chalk from "chalk"
 import { readFile } from "fs/promises"
 import { DateTime } from "luxon"
 import prompts from "prompts"
+import { ConnectorClient } from "./client/ConnectorClient.js"
 import type { ConnectorTUI as ConnectorTUIInterface } from "./index.d.js"
 import { ConnectorTUIBaseWithMixins } from "./mixins/index.js"
 
 export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements ConnectorTUIInterface {
   public static async create(baseUrl: string, apiKey: string) {
-    const client = ConnectorClient.create({ baseUrl, authenticator: new ApiKeyAuthenticator(apiKey) })
+    const client = new ConnectorClient({ baseUrl, authenticator: new ApiKeyAuthenticator(apiKey) })
     const address = (await client.account.getIdentityInfo()).result.address
     const support = await client.monitoring.getSupport()
 
@@ -24,7 +25,7 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements Connecto
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
-      const activeIdentityDeletionProcess = this.isDebugMode() ? await this.identityDeletionProcessEndpoint.getActiveIdentityDeletionProcess() : undefined
+      const activeIdentityDeletionProcess = this.isDebugMode() ? await this.connectorClient.identityDeletionProcess.getActiveIdentityDeletionProcess() : undefined
 
       if (activeIdentityDeletionProcess?.isSuccess && activeIdentityDeletionProcess.result.status === "Approved") {
         const gracePeriodEndsAtDateTime = DateTime.fromISO(activeIdentityDeletionProcess.result.gracePeriodEndsAt!)

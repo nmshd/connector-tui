@@ -1,8 +1,8 @@
-import { ConnectorClient, ConnectorSupportInformation, FileDTO, GetAttributesRequest, LocalAttributeDTO, RelationshipDTO, RelationshipStatus } from "@nmshd/connector-sdk"
+import { ConnectorSupportInformation, FileDTO, GetAttributesRequest, LocalAttributeDTO, RelationshipDTO, RelationshipStatus } from "@nmshd/connector-sdk"
 import { DisplayNameJSON, GivenNameJSON, SurnameJSON } from "@nmshd/content"
 import { DateTime } from "luxon"
 import prompts from "prompts"
-import { IdentityDeletionProcessEndpoint } from "./IdentityDeletionProcessEndpoint.js"
+import { ConnectorClient } from "./client/ConnectorClient.js"
 
 export type ConnectorTUIBaseConstructor = new (...args: any[]) => ConnectorTUIBase
 
@@ -13,15 +13,12 @@ export interface ConnectorTUIChoice extends prompts.Choice {
 export class ConnectorTUIBase {
   protected choices: ConnectorTUIChoice[] = []
   protected choicesInDeletion: ConnectorTUIChoice[] = []
-  protected identityDeletionProcessEndpoint: IdentityDeletionProcessEndpoint
 
   public constructor(
     protected connectorClient: ConnectorClient,
     protected connectorAddress: string,
     protected support: ConnectorSupportInformation
-  ) {
-    this.identityDeletionProcessEndpoint = new IdentityDeletionProcessEndpoint(this.connectorClient.account["httpClient"])
-  }
+  ) {}
 
   protected async selectRelationship(prompt: string, ...status: RelationshipStatus[]): Promise<RelationshipDTO | undefined> {
     if (status.length === 0) status.push(RelationshipStatus.Active)
