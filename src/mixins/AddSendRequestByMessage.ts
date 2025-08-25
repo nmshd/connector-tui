@@ -201,16 +201,22 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           name: "attributeType",
         },
         {
+          message: "What's the description of the RequestItem?",
+          type: "text",
+          name: "requestItemDescription",
+          format: (value: string) => (value === "" ? undefined : value),
+        },
+        {
           message: "What's the title of the RelationshipAttribute?",
           type: "text",
           name: "attributeTitle",
-          initial: "Attribute Title",
+          format: (value: string) => (value === "" ? undefined : value),
         },
         {
           message: "What's the description of the RelationshipAttribute?",
           type: "text",
           name: "attributeDescription",
-          initial: "Attribute Title",
+          format: (value: string) => (value === "" ? undefined : value),
         },
         {
           message: "What's the key of the attribute you would like to query?",
@@ -223,18 +229,20 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "select",
           name: "owner",
           choices: [
-            { title: "The other side or a third party", value: "" },
-            { title: "The other side", value: "recipient" },
-            { title: "A third party", value: "thirdParty" },
+            { title: "Yourself", value: "yourself" },
+            { title: "The recipient", value: "" },
           ],
         },
       ])
 
       const title = result.attributeTitle ?? `A ${result.attributeType} attribute`
 
+      if (result.owner === "yourself") result.owner = this.connectorAddress
+
       const requestItem: ReadAttributeRequestItemJSON = {
         "@type": "ReadAttributeRequestItem",
         mustBeAccepted: true,
+        description: result.requestItemDescription,
         query: {
           "@type": "RelationshipAttributeQuery",
           owner: result.owner ?? "",
@@ -266,8 +274,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         },
         {
           message: "Who is the owner of the RelationshipAttribute?",
-          type: "text",
+          type: "select",
           name: "owner",
+          choices: [
+            { title: "The recipient or the third party", value: "" },
+            { title: "The recipient", value: "recipient" },
+            { title: "The third party", value: "thirdParty" },
+          ],
         },
         {
           message: "What are the third party addresses? (comma-separated)",
