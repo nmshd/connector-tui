@@ -344,6 +344,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           queryString: result.queryString,
           attributeCreationHints: {
             valueType: result.valueType,
+            tags: result.tags.length > 0 ? result.tags : undefined,
           },
         },
       }
