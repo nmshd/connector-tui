@@ -324,6 +324,16 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "text",
           name: "valueType",
         },
+        {
+          message: "Type in the comma separated tags for the IQL query",
+          type: "text",
+          format: (value: string) =>
+            value
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter((tag) => tag.length > 0),
+          name: "tags",
+        },
       ])
 
       const requestItem: ReadAttributeRequestItemJSON = {
