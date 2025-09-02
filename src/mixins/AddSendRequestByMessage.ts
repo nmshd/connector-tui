@@ -324,6 +324,16 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "text",
           name: "valueType",
         },
+        {
+          message: "Type in the comma separated tags the fallback attribute should have",
+          type: "text",
+          format: (value: string) =>
+            value
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter((tag) => tag.length > 0),
+          name: "tags",
+        },
       ])
 
       const requestItem: ReadAttributeRequestItemJSON = {
@@ -334,6 +344,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           queryString: result.queryString,
           attributeCreationHints: {
             valueType: result.valueType,
+            tags: result.tags.length > 0 ? result.tags : undefined,
           },
         },
       }
@@ -456,6 +467,16 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "text",
           name: "value",
         },
+        {
+          message: "Type in the comma separated tags your proposed attribute or created attributes should have",
+          type: "text",
+          format: (value: string) =>
+            value
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter((tag) => tag.length > 0),
+          name: "tags",
+        },
       ])
 
       const requestItem: ProposeAttributeRequestItemJSON = {
@@ -464,6 +485,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
         query: {
           "@type": "IQLQuery",
           queryString: result.queryString,
+          attributeCreationHints: {
+            valueType: result.attributeType,
+            tags: result.tags.length > 0 ? result.tags : undefined,
+          },
         },
         attribute: {
           "@type": "IdentityAttribute",
@@ -472,6 +497,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             "@type": result.attributeType,
             value: result.value,
           },
+          tags: result.tags.length > 0 ? result.tags : undefined,
         },
       }
 
