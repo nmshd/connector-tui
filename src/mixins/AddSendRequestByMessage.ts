@@ -325,7 +325,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           name: "valueType",
         },
         {
-          message: "Type in the comma separated tags for the IQL query",
+          message: "Type in the comma separated tags the fallback attribute should have",
           type: "text",
           format: (value: string) =>
             value
