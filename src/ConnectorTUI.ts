@@ -1,3 +1,4 @@
+import { ApiKeyAuthenticator } from "@nmshd/connector-sdk"
 import { ConnectorVersionInfo } from "@nmshd/connector-sdk/dist/types/monitoring"
 import chalk from "chalk"
 import { readFile } from "fs/promises"
@@ -9,7 +10,7 @@ import { ConnectorTUIBaseWithMixins } from "./mixins/index.js"
 
 export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements ConnectorTUIInterface {
   public static async create(baseUrl: string, apiKey: string) {
-    const client = new ConnectorClient({ baseUrl, apiKey })
+    const client = new ConnectorClient({ baseUrl, authenticator: new ApiKeyAuthenticator(apiKey) })
     const address = (await client.account.getIdentityInfo()).result.address
     const support = await client.monitoring.getSupport()
 
@@ -58,8 +59,8 @@ export class ConnectorTUI extends ConnectorTUIBaseWithMixins implements Connecto
     // allow connector in debugging mode to be used
     if (connectorVersionInfo.version === "{{version}}") return connectorVersionInfo
 
-    if (!connectorVersionInfo.version.startsWith("6.")) {
-      console.log(`This TUI is made for enmeshed V6 connectors (starting with version 6.0.0 of the connector). Current version: ${connectorVersionInfo.version}`)
+    if (!connectorVersionInfo.version.startsWith("7.")) {
+      console.log(`This TUI is made for enmeshed V7 connectors (starting with version 7.0.0 of the connector). Current version: ${connectorVersionInfo.version}`)
 
       return
     }

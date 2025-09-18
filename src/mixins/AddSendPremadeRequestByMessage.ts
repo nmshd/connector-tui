@@ -365,7 +365,6 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               {
                 "@type": "ConsentRequestItem",
                 mustBeAccepted: true,
-                title: "Bestätigung",
                 consent: "Ich bestätige hiermit die Richtigkeit und Vollständigkeit meiner Angaben.",
               },
             ],

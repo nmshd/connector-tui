@@ -23,14 +23,14 @@ export interface IdentityDeletionProcess {
 
 export class IdentityDeletionProcessEndpoint extends Endpoint {
   public async initiateIdentityDeletionProcess(lengthOfGracePeriodInDays?: number): Promise<ConnectorHttpResponse<IdentityDeletionProcess>> {
-    return await this.post("/api/v2/IdentityDeletionProcess", undefined, 200, { lengthOfGracePeriodInDays })
+    return await this.post("/api/core/v1/IdentityDeletionProcess", undefined, 200, { lengthOfGracePeriodInDays })
   }
 
   public async getActiveIdentityDeletionProcess(): Promise<ConnectorHttpResponse<IdentityDeletionProcess>> {
-    return await this.get("/api/v2/IdentityDeletionProcess")
+    return await this.get("/api/core/v1/IdentityDeletionProcess")
   }
 
   public async cancelIdentityDeletionProcess(): Promise<ConnectorHttpResponse<IdentityDeletionProcess>> {
-    return await this.delete("/api/v2/IdentityDeletionProcess", undefined, 200)
+    return await this.delete("/api/core/v1/IdentityDeletionProcess", undefined, 200)
   }
 }
