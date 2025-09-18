@@ -270,7 +270,7 @@ Selbstverständlich unterliegen alle Ihre Angaben der
                     "Sterilisation des Partners",
                     "Pflaster",
                     "Kondom",
-                    "Kuperspirale",
+                    "Kupferspirale",
                     "Nuvaring",
                     "Pille",
                   ],
@@ -280,6 +280,7 @@ Selbstverständlich unterliegen alle Ihre Angaben der
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
                 title: "Name der Pille",
+                description: "Wenn Sie mit der Pille verhüten, tragen Sie hier bitte den Namen ein.",
                 settings: { "@type": "StringFormFieldSettings" },
               },
             ],
@@ -292,7 +293,7 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               {
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
-                title: "Wie lange dauert Ihr Zyklus?",
+                title: "Haben oder hatten Sie eine der folgenden Erkrankungen oder Infektionen?",
                 settings: {
                   "@type": "SelectionFormFieldSettings",
                   allowMultipleSelection: true,
@@ -339,15 +340,15 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               {
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
-                title: "Wie empfanden Sie Ihren letzten Besuch in unserer Praxis?",
-                description: "Vergeben Sie bis zu 5 Sterne, ein Stern bedeutet unzureichend und 5 Sterne bedeuten äußerst umfangreich.",
+                title: "Wie zufrieden waren Sie mit dem Ablauf der Terminvereinbarung?",
+                description: "Vergeben Sie bis zu 5 Sterne, ein Stern bedeutet sehr unzufrieden, 5 Sterne vollstens zufrieden.",
                 settings: { "@type": "RatingFormFieldSettings", maxRating: 5 },
               },
               {
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
                 title: "Wie haben Sie von unserer Praxis erfahren?",
-                settings: { "@type": "SelectionFormFieldSettings", options: ["Hausarzt", "Internet", "von Bekannten", "zufällig", "Sonstiges"] },
+                settings: { "@type": "SelectionFormFieldSettings", options: ["Hausarzt", "Internet", "von Bekannten", "zufällig", "sonstiges"] },
               },
               {
                 "@type": "FormFieldRequestItem",
@@ -358,7 +359,7 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               {
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: true,
-                title: "Falls nötig bin ich damit inverstanden, dass Arztberichte an meine behandelnden Ärzte geschickt werden.",
+                title: "Falls nötig bin ich damit einverstanden, dass Arztberichte an meine behandelnden Ärzte geschickt werden.",
                 settings: { "@type": "BooleanFormFieldSettings" },
               },
               {
