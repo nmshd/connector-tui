@@ -78,51 +78,33 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               {
                 "@type": "ReadAttributeRequestItem",
                 mustBeAccepted: true,
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "GivenName",
-                },
+                query: { "@type": "IdentityAttributeQuery", valueType: "GivenName" },
               },
               {
                 "@type": "ReadAttributeRequestItem",
                 mustBeAccepted: true,
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "Surname",
-                },
+                query: { "@type": "IdentityAttributeQuery", valueType: "Surname" },
               },
               {
                 "@type": "ReadAttributeRequestItem",
                 mustBeAccepted: false,
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "StreetAddress",
-                },
+                query: { "@type": "IdentityAttributeQuery", valueType: "StreetAddress" },
               },
               {
                 "@type": "ReadAttributeRequestItem",
                 mustBeAccepted: false,
-                description: "Geben Sie eine Festnetz- oder Mobilfunknummer an. Terminbestätigungen werden an diese Nummer versendet.",
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "PhoneNumber",
-                },
+                description: "Geben Sie eine Festnetz- oder Mobilfunknummer an.",
+                query: { "@type": "IdentityAttributeQuery", valueType: "PhoneNumber" },
               },
               {
                 "@type": "ReadAttributeRequestItem",
                 mustBeAccepted: false,
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "EMailAddress",
-                },
+                query: { "@type": "IdentityAttributeQuery", valueType: "EMailAddress" },
               },
               {
                 "@type": "ReadAttributeRequestItem",
                 mustBeAccepted: false,
-                query: {
-                  "@type": "IdentityAttributeQuery",
-                  valueType: "BirthDate",
-                },
+                query: { "@type": "IdentityAttributeQuery", valueType: "BirthDate" },
               },
             ],
           },
@@ -157,7 +139,7 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               },
               {
                 "@type": "FormFieldRequestItem",
-                mustBeAccepted: false,
+                mustBeAccepted: true,
                 title: "Gewicht",
                 settings: { "@type": "DoubleFormFieldSettings", unit: "kg" },
               },
@@ -196,6 +178,54 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               {
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
+                title: "Anzahl Ihrer natürlichen Geburten",
+                settings: { "@type": "IntegerFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Geburtsjahre",
+                settings: { "@type": "StringFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Anzahl Ihrer Kaiserschnitte",
+                settings: { "@type": "IntegerFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Geburtsjahre",
+                settings: { "@type": "StringFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Anzahl Ihrer Saugglocken- oder Zangengeburten",
+                settings: { "@type": "IntegerFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Geburtsjahre",
+                settings: { "@type": "StringFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Anzahl Ihrer Schwangerschaftsabbrüche",
+                settings: { "@type": "IntegerFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Jahre",
+                settings: { "@type": "StringFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
                 title: "Gab es während der Schwangerschaft oder Geburt Komplikationen?",
                 settings: { "@type": "BooleanFormFieldSettings" },
               },
@@ -203,6 +233,53 @@ Selbstverständlich unterliegen alle Ihre Angaben der
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
                 title: "Welcher Art waren die Komplikationen?",
+                settings: { "@type": "StringFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Hatten Sie jemals eine gynäkologische Operation?",
+                settings: { "@type": "BooleanFormFieldSettings" },
+              },
+            ],
+          },
+          {
+            "@type": "RequestItemGroup",
+            title: "Verhütung und Vorsorge",
+            description: "Nennen Sie uns hier Ihre Verhütungsmethoden und Ihre erfolgten Vorsorgemaßnahmen.",
+            items: [
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Wurde eine HPV-Impfung gegen Gebärmutterhalskrebs durchgeführt?",
+                settings: { "@type": "BooleanFormFieldSettings" },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Mit welcher Methode verhüten Sie?",
+                settings: {
+                  "@type": "SelectionFormFieldSettings",
+                  allowMultipleSelection: true,
+                  options: [
+                    "keine",
+                    "Verhütungsstäbchen (Implanon)",
+                    "Sterilisation",
+                    "3-Monats-Spritze",
+                    "Hormonspirae (Mirena, Jaydess)",
+                    "Sterilisation des Partners",
+                    "Pflaster",
+                    "Kondom",
+                    "Kuperspirale",
+                    "Nuvaring",
+                    "Pille",
+                  ],
+                },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Name der Pille",
                 settings: { "@type": "StringFormFieldSettings" },
               },
             ],
@@ -250,15 +327,8 @@ Selbstverständlich unterliegen alle Ihre Angaben der
           {
             "@type": "RequestItemGroup",
             title: "Abschließendes und Einwilligungen",
-            // TODO: add more to description
-            // description: "",
+            description: "Bestätigen Sie abschließend die Richtigkeit Ihrer Angaben und geben Sie uns Einwilligungen.",
             items: [
-              {
-                "@type": "FormFieldRequestItem",
-                mustBeAccepted: false,
-                title: "Wie empfanden Sie Ihren letzten Besuch in unserer Praxis?",
-                settings: { "@type": "RatingFormFieldSettings", maxRating: 5 },
-              },
               {
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
@@ -269,21 +339,33 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               {
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
+                title: "Wie empfanden Sie Ihren letzten Besuch in unserer Praxis?",
+                description: "Vergeben Sie bis zu 5 Sterne, ein Stern bedeutet unzureichend und 5 Sterne bedeuten äußerst umfangreich.",
+                settings: { "@type": "RatingFormFieldSettings", maxRating: 5 },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: false,
+                title: "Wie haben Sie von unserer Praxis erfahren?",
+                settings: { "@type": "SelectionFormFieldSettings", options: ["Hausarzt", "Internet", "von Bekannten", "zufällig", "Sonstiges"] },
+              },
+              {
+                "@type": "FormFieldRequestItem",
+                mustBeAccepted: true,
                 title: "Dürfen wir Ihnen Informationen zu unserer Praxis per E-Mail zusenden? ",
                 settings: { "@type": "BooleanFormFieldSettings" },
               },
               {
                 "@type": "FormFieldRequestItem",
-                mustBeAccepted: false,
+                mustBeAccepted: true,
                 title: "Falls nötig bin ich damit inverstanden, dass Arztberichte an meine behandelnden Ärzte geschickt werden.",
                 settings: { "@type": "BooleanFormFieldSettings" },
               },
               {
                 "@type": "ConsentRequestItem",
                 mustBeAccepted: true,
-                title: "Patientenerklärung zur Weitergabe und Einholung von medizinischen Befunden",
-                consent:
-                  "Hiermit erkläre ich, dass ich mit der Übersendung des Befundberichtes und der im Universitätsklinikum Heidelberg erhobenen Befunde an den überweisenden Arzt bzw. meinen Hausarzt und weiterbehandelnde Kolleg*innen einverstanden bin. Darüber hinaus erkläre ich mein Einverständnis zur Anforderung notwendiger Vorbefunde vorbehandelnder Kolleg*innen und Krankenhäuser.",
+                title: "Bestätigung",
+                consent: "Ich bestätige hiermit die Richtigkeit und Vollständigkeit meiner Angaben.",
               },
             ],
           },
