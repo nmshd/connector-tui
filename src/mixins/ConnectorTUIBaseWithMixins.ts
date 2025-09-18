@@ -8,6 +8,7 @@ import {
   AddGetAttributesOfRelationship,
   AddIdentityDeletionProcess,
   AddSendMail,
+  AddSendPremadeRequestByMessage,
   AddSendRequestByMessage,
   AddShareRequestByTemplate,
   AddSync,
@@ -25,13 +26,15 @@ export class ConnectorTUIBaseWithMixins
             AddAcceptPendingRequests(
               AddGetAttributesOfRelationship(
                 AddSendMail(
-                  AddSendRequestByMessage(
-                    AddShareRequestByTemplate(
-                      AddSync(
-                        AddUploadFile(
-                          AddIdentityDeletionProcess(
-                            //
-                            ConnectorTUIBase
+                  AddSendPremadeRequestByMessage(
+                    AddSendRequestByMessage(
+                      AddShareRequestByTemplate(
+                        AddSync(
+                          AddUploadFile(
+                            AddIdentityDeletionProcess(
+                              //
+                              ConnectorTUIBase
+                            )
                           )
                         )
                       )
