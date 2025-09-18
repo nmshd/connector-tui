@@ -196,7 +196,7 @@ Selbstverständlich unterliegen alle Ihre Angaben der
               {
                 "@type": "FormFieldRequestItem",
                 mustBeAccepted: false,
-                title: "Gab es während der Schwangerschaft oder Geburt Kompolikationen?",
+                title: "Gab es während der Schwangerschaft oder Geburt Komplikationen?",
                 settings: { "@type": "BooleanFormFieldSettings" },
               },
               {
