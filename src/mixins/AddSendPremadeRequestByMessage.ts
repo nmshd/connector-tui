@@ -68,6 +68,7 @@ Selbstverständlich unterliegen alle Ihre Angaben der
 
       return {
         "@type": "Request",
+        title: "Anmeldung & Anamnese",
         description,
         items: [
           {
@@ -266,7 +267,7 @@ Selbstverständlich unterliegen alle Ihre Angaben der
                     "Verhütungsstäbchen (Implanon)",
                     "Sterilisation",
                     "3-Monats-Spritze",
-                    "Hormonspirae (Mirena, Jaydess)",
+                    "Hormonspirale (Mirena, Jaydess)",
                     "Sterilisation des Partners",
                     "Pflaster",
                     "Kondom",
