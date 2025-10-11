@@ -118,7 +118,7 @@ export class ConnectorTUIBase {
   }
 
   private renderFile(file: FileDTO): prompts.Choice {
-    return { title: file.title, value: file }
+    return { title: file.title ?? file.filename, value: file }
   }
 
   protected async selectAttribute(prompt: string, query?: GetAttributesRequest): Promise<LocalAttributeDTO | undefined> {
