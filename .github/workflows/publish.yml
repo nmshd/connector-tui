@@ -23,5 +23,4 @@ jobs:
           COMMIT_HASH: ${{ github.sha }}
       - run: bash .ci/publish.sh
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           VERSION: ${{ github.ref_name }}
