@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: current
-          registry-url: https://registry.npmjs.org/
+          registry-url: https://registry.npmjs.org
       - run: bash .ci/build.sh
         env:
           BUILD_NUMBER: ${{ github.run_number }}
