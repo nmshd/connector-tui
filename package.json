@@ -28,7 +28,7 @@
     "watch": "node --watch --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/run.ts"
   },
   "dependencies": {
-    "@nmshd/connector-sdk": "^6.36.10",
+    "@nmshd/connector-sdk": "^6.36.11",
     "axios": "^1.12.2",
     "chalk": "^5.6.2",
     "dotenv": "^17.2.3",
@@ -38,8 +38,8 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@js-soft/eslint-config-ts": "^2.0.3",
-    "@js-soft/license-check": "^1.0.9",
+    "@js-soft/eslint-config-ts": "^2.0.4",
+    "@js-soft/license-check": "^1.0.10",
     "@types/luxon": "^3.7.1",
     "@types/node": "^24.7.2",
     "@types/prompts": "^2.4.9",
