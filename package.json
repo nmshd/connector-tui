@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@nmshd/connector-sdk": "^6.36.11",
-    "axios": "^1.12.2",
+    "axios": "^1.13.0",
     "chalk": "^5.6.2",
     "dotenv": "^17.2.3",
     "luxon": "^3.7.2",
