@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@nmshd/connector-sdk": "^6.36.11",
-    "axios": "^1.13.0",
+    "axios": "^1.13.1",
     "chalk": "^5.6.2",
     "dotenv": "^17.2.3",
     "luxon": "^3.7.2",
@@ -41,7 +41,7 @@
     "@js-soft/eslint-config-ts": "^2.0.4",
     "@js-soft/license-check": "^1.0.10",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^24.9.1",
+    "@types/node": "^24.9.2",
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/yargs": "^17.0.34",
@@ -51,7 +51,7 @@
     "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=22.21.0"
+    "node": ">=22.21.1"
   },
   "publishConfig": {
     "access": "public",
