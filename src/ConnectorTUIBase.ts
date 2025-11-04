@@ -143,7 +143,7 @@ export class ConnectorTUIBase {
       return
     }
 
-    const choices = await Promise.all(attributes.map((attribute) => this.renderAttribute(attribute)))
+    const choices = attributes.map((attribute) => this.renderAttribute(attribute))
     return choices
   }
 
