@@ -45,7 +45,7 @@
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/yargs": "^17.0.34",
-    "eslint": "^9.39.0",
+    "eslint": "^9.39.1",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
