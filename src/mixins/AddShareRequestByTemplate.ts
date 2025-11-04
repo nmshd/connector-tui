@@ -24,7 +24,7 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
             "@type": "ShareAttributeRequestItem",
             mustBeAccepted: true,
             attribute: displayName.content,
-            sourceAttributeId: displayName.id,
+            attributeId: displayName.id,
           },
         ],
       }
@@ -100,20 +100,11 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
     }
 
     private async getOrCreateConnectorDisplayName(displayName: string) {
-      const response = await this.connectorClient.attributes.getOwnRepositoryAttributes({ "content.value.@type": "DisplayName" })
+      const response = await this.connectorClient.attributes.getOwnIdentityAttributes({ "content.value.@type": "DisplayName" })
       const displayNameWithValue = response.result.find((attr) => attr.content.value["@type"] === "DisplayName" && attr.content.value.value === displayName)
-
       if (displayNameWithValue) return displayNameWithValue
 
-      const createAttributeResponse = await this.connectorClient.attributes.createRepositoryAttribute({
-        content: {
-          value: {
-            "@type": "DisplayName",
-            value: displayName,
-          },
-        },
-      })
-
+      const createAttributeResponse = await this.connectorClient.attributes.createOwnIdentityAttribute({ content: { value: { "@type": "DisplayName", value: displayName } } })
       return createAttributeResponse.result
     }
 
