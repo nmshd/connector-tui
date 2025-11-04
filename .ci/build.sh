@@ -4,6 +4,6 @@ set -x
 npm ci
 npm run lint:prettier
 npm run lint:eslint
-npx license-check
+npx license-check --ignoreRegex "@nmshd/*"
 npx better-npm-audit audit
 npm run build

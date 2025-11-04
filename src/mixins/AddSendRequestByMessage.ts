@@ -990,7 +990,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
       const requestItem: ShareAttributeRequestItemJSON = {
         "@type": "ShareAttributeRequestItem",
         mustBeAccepted: true,
-        sourceAttributeId: attribute.id,
+        attributeId: attribute.id,
         attribute: attribute.content,
       }
 
