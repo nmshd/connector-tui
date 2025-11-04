@@ -1,7 +1,7 @@
 {
   "name": "@nmshd/connector-tui",
   "repository": "github:nmshd/connector-tui",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "author": "j&s-soft AG",
   "type": "module",
   "main": "dist/index.js",
