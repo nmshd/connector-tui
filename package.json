@@ -41,7 +41,7 @@
     "@js-soft/eslint-config-ts": "^2.0.4",
     "@js-soft/license-check": "^1.0.10",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/yargs": "^17.0.34",
@@ -51,7 +51,7 @@
     "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=24.11.0"
+    "node": ">=24.11.1"
   },
   "publishConfig": {
     "access": "public",
