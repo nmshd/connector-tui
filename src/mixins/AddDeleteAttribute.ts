@@ -47,18 +47,6 @@ export function AddDeleteAttribute<TBase extends ConnectorTUIBaseConstructor>(Ba
         return
       }
 
-      const attributeResult = await this.connectorClient.relationships.getAttributesForRelationship(relationship.id)
-
-      if (attributeResult.isError) {
-        console.log(attributeResult.error)
-        return
-      }
-
-      if (attributeResult.result.length === 0) {
-        console.log("The selected peer didn't share any Attributes with you")
-        return
-      }
-
       const query = { content: { owner: relationship.peerIdentity.address } }
       const attribute = await this.selectAttribute("Which Attribute would you like to delete?", query)
 
