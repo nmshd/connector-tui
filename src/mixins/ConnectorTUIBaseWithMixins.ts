@@ -4,6 +4,7 @@ import {
   AddAcceptPendingRequests,
   AddConnectorInfo,
   AddDecomposeRelationship,
+  AddDeleteAttribute,
   AddExit,
   AddGetAttributesOfRelationship,
   AddIdentityDeletionProcess,
@@ -24,16 +25,18 @@ export class ConnectorTUIBaseWithMixins
         AddTerminateRelationship(
           AddAcceptPendingRelationships(
             AddAcceptPendingRequests(
-              AddGetAttributesOfRelationship(
-                AddSendMail(
-                  AddSendPremadeRequestByMessage(
-                    AddSendRequestByMessage(
-                      AddShareRequestByTemplate(
-                        AddSync(
-                          AddUploadFile(
-                            AddIdentityDeletionProcess(
-                              //
-                              ConnectorTUIBase
+              AddDeleteAttribute(
+                AddGetAttributesOfRelationship(
+                  AddSendMail(
+                    AddSendPremadeRequestByMessage(
+                      AddSendRequestByMessage(
+                        AddShareRequestByTemplate(
+                          AddSync(
+                            AddUploadFile(
+                              AddIdentityDeletionProcess(
+                                //
+                                ConnectorTUIBase
+                              )
                             )
                           )
                         )
