@@ -10,23 +10,28 @@ export function AddDeleteAttribute<TBase extends ConnectorTUIBaseConstructor>(Ba
     }
 
     protected async deleteAttribute() {
-      const result = await prompts({
+      const attributeType = await prompts({
         message: "Do you want to delete an own Attribute?",
         type: "confirm",
         name: "own",
-        initial: true,
       })
 
-      if (result.own) {
+      if (attributeType.own) {
         const query = { content: { owner: this.connectorAddress } }
         const attribute = await this.selectAttribute("Which Attribute would you like to delete?", query)
 
         if (!attribute) {
-          console.log("No Attributes selected")
+          console.log("No Attribute selected")
           return
         }
 
-        await this.connectorClient.attributes.deleteAttributeAndNotify(attribute.id)
+        const result = await this.connectorClient.attributes.deleteAttributeAndNotify(attribute.id)
+        if (result.isError) {
+          console.log(result.error)
+          return
+        }
+
+        console.log("Deleted Attribute successfully")
         return
       }
 
@@ -37,7 +42,10 @@ export function AddDeleteAttribute<TBase extends ConnectorTUIBaseConstructor>(Ba
         RelationshipStatus.Terminated,
         RelationshipStatus.DeletionProposed
       )
-      if (!relationship) return console.log("No peer selected")
+      if (!relationship) {
+        console.log("No peer selected")
+        return
+      }
 
       const attributeResult = await this.connectorClient.relationships.getAttributesForRelationship(relationship.id)
 
@@ -55,11 +63,17 @@ export function AddDeleteAttribute<TBase extends ConnectorTUIBaseConstructor>(Ba
       const attribute = await this.selectAttribute("Which Attribute would you like to delete?", query)
 
       if (!attribute) {
-        console.log("No Attributes selected")
+        console.log("No Attribute selected")
         return
       }
 
-      await this.connectorClient.attributes.deleteAttributeAndNotify(attribute.id)
+      const result = await this.connectorClient.attributes.deleteAttributeAndNotify(attribute.id)
+      if (result.isError) {
+        console.log(result.error)
+        return
+      }
+
+      console.log("Deleted Attribute successfully")
     }
   }
 }
