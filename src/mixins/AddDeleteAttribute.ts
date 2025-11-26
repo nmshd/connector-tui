@@ -47,7 +47,10 @@ export function AddDeleteAttribute<TBase extends ConnectorTUIBaseConstructor>(Ba
         return
       }
 
-      const query = { content: { owner: relationship.peerIdentity.address } }
+      const query = {
+        "@type": ["PeerIdentityAttribute", "PeerRelationshipAttribute", "ThirdPartyRelationshipAttribute"],
+        peer: relationship.peerIdentity.address,
+      }
       const attribute = await this.selectAttribute("Which Attribute would you like to delete?", query)
 
       if (!attribute) {
