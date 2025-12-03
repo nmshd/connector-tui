@@ -35,6 +35,7 @@ export function AddSendMail<TBase extends ConnectorTUIBaseConstructor>(Base: TBa
         to: recipients,
         subject: result.subject,
         body: result.body,
+        bodyFormat: "PlainText",
       }
 
       const sendMessageResult = await this.connectorClient.messages.sendMessage({ recipients, content, attachments: attachments?.map((a) => a.id) })
