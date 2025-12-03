@@ -27,6 +27,16 @@ export function AddSendMail<TBase extends ConnectorTUIBaseConstructor>(Base: TBa
           type: "text",
           name: "body",
           initial: "A Body",
+          format: (value: string) => value.replaceAll("\\n", "\n"),
+        },
+        {
+          message: "What's the body format?",
+          type: "select",
+          name: "bodyFormat",
+          choices: [
+            { title: "PlainText", value: "PlainText" },
+            { title: "Markdown", value: "Markdown" },
+          ],
         },
       ])
 
@@ -35,7 +45,7 @@ export function AddSendMail<TBase extends ConnectorTUIBaseConstructor>(Base: TBa
         to: recipients,
         subject: result.subject,
         body: result.body,
-        bodyFormat: "PlainText",
+        bodyFormat: result.bodyFormat,
       }
 
       const sendMessageResult = await this.connectorClient.messages.sendMessage({ recipients, content, attachments: attachments?.map((a) => a.id) })
