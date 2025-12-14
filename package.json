@@ -41,7 +41,7 @@
     "@js-soft/eslint-config-ts": "^2.0.4",
     "@js-soft/license-check": "^1.0.10",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^24.10.3",
+    "@types/node": "^24.10.4",
     "@types/prompts": "^2.4.9",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/yargs": "^17.0.35",
