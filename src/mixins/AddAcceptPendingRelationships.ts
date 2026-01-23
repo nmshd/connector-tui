@@ -14,6 +14,7 @@ export function AddAcceptPendingRelationships<TBase extends ConnectorTUIBaseCons
         message: "Do you want to sync before accepting pending relationships?",
         type: "confirm",
         name: "sync",
+        initial: true,
       })
 
       if (result.sync) {
