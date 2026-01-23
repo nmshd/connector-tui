@@ -230,8 +230,8 @@ export function AddShareRequestByTemplate<TBase extends ConnectorTUIBaseConstruc
         type: "select",
         name: "deviceType",
         choices: [
-          { title: "Android", value: "Android" },
           { title: "iOS", value: "iOS" },
+          { title: "Android", value: "Android" },
         ],
       })
 
