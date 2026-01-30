@@ -409,6 +409,12 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           type: "text",
           name: "value",
         },
+        {
+          message: "What's the key of your Attribute?",
+          type: "text",
+          name: "key",
+          initial: "Key of RelationshipAttribute",
+        },
       ])
 
       const requestItem: ProposeAttributeRequestItemJSON = {
@@ -421,13 +427,13 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             confidentiality: RelationshipAttributeConfidentiality.Public,
             valueType: "ProprietaryString",
           },
-          key: "aKey",
+          key: result.key,
           owner: "",
         },
         attribute: {
           "@type": "RelationshipAttribute",
           owner: "",
-          key: "aKey",
+          key: result.key,
           confidentiality: RelationshipAttributeConfidentiality.Public,
           value: {
             "@type": "ProprietaryString",
