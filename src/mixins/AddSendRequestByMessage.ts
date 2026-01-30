@@ -413,7 +413,7 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
           message: "What's the key of your Attribute?",
           type: "text",
           name: "key",
-          initial: "Key of Attribute",
+          initial: "Key of RelationshipAttribute",
         },
       ])
 
