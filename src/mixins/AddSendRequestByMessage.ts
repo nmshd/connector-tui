@@ -66,6 +66,10 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
               value: this.createCreateRelationshipAttributeRequestItemWithBooleanValue.bind(this),
             },
             {
+              title: "CreateRelationshipAttributeRequestItem with ProprietaryJSON value",
+              value: this.createCreateRelationshipAttributeRequestItemWithProprietaryJSONValue.bind(this),
+            },
+            {
               title: "CreateIdentityAttributeRequestItem",
               value: this.createCreateIdentityAttributeRequestItem.bind(this),
             },
