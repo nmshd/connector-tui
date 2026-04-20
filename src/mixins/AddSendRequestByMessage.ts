@@ -11,6 +11,7 @@ import {
   ShareAttributeRequestItemJSON,
   TransferFileOwnershipRequestItemJSON,
 } from "@nmshd/content"
+import fs from "fs"
 import prompts from "prompts"
 import { ConnectorTUIBaseConstructor } from "../ConnectorTUIBase.js"
 
@@ -583,6 +584,63 @@ export function AddSendRequestByMessage<TBase extends ConnectorTUIBaseConstructo
             "@type": "ProprietaryBoolean",
             value: result.value,
             title: result.title,
+          },
+        },
+      }
+
+      return requestItem
+    }
+
+    private async createCreateRelationshipAttributeRequestItemWithProprietaryJSONValue() {
+      const result = await prompts([
+        {
+          message: "What's the title of the RelationshipAttribute you would like to create?",
+          type: "text",
+          name: "title",
+          initial: "Title of RelationshipAttribute",
+        },
+        {
+          message: "[Optional] What's the description of the RelationshipAttribute?",
+          type: "text",
+          name: "description",
+          format: (value: string) => (value.length > 0 ? value : undefined),
+        },
+        {
+          message: "What's the key of the RelationshipAttribute you would like to create?",
+          type: "text",
+          name: "key",
+          initial: "Key of RelationshipAttribute",
+        },
+        {
+          message: "Who will be the owner of the RelationshipAttribute?",
+          type: "select",
+          name: "owner",
+          choices: [
+            { title: "You (Connector)", value: this.connectorAddress },
+            { title: "The other Side", value: "" },
+          ],
+        },
+        {
+          message: "Enter the path to a JSON file:",
+          type: "text",
+          name: "jsonValue",
+          format: (value: string) => JSON.parse(fs.readFileSync(value, "utf-8")),
+        },
+      ])
+
+      const requestItem: CreateAttributeRequestItemJSON = {
+        "@type": "CreateAttributeRequestItem",
+        mustBeAccepted: true,
+        attribute: {
+          "@type": "RelationshipAttribute",
+          owner: result.owner,
+          key: result.key,
+          confidentiality: RelationshipAttributeConfidentiality.Public,
+          value: {
+            "@type": "ProprietaryJSON",
+            title: result.title,
+            description: result.description,
+            value: result.jsonValue,
           },
         },
       }
