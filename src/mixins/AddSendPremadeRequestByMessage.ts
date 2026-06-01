@@ -391,7 +391,7 @@ Bitte überprüfen Sie die Aktualität Ihrer Daten und laden Sie einen aktuellen
           {
             "@type": "RequestItemGroup",
             title: "Persönliche Daten",
-            description: "Bitte überprüfen Sie Ihre persönlichen Daten und aktualisieren diese bei Bedarf.",
+            description: "Bitte überprüfen Sie Ihre persönlichen Daten und aktualisieren Sie diese bei Bedarf.",
             items: [
               {
                 "@type": "ProposeAttributeRequestItem",
