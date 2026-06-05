@@ -24,6 +24,10 @@ export function AddSendPremadeRequestByMessage<TBase extends ConnectorTUIBaseCon
             title: "Gynaecology Questionnaire",
             value: this.createGynaecologyQuestionnaire.bind(this),
           },
+          {
+            title: "Extension Social Card",
+            value: this.createExtensionSocialCard.bind(this),
+          },
         ],
       })
 
@@ -367,6 +371,133 @@ Selbstverständlich unterliegen alle Ihre Angaben der
                 "@type": "ConsentRequestItem",
                 mustBeAccepted: true,
                 consent: "Ich bestätige hiermit die Richtigkeit und Vollständigkeit meiner Angaben.",
+              },
+            ],
+          },
+        ],
+      }
+    }
+
+    private createExtensionSocialCard(_: string): RequestJSON {
+      const description = `Guten Tag, 
+in 4 Wochen läuft Ihr Sozialpass aus.
+Bitte überprüfen Sie die Aktualität Ihrer Daten und laden Sie einen aktuellen Leistungsbescheid hoch.`
+
+      return {
+        "@type": "Request",
+        title: "Verlängerung Sozialpass",
+        description,
+        items: [
+          {
+            "@type": "RequestItemGroup",
+            title: "Persönliche Daten",
+            description: "Bitte überprüfen Sie Ihre persönlichen Daten und aktualisieren Sie diese bei Bedarf.",
+            items: [
+              {
+                "@type": "ProposeAttributeRequestItem",
+                mustBeAccepted: true,
+                query: { "@type": "IdentityAttributeQuery", valueType: "GivenName" },
+                attribute: {
+                  "@type": "IdentityAttribute",
+                  owner: "",
+                  value: { "@type": "GivenName", value: "Elke" },
+                },
+              },
+              {
+                "@type": "ProposeAttributeRequestItem",
+                mustBeAccepted: true,
+                query: { "@type": "IdentityAttributeQuery", valueType: "Surname" },
+                attribute: {
+                  "@type": "IdentityAttribute",
+                  owner: "",
+                  value: { "@type": "Surname", value: "Mustermann" },
+                },
+              },
+              {
+                "@type": "ProposeAttributeRequestItem",
+                mustBeAccepted: true,
+                query: { "@type": "IdentityAttributeQuery", valueType: "MaritalStatus" },
+                attribute: {
+                  "@type": "IdentityAttribute",
+                  owner: "",
+                  value: { "@type": "MaritalStatus", value: "single" },
+                },
+              },
+              {
+                "@type": "ProposeAttributeRequestItem",
+                mustBeAccepted: true,
+                query: { "@type": "IdentityAttributeQuery", valueType: "BirthDate" },
+                attribute: {
+                  "@type": "IdentityAttribute",
+                  owner: "",
+                  value: { "@type": "BirthDate", day: 1, month: 1, year: 2000 },
+                },
+              },
+              {
+                "@type": "ProposeAttributeRequestItem",
+                mustBeAccepted: true,
+                query: { "@type": "IdentityAttributeQuery", valueType: "StreetAddress" },
+                attribute: {
+                  "@type": "IdentityAttribute",
+                  owner: "",
+                  value: {
+                    "@type": "StreetAddress",
+                    recipient: "Elke Mustermann",
+                    street: "Musterstraße",
+                    houseNo: "1",
+                    zipCode: "12345",
+                    city: "Musterstadt",
+                    country: "DE",
+                  },
+                },
+              },
+              {
+                "@type": "ProposeAttributeRequestItem",
+                mustBeAccepted: true,
+                query: { "@type": "IdentityAttributeQuery", valueType: "PhoneNumber" },
+                attribute: {
+                  "@type": "IdentityAttribute",
+                  owner: "",
+                  value: { "@type": "PhoneNumber", value: "012345" },
+                },
+              },
+              {
+                "@type": "ProposeAttributeRequestItem",
+                mustBeAccepted: false,
+                query: { "@type": "IdentityAttributeQuery", valueType: "EMailAddress" },
+                attribute: {
+                  "@type": "IdentityAttribute",
+                  owner: "",
+                  value: { "@type": "EMailAddress", value: "example@example.com" },
+                },
+              },
+            ],
+          },
+          {
+            "@type": "RequestItemGroup",
+            title: "Weitere im Haushalt lebende Personen",
+            items: [
+              {
+                "@type": "ProposeAttributeRequestItem",
+                mustBeAccepted: true,
+                query: { "@type": "IdentityAttributeQuery", valueType: "SchematizedJSON" },
+                attribute: {
+                  "@type": "IdentityAttribute",
+                  owner: "",
+                  value: { "@type": "SchematizedJSON", value: "<Bekannte Familienmitglieder>" },
+                },
+              },
+            ],
+          },
+          {
+            "@type": "RequestItemGroup",
+            title: "Leistungsbescheid",
+            description: "Zur Prüfung Ihres Anspruchs benötigen wir einen Einkommensnachweis der letzten 12 Monate, Rentenbescheid, Wohngeldbescheid oder Kindergeldnachweis.",
+            items: [
+              {
+                "@type": "ReadAttributeRequestItem",
+                mustBeAccepted: true,
+                query: { "@type": "IdentityAttributeQuery", valueType: "IdentityFileReference" },
               },
             ],
           },

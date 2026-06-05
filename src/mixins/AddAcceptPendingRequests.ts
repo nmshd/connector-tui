@@ -33,18 +33,18 @@ export function AddAcceptPendingRequests<TBase extends ConnectorTUIBaseConstruct
             const acceptItems: DecideRequestItem[] = []
             for (const _itemOfGroup of (item as RequestItemGroupJSON).items) {
               if (_itemOfGroup["@type"] === "FreeTextRequestItem") {
-                acceptItems.push({ accept: true, freeText: "freeText" } as DecideRequestItem)
+                acceptItems.push({ accept: true, freeText: "freeText" })
               } else if (_itemOfGroup["@type"] === "DeleteAttributeRequestItem") {
-                acceptItems.push({ accept: true, deletionDate: DateTime.utc().plus({ seconds: 5 }).toISO() } as DecideRequestItem)
+                acceptItems.push({ accept: true, deletionDate: DateTime.utc().plus({ seconds: 5 }).toISO() })
               } else {
                 acceptItems.push({ accept: true })
               }
             }
             items.push({ items: acceptItems })
           } else if (item["@type"] === "FreeTextRequestItem") {
-            items.push({ accept: true, freeText: "freeText" } as DecideRequestItem)
+            items.push({ accept: true, freeText: "freeText" })
           } else if (item["@type"] === "DeleteAttributeRequestItem") {
-            items.push({ accept: true, deletionDate: DateTime.utc().plus({ seconds: 5 }).toISO() } as DecideRequestItem)
+            items.push({ accept: true, deletionDate: DateTime.utc().plus({ seconds: 5 }).toISO() })
           } else {
             items.push({ accept: true })
           }
