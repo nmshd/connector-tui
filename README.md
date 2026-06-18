@@ -31,5 +31,3 @@ If you want to execute this TUI as a package you can install it using `npm i -g 
                                                       [string] [default: ".env"]
   -h, --help     Show help                                             [boolean]
 ```
-
-<!-- Remove this -->
