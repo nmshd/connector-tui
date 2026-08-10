@@ -38,9 +38,9 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@js-soft/eslint-config-ts": "2.0.7",
-    "@js-soft/license-check": "1.0.12",
-    "@types/luxon": "3.7.2",
+    "@js-soft/eslint-config-ts": "2.0.8",
+    "@js-soft/license-check": "1.0.13",
+    "@types/luxon": "3.7.3",
     "@types/node": "24.13.3",
     "@types/prompts": "2.4.9",
     "@types/qrcode-terminal": "0.12.2",
