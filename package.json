@@ -38,15 +38,15 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@js-soft/eslint-config-ts": "2.0.11",
-    "@js-soft/license-check": "1.0.15",
+    "@js-soft/eslint-config-ts": "2.0.12",
+    "@js-soft/license-check": "1.0.16",
     "@types/luxon": "3.7.6",
-    "@types/node": "24.19.1",
+    "@types/node": "24.19.2",
     "@types/prompts": "2.4.9",
     "@types/qrcode-terminal": "0.12.2",
     "@types/yargs": "17.0.35",
     "eslint": "10.12.0",
-    "prettier": "3.9.9",
+    "prettier": "3.9.10",
     "ts-node": "10.9.2",
     "typescript": "6.0.3"
   },
